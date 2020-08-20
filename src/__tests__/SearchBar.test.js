@@ -2,35 +2,44 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SearchBar from '../components/SearchBar';
+import '@testing-library/jest-dom/extend-expect';
 
 describe('Typing and submitting', () => {
-  const handleSubmit = jest.fn();
+  let handleSubmit;
+  let textBox;
+  let submitButton;
 
-  const { getByRole } = render(<SearchBar handleSubmit={handleSubmit} />);
-
-  const textBox = getByRole('textbox');
-  const submitButton = getByRole('button');
-
-  userEvent.type(textBox, 'SubmitText');
-  test('user can type in the textBox', () => {
-    expect(textBox).toHaveAttribute('value', 'SubmitText');
+  beforeEach(() => {
+    handleSubmit = jest.fn();
+    const { getByRole } = render(<SearchBar handleSubmit={handleSubmit} />);
+    textBox = getByRole('textbox');
+    submitButton = getByRole('button');
   });
 
-  userEvent.click(submitButton);
+  test('user can type in the textBox', () => {
+    userEvent.type(textBox, 'SubmitText');
+    expect(textBox).toHaveValue('SubmitText');
+  });
+
   test('user can submit via submit button', () => {
+    userEvent.type(textBox, 'SubmitText');
+    userEvent.click(submitButton);
     expect(handleSubmit).toHaveBeenNthCalledWith(1, 'SubmitText');
   });
 
   test('textBox is cleared after submit with button', () => {
-    expect(textBox).toHaveAttribute('value', '');
+    userEvent.type(textBox, 'SubmitText');
+    userEvent.click(submitButton);
+    expect(textBox).toHaveValue('');
   });
 
-  userEvent.type(textBox, 'SubmitWithEnter{enter}');
   test('user can submit via enter', () => {
+    userEvent.type(textBox, 'SubmitWithEnter{enter}');
     expect(handleSubmit).toHaveBeenNthCalledWith(1, 'SubmitWithEnter');
   });
 
   test('textBox is cleared after submit with enter', () => {
-    expect(handleSubmit).toHaveAttribute('value', '');
+    userEvent.type(textBox, 'SubmitWithEnter{enter}');
+    expect(textBox).toHaveValue('');
   });
 });
