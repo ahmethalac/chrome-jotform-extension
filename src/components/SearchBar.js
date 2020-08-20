@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * TODO:
+ * implement placeholder for text input
+ * Get button text from prop. default to Search.
+ */
+
 const SearchBar = ({
   handleSubmit,
 }) => {
@@ -12,6 +18,7 @@ const SearchBar = ({
     handleSubmit(inputText);
   };
   const enterEvent = event => {
+    // TODO: use event.key for a more readable code. (e.g. event.key === 'Enter')
     if (event.keyCode === 13) {
       handleSend();
     }
@@ -20,6 +27,7 @@ const SearchBar = ({
   return (
     <div>
       <input
+        // TODO: always define `type`. (type="text")
         value={inputText}
         onChange={handleInputChange}
         onKeyDown={enterEvent}
@@ -30,7 +38,6 @@ const SearchBar = ({
       >
         Search
       </button>
-
     </div>
   );
 };
@@ -40,6 +47,11 @@ SearchBar.propTypes = {
 };
 
 SearchBar.defaultProps = {
+  /**
+   * TODO:
+   * When describing defaultProps, you should match the type of defaultProp properly
+   * The type of the handleSubmit is function. You should use a noop function like f => f or () => {}
+   */
   handleSubmit: null,
 };
 
