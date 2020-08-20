@@ -1,45 +1,74 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { mount } from 'enzyme';
 import SearchBar from '../components/SearchBar';
-import '@testing-library/jest-dom/extend-expect';
+
+describe('Rendering components', () => {
+  let searchBar;
+
+  beforeEach(() => {
+    searchBar = mount(<SearchBar />);
+  });
+  afterEach(() => {
+    searchBar.unmount();
+  });
+
+  it('should render an input field', () => {
+    expect(searchBar.exists('input')).toBe(true);
+  });
+
+  it('should render a submit button', () => {
+    expect(searchBar.exists('button[type="submit"]')).toBe(true);
+  });
+});
 
 describe('Typing and submitting', () => {
   let handleSubmit;
+  let searchBar;
   let textBox;
   let submitButton;
 
   beforeEach(() => {
     handleSubmit = jest.fn();
-    const { getByRole } = render(<SearchBar handleSubmit={handleSubmit} />);
-    textBox = getByRole('textbox');
-    submitButton = getByRole('button');
+    searchBar = mount(<SearchBar handleSubmit={handleSubmit} />);
+    textBox = searchBar.find('input').first();
+    submitButton = searchBar.find('button[type="submit"]').first();
+  });
+  afterEach(() => {
+    searchBar.unmount();
   });
 
-  test('user can type in the textBox', () => {
-    userEvent.type(textBox, 'SubmitText');
-    expect(textBox).toHaveValue('SubmitText');
+  it('user can type in the textBox', () => {
+    textBox.simulate('change', { target: { value: 'TestText' } });
+    expect(textBox.instance().value).toBe('TestText');
   });
 
-  test('user can submit via submit button', () => {
-    userEvent.type(textBox, 'SubmitText');
-    userEvent.click(submitButton);
+  it('user cannot submit empty text', () => {
+    submitButton.simulate('click');
+    textBox.simulate('keyDown', { key: 'Enter' });
+    expect(handleSubmit).toHaveBeenCalledTimes(0);
+  });
+
+  it('user can submit any text via submit button', () => {
+    textBox.simulate('change', { target: { value: 'SubmitText' } });
+    submitButton.simulate('click');
     expect(handleSubmit).toHaveBeenNthCalledWith(1, 'SubmitText');
   });
 
-  test('textBox is cleared after submit with button', () => {
-    userEvent.type(textBox, 'SubmitText');
-    userEvent.click(submitButton);
-    expect(textBox).toHaveValue('');
+  it('textBox is cleared after submitting via button', () => {
+    textBox.simulate('change', { target: { value: 'sometext' } });
+    submitButton.simulate('click');
+    expect(textBox.instance().value).toBe('');
   });
 
-  test('user can submit via enter', () => {
-    userEvent.type(textBox, 'SubmitWithEnter{enter}');
-    expect(handleSubmit).toHaveBeenNthCalledWith(1, 'SubmitWithEnter');
+  it('user can submit any text via enter key', () => {
+    textBox.simulate('change', { target: { value: 'SubmitText' } });
+    textBox.simulate('keyDown', { key: 'Enter' });
+    expect(handleSubmit).toHaveBeenNthCalledWith(1, 'SubmitText');
   });
 
-  test('textBox is cleared after submit with enter', () => {
-    userEvent.type(textBox, 'SubmitWithEnter{enter}');
-    expect(textBox).toHaveValue('');
+  it('textBox is cleared after submitting via enter key', () => {
+    textBox.simulate('change', { target: { value: 'sometext' } });
+    textBox.simulate('keyDown', { key: 'Enter' });
+    expect(textBox.instance().value).toBe('');
   });
 });
