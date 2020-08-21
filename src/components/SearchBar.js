@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 const SearchBar = ({
   handleSubmit,
-  submitText,
-  placeholder,
+  searchButtonText,
+  searchbarPlaceholder,
 }) => {
   const [inputText, setInputText] = useState('');
 
@@ -24,17 +24,19 @@ const SearchBar = ({
   return (
     <div>
       <input
+        id="searchInput"
         type="text"
         value={inputText}
         onChange={handleInputChange}
         onKeyDown={enterEvent}
-        placeholder={placeholder}
+        placeholder={searchbarPlaceholder}
       />
       <button
+        id="searchButton"
         onClick={handleSend}
-        type="submit"
+        type="button"
       >
-        {submitText}
+        {searchButtonText}
       </button>
     </div>
   );
@@ -42,14 +44,14 @@ const SearchBar = ({
 
 SearchBar.propTypes = {
   handleSubmit: PropTypes.func,
-  submitText: PropTypes.string,
-  placeholder: PropTypes.string,
+  searchButtonText: PropTypes.string,
+  searchbarPlaceholder: PropTypes.string,
 };
 
 SearchBar.defaultProps = {
-  handleSubmit: (() => {}),
-  submitText: 'Search',
-  placeholder: 'Search in Web',
+  handleSubmit: (searchTerm => window.open(`https://www.google.com/search?q=${searchTerm}`, '_top')),
+  searchButtonText: 'Search',
+  searchbarPlaceholder: 'Search in Web',
 };
 
 export default SearchBar;
