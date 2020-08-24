@@ -25,7 +25,7 @@ const SearchBar = ({
     <div>
       <input
         id="searchInput"
-        type="text"
+        type="search"
         value={inputText}
         onChange={handleInputChange}
         onKeyDown={enterEvent}
