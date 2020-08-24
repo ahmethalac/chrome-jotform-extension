@@ -21,7 +21,7 @@ describe('Rendering components', () => {
   });
 
   it('should render a text for deadline', () => {
-    expect(todo.exists('div#deadline')).toBe(true);
+    expect(todo.exists('span#deadline')).toBe(true);
   });
 });
 
@@ -34,7 +34,7 @@ describe('Custom props', () => {
 
   it('should have a deadline from props', () => {
     const todo = mount(<Todo deadline="Test" />);
-    const name = todo.find('div#deadline');
+    const name = todo.find('span#deadline');
     expect(name.text()).toBe('Test');
   });
 });

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 const Todo = ({
   name,
   deadline,
+  id,
 }) => {
   const [done, setDone] = useState(false);
 
@@ -11,17 +12,18 @@ const Todo = ({
 
   return (
     <div>
-      <label id="name" htmlFor="done">
+      <label id="name" htmlFor={`done${id}`}>
         {name}
       </label>
-      <div
+      <span
         id="deadline"
       >
         {deadline}
-      </div>
+      </span>
       <input
         type="checkbox"
-        id="done"
+        id={`done${id}`}
+        className="done"
         checked={done}
         onChange={() => {}}
         onClick={handleClick}
@@ -33,10 +35,12 @@ const Todo = ({
 Todo.propTypes = {
   name: PropTypes.string,
   deadline: PropTypes.string,
+  id: PropTypes.number,
 };
 
 Todo.defaultProps = {
   name: 'DefaultName',
   deadline: '',
+  id: 0,
 };
 export default Todo;

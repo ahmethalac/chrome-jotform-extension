@@ -1,51 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Todo from './Todo';
+import { getID, getName } from '../selectors/todosSelectors';
 
-const Todos = ({
+const TodoList = ({
   newTodoPlaceholder,
   addButtonText,
   deadlineLabel,
+  name,
+  todos,
+  formId,
 }) => (
   <div>
+    <div className="todoListName">
+      {name + formId}
+    </div>
     <ul>
-      <Todo />
+      {todos.map(todo => <Todo name={getName(todo)} id={getID(todo)} />)}
     </ul>
     <input
       type="text"
-      id="newTodoInput"
+      className="newTodoInput"
       placeholder={newTodoPlaceholder}
     />
     <label
       htmlFor="deadlinePicker"
-      id="deadlineLabel"
+      className="deadlineLabel"
     >
       {deadlineLabel}
     </label>
     <input
-      id="deadlinePicker"
+      className="deadlinePicker"
       placeholder="selam"
       type="datetime-local"
     />
     <button
       type="button"
-      id="addTodoButton"
+      className="addTodoButton"
     >
       {addButtonText}
     </button>
   </div>
 );
 
-Todos.propTypes = {
+TodoList.propTypes = {
   newTodoPlaceholder: PropTypes.string,
   addButtonText: PropTypes.string,
   deadlineLabel: PropTypes.string,
+  todos: PropTypes.arrayOf(PropTypes.object),
+  name: PropTypes.string,
+  formId: PropTypes.number,
 };
 
-Todos.defaultProps = {
+TodoList.defaultProps = {
   newTodoPlaceholder: 'Type a new todo',
   addButtonText: 'Add todo',
   deadlineLabel: 'Set a deadline if you want',
+  todos: [],
+  name: 'Default List',
+  formId: 0,
 };
 
-export default Todos;
+export default TodoList;

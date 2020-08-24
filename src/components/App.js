@@ -1,13 +1,13 @@
 import React from 'react';
 import '../styles/App.scss';
 import SearchBar from './SearchBar';
-import Todos from './Todos';
+import VisibleTodoLists from './VisibleTodoLists';
 
 const App = () => (
   <div className="App">
     <header className="App-header">
       <SearchBar />
-      <Todos />
+      <VisibleTodoLists />
     </header>
   </div>
 );
