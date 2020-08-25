@@ -1,3 +1,9 @@
+/**
+ * TODO:
+ * these are not true selectors,
+ * you should use the createSelector helper func from the reselect package
+*/
+
 export const getName = object => object.get('name', 'undefined');
 export const getID = object => object.get('id', 0);
 

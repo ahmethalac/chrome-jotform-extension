@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * TODO:
+ * taken from the README.
+ * `
+ *  Search engine with custom shortcuts
+ *  (User can assign !w to "what is" phrase so he can use "!w TDD" instead of "what is TDD")
+ * `
+*/
+
 const SearchBar = ({
   handleSubmit,
   searchButtonText,
