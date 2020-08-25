@@ -21,4 +21,13 @@ describe('Custom props', () => {
     const component = mount(<TodoLists todoLists={todoLists} toggleTodo={mockFunction} />);
     expect(component.find('TodoList').prop('toggleTodo')).toBe(mockFunction);
   });
+
+  it('should pass addTodo function to TodoList', () => {
+    const mockFunction = jest.fn();
+    const todoLists = I.fromJS([
+      { id: 1, name: 'list1', todos: [] },
+    ]);
+    const component = mount(<TodoLists todoLists={todoLists} addTodo={mockFunction} />);
+    expect(component.find('TodoList').prop('addTodo')).toBe(mockFunction);
+  });
 });

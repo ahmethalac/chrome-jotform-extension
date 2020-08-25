@@ -72,4 +72,13 @@ describe('Custom props', () => {
     expect(todos.exists('Todo[name="test1"]')).toBe(true);
     expect(todos.exists('Todo[name="test2"]')).toBe(true);
   });
+
+  it('should have a button whose onClick is obtained from props', () => {
+    const mockFunction = jest.fn();
+    const todos = mount(<TodoList addTodo={mockFunction} formId={5} />);
+    todos.find('input.newTodoInput').simulate('change', { target: { value: 'TestText' } });
+    todos.find('button.addTodoButton').simulate('click');
+    expect(mockFunction).toHaveBeenCalledTimes(1);
+    expect(mockFunction).toHaveBeenCalledWith(5, 'TestText');
+  });
 });
