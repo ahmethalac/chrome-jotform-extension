@@ -10,13 +10,20 @@ const TodoList = ({
   name,
   todos,
   formId,
+  toggleTodo,
 }) => (
   <div>
     <div className="todoListName">
       {name + formId}
     </div>
     <ul>
-      {todos.map(todo => <Todo name={getName(todo)} id={getID(todo)} />)}
+      {todos.map(todo => (
+        <Todo
+          name={getName(todo)}
+          id={getID(todo)}
+          onClick={() => toggleTodo(formId, getID(todo))}
+        />
+      ))}
     </ul>
     <input
       type="text"
@@ -31,7 +38,6 @@ const TodoList = ({
     </label>
     <input
       className="deadlinePicker"
-      placeholder="selam"
       type="datetime-local"
     />
     <button
@@ -50,6 +56,7 @@ TodoList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.object),
   name: PropTypes.string,
   formId: PropTypes.number,
+  toggleTodo: PropTypes.func,
 };
 
 TodoList.defaultProps = {
@@ -59,6 +66,7 @@ TodoList.defaultProps = {
   todos: [],
   name: 'Default List',
   formId: 0,
+  toggleTodo: (() => {}),
 };
 
 export default TodoList;
