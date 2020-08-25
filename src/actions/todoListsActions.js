@@ -1,4 +1,4 @@
-import { ADD_TODO_REQUEST, TOGGLE_TODO_REQUEST } from '../constants/actionTypes';
+import { ADD_TODO_REQUEST, ADD_TODOLIST_REQUEST, TOGGLE_TODO_REQUEST } from '../constants/actionTypes';
 
 export const toggleTodo = (formId, submissionId) => ({
   type: TOGGLE_TODO_REQUEST,
@@ -8,11 +8,18 @@ export const toggleTodo = (formId, submissionId) => ({
   },
 });
 
-export const addTodo = (formId, text) => ({
+export const addTodo = (formId, name) => ({
   type: ADD_TODO_REQUEST,
   payload: {
     formId,
-    text,
+    name,
+  },
+});
+
+export const addTodoList = name => ({
+  type: ADD_TODOLIST_REQUEST,
+  payload: {
+    name,
   },
 });
 

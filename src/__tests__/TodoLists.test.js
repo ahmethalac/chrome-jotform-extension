@@ -3,6 +3,25 @@ import { mount } from 'enzyme';
 import I from 'immutable';
 import TodoLists from '../components/TodoLists';
 
+describe('Rendering components', () => {
+  let todoLists;
+
+  beforeEach(() => {
+    todoLists = mount(<TodoLists />);
+  });
+  afterEach(() => {
+    todoLists.unmount();
+  });
+
+  it('should render an input for typing a new todoList', () => {
+    expect(todoLists.exists('input.newTodoListInput')).toBe(true);
+  });
+
+  it('should render a button for adding new todoList', () => {
+    expect(todoLists.exists('button.addTodoListButton')).toBe(true);
+  });
+});
+
 describe('Custom props', () => {
   it('should have a TodoList from props', () => {
     const todoLists = I.fromJS([
@@ -29,5 +48,15 @@ describe('Custom props', () => {
     ]);
     const component = mount(<TodoLists todoLists={todoLists} addTodo={mockFunction} />);
     expect(component.find('TodoList').prop('addTodo')).toBe(mockFunction);
+  });
+});
+
+describe('Adding a new todoList', () => {
+  it('should call addTodolist function from props when clicked', () => {
+    const mockFunction = jest.fn();
+    const todoLists = mount(<TodoLists addTodoList={mockFunction} />);
+    todoLists.find('input.newTodoListInput').simulate('change', { target: { value: 'TestText' } });
+    todoLists.find('button.addTodoListButton').simulate('click');
+    expect(mockFunction).toHaveBeenNthCalledWith(1, 'TestText');
   });
 });
