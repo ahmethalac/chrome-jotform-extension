@@ -3,3 +3,4 @@ export const getID = object => object.get('id', 0);
 
 export const getTodoLists = state => state.todoLists;
 export const getTodos = todoList => todoList.get('todos', []);
+export const getDone = todo => todo.get('done', false);

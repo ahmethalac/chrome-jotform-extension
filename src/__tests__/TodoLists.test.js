@@ -12,4 +12,13 @@ describe('Custom props', () => {
     expect(component.exists('TodoList[formId=1]')).toBe(true);
     expect(component.exists('TodoList[name="list1"]')).toBe(true);
   });
+
+  it('should pass toggleTodo function to TodoList', () => {
+    const mockFunction = jest.fn();
+    const todoLists = I.fromJS([
+      { id: 1, name: 'list1', todos: [] },
+    ]);
+    const component = mount(<TodoLists todoLists={todoLists} toggleTodo={mockFunction} />);
+    expect(component.find('TodoList').prop('toggleTodo')).toBe(mockFunction);
+  });
 });

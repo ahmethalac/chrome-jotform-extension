@@ -6,14 +6,14 @@ const Todo = ({
   deadline,
   id,
   done,
-  onClick,
+  toggleTodo,
 }) => (
-  <div>
-    <label id="name" htmlFor={`done${id}`}>
+  <li>
+    <label className="name" htmlFor={`done${id}`}>
       {name}
     </label>
     <span
-      id="deadline"
+      className="deadline"
     >
       {deadline}
     </span>
@@ -23,9 +23,9 @@ const Todo = ({
       className="done"
       checked={done}
       onChange={() => {}}
-      onClick={onClick}
+      onClick={toggleTodo}
     />
-  </div>
+  </li>
 );
 
 Todo.propTypes = {
@@ -33,7 +33,7 @@ Todo.propTypes = {
   deadline: PropTypes.string,
   id: PropTypes.number,
   done: PropTypes.bool,
-  onClick: PropTypes.func,
+  toggleTodo: PropTypes.func,
 };
 
 Todo.defaultProps = {
@@ -41,6 +41,6 @@ Todo.defaultProps = {
   deadline: '',
   id: 0,
   done: false,
-  onClick: (() => {}),
+  toggleTodo: (() => {}),
 };
 export default Todo;
