@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Todo from './Todo';
-import { getDone, getID, getName } from '../selectors/todosSelectors';
 
 const TodoList = ({
   newTodoPlaceholder,
@@ -37,11 +36,11 @@ const TodoList = ({
       <ul>
         {todos.map(todo => (
           <Todo
-            key={getID(todo)}
-            name={getName(todo)}
-            id={getID(todo)}
-            toggleTodo={done => toggleTodo(formId, getID(todo), done)}
-            done={getDone(todo)}
+            key={todo.get('id', '0')}
+            name={todo.get('name', 'undefined')}
+            id={todo.get('id', '0')}
+            toggleTodo={done => toggleTodo(formId, todo.get('id', '0'), done)}
+            done={todo.get('done', false)}
           />
         ))}
       </ul>

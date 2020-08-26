@@ -1,12 +1,19 @@
+import { createSelector } from 'reselect';
+
 /**
  * TODO:
  * these are not true selectors,
  * you should use the createSelector helper func from the reselect package
 */
 
-export const getName = object => object.get('name', 'undefined');
-export const getID = object => object.get('id', 0);
+export const getTodoListsState = state => state.todoLists;
 
-export const getTodoLists = state => state.todoLists.toArray().map(value => value[1]);
-export const getTodos = todoList => todoList.get('todos', []).toArray().map(value => value[1]);
-export const getDone = todo => todo.get('done', false);
+export const getTodoLists = createSelector(
+  [getTodoListsState],
+  todoLists => todoLists.toArray().map(value => value[1]),
+);
+
+export const getTodos = createSelector(
+  [todoList => todoList.get('todos', {})],
+  todos => todos.toArray().map(value => value[1]),
+);

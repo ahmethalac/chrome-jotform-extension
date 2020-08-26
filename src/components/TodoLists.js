@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TodoList from './TodoList';
-import { getID, getName, getTodos } from '../selectors/todosSelectors';
+import { getTodos } from '../selectors';
 
 const TodoLists = ({
   todoLists,
@@ -30,9 +30,9 @@ const TodoLists = ({
     <div>
       {todoLists.map(todoList => (
         <TodoList
-          key={getID(todoList)}
-          name={getName(todoList)}
-          formId={getID(todoList)}
+          key={todoList.get('id', '0')}
+          name={todoList.get('name', 'undefined')}
+          formId={todoList.get('id', '0')}
           todos={getTodos(todoList)}
           toggleTodo={toggleTodo}
           addTodo={addTodo}
