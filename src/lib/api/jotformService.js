@@ -44,3 +44,16 @@ export const changeTodoState = (submissionID, done) => {
   const requestBody = `submission[2]=${done}`;
   return axios.post(`${baseURL}submission/${submissionID}?apiKey=${JOTFORM_API_KEY}`, requestBody);
 };
+
+export const getTodoLists = () => axios.get(`${baseURL}user/forms?apikey=${JOTFORM_API_KEY}`)
+  .then(response => response.data.content)
+  .then(forms => forms.filter(form => form.status === 'ENABLED'))
+  .then(enabledForms => enabledForms.filter(form => form.title.startsWith('todoList_')));
+
+export const getTodos = formId => axios.get(`${baseURL}form/${formId}/submissions?apiKey=${JOTFORM_API_KEY}`)
+  .then(response => response.data.content)
+  .then(submissions => submissions.map(submission => ({
+    id: submission.id,
+    name: submission.answers['1'].prettyFormat,
+    done: submission.answers['2'].prettyFormat === 'true',
+  })));

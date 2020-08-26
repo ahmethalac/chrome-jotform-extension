@@ -1,7 +1,9 @@
 import I from 'immutable';
 import reducer from '../reducers/todoListsReducer';
 import { DUMMY_STATE_FOR_TODOLISTS } from '../constants/dummyValues';
-import { ADD_TODO_SUCCESS, ADD_TODOLIST_SUCCESS, TOGGLE_TODO_SUCCESS } from '../constants/actionTypes';
+import {
+  ADD_TODO_SUCCESS, ADD_TODOLIST_SUCCESS, INIT_A_TODOLIST, TOGGLE_TODO_SUCCESS,
+} from '../constants/actionTypes';
 
 it('should return the initial state', () => {
   expect(reducer(undefined, {})).toEqual(I.fromJS(DUMMY_STATE_FOR_TODOLISTS));
@@ -85,5 +87,35 @@ it('should handle TOGGLE_TODO_SUCCESS', () => {
       },
     },
   });
+  expect(reducer(initialState, action)).toEqual(expectedState);
+});
+
+it('should handle INIT_A_TODOLIST', () => {
+  const initialState = I.fromJS({});
+  const action = {
+    type: INIT_A_TODOLIST,
+    payload: {
+      id: '5',
+      name: 'testName',
+      todos: {
+        3: {
+          id: '3',
+          name: 'testTodo',
+          done: false,
+        },
+      },
+    },
+  };
+  const expectedState = initialState.set('5', I.fromJS({
+    id: '5',
+    name: 'testName',
+    todos: {
+      3: {
+        id: '3',
+        name: 'testTodo',
+        done: false,
+      },
+    },
+  }));
   expect(reducer(initialState, action)).toEqual(expectedState);
 });
