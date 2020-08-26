@@ -3,9 +3,9 @@ import {
   ADD_TODO_FAILURE, ADD_TODO_REQUEST, ADD_TODO_SUCCESS,
   ADD_TODOLIST_FAILURE,
   ADD_TODOLIST_REQUEST,
-  ADD_TODOLIST_SUCCESS,
+  ADD_TODOLIST_SUCCESS, TOGGLE_TODO_FAILURE, TOGGLE_TODO_REQUEST, TOGGLE_TODO_SUCCESS,
 } from '../constants/actionTypes';
-import { createTodoList, submitTodo } from '../lib/api';
+import { changeTodoState, createTodoList, submitTodo } from '../lib/api';
 
 export function* addTodoList(action) {
   try {
@@ -38,12 +38,13 @@ export function* addTodo(action) {
     const { name, formId } = action.payload;
 
     const { request: { response } } = yield call(submitTodo, formId, name);
-    const { content, responseCode } = JSON.parse(response);
-    const { submissionID } = content[0];
+    const { content, responseCode, message } = JSON.parse(response);
 
     if (responseCode !== 200) {
-      throw Error(`Request failed! status=${responseCode}`);
+      throw Error(`Request failed! ${message}`);
     }
+
+    const { submissionID } = content[0];
 
     yield put({
       type: ADD_TODO_SUCCESS,
@@ -61,9 +62,36 @@ export function* addTodo(action) {
   }
 }
 
+export function* toggleTodo(action) {
+  try {
+    const { formId, submissionId, done } = action.payload;
+
+    const { request: { response } } = yield call(changeTodoState, submissionId, !done);
+    const { responseCode, message } = JSON.parse(response);
+
+    if (responseCode !== 200) {
+      throw Error(`Request failed! ${message}`);
+    }
+
+    yield put({
+      type: TOGGLE_TODO_SUCCESS,
+      payload: {
+        formId,
+        submissionId,
+        done: !done,
+      },
+    });
+  } catch (e) {
+    yield put({
+      type: TOGGLE_TODO_FAILURE,
+      payload: e.message,
+    });
+  }
+}
 const appSagas = [
   takeEvery(ADD_TODOLIST_REQUEST, addTodoList),
   takeEvery(ADD_TODO_REQUEST, addTodo),
+  takeEvery(TOGGLE_TODO_REQUEST, toggleTodo),
 ];
 
 export default appSagas;

@@ -23,7 +23,7 @@ const Todo = ({
       className="done"
       checked={done}
       onChange={() => {}}
-      onClick={toggleTodo}
+      onClick={() => toggleTodo(done)}
     />
   </li>
 );

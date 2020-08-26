@@ -39,7 +39,7 @@ const TodoList = ({
           <Todo
             name={getName(todo)}
             id={getID(todo)}
-            toggleTodo={() => toggleTodo(formId, getID(todo))}
+            toggleTodo={done => toggleTodo(formId, getID(todo), done)}
             done={getDone(todo)}
           />
         ))}

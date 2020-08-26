@@ -1,10 +1,11 @@
 import { ADD_TODO_REQUEST, ADD_TODOLIST_REQUEST, TOGGLE_TODO_REQUEST } from '../constants/actionTypes';
 
-export const toggleTodo = (formId, submissionId) => ({
+export const toggleTodo = (formId, submissionId, done) => ({
   type: TOGGLE_TODO_REQUEST,
   payload: {
     formId,
     submissionId,
+    done,
   },
 });
 

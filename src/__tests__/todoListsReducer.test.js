@@ -1,7 +1,7 @@
 import I from 'immutable';
 import reducer from '../reducers/todoListsReducer';
 import { DUMMY_STATE_FOR_TODOLISTS } from '../constants/dummyValues';
-import { ADD_TODO_SUCCESS, ADD_TODOLIST_SUCCESS } from '../constants/actionTypes';
+import { ADD_TODO_SUCCESS, ADD_TODOLIST_SUCCESS, TOGGLE_TODO_SUCCESS } from '../constants/actionTypes';
 
 it('should return the initial state', () => {
   expect(reducer(undefined, {})).toEqual(I.fromJS(DUMMY_STATE_FOR_TODOLISTS));
@@ -47,5 +47,43 @@ it('should handle ADD_TODO_SUCCESS', () => {
     name: 'testName',
     done: false,
   }));
+  expect(reducer(initialState, action)).toEqual(expectedState);
+});
+
+it('should handle TOGGLE_TODO_SUCCESS', () => {
+  const initialState = I.fromJS({
+    5: {
+      id: 5,
+      name: 'todoList',
+      todos: {
+        3: {
+          id: 3,
+          name: 'testName',
+          done: false,
+        },
+      },
+    },
+  });
+  const action = {
+    type: TOGGLE_TODO_SUCCESS,
+    payload: {
+      formId: '5',
+      submissionId: '3',
+      done: true,
+    },
+  };
+  const expectedState = I.fromJS({
+    5: {
+      id: 5,
+      name: 'todoList',
+      todos: {
+        3: {
+          id: 3,
+          name: 'testName',
+          done: true,
+        },
+      },
+    },
+  });
   expect(reducer(initialState, action)).toEqual(expectedState);
 });

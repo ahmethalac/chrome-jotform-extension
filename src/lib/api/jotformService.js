@@ -39,3 +39,8 @@ export const submitTodo = (formId, name) => {
   ];
   return axios.put(`${baseURL}form/${formId}/submissions?apiKey=${JOTFORM_API_KEY}`, requestBody);
 };
+
+export const changeTodoState = (submissionID, done) => {
+  const requestBody = `submission[2]=${done}`;
+  return axios.post(`${baseURL}submission/${submissionID}?apiKey=${JOTFORM_API_KEY}`, requestBody);
+};
