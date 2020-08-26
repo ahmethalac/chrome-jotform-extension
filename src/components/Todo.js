@@ -31,7 +31,7 @@ const Todo = ({
 Todo.propTypes = {
   name: PropTypes.string,
   deadline: PropTypes.string,
-  id: PropTypes.number,
+  id: PropTypes.string,
   done: PropTypes.bool,
   toggleTodo: PropTypes.func,
 };
@@ -39,7 +39,7 @@ Todo.propTypes = {
 Todo.defaultProps = {
   name: 'DefaultName',
   deadline: '',
-  id: 0,
+  id: '0',
   done: false,
   toggleTodo: (() => {}),
 };

@@ -37,6 +37,7 @@ const TodoList = ({
       <ul>
         {todos.map(todo => (
           <Todo
+            key={getID(todo)}
             name={getName(todo)}
             id={getID(todo)}
             toggleTodo={done => toggleTodo(formId, getID(todo), done)}
@@ -79,7 +80,7 @@ TodoList.propTypes = {
   deadlineLabel: PropTypes.string,
   todos: PropTypes.arrayOf(PropTypes.object),
   name: PropTypes.string,
-  formId: PropTypes.number,
+  formId: PropTypes.string,
   toggleTodo: PropTypes.func,
   addTodo: PropTypes.func,
 };
@@ -90,7 +91,7 @@ TodoList.defaultProps = {
   deadlineLabel: 'Set a deadline if you want',
   todos: [],
   name: 'Default List',
-  formId: 0,
+  formId: '0',
   toggleTodo: (() => {}),
   addTodo: (() => {}),
 };

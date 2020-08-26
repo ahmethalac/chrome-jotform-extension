@@ -5,9 +5,11 @@ import {
   ADD_TODO_SUCCESS,
   ADD_TODOLIST_FAILURE,
   ADD_TODOLIST_REQUEST,
-  ADD_TODOLIST_SUCCESS, INIT_A_TODOLIST,
+  ADD_TODOLIST_SUCCESS,
+  INIT_A_TODOLIST,
   INIT_TODOLISTS_FAILURE,
-  INIT_TODOLISTS_REQUEST, INIT_TODOLISTS_SUCCESS,
+  INIT_TODOLISTS_REQUEST,
+  INIT_TODOLISTS_SUCCESS,
   TOGGLE_TODO_FAILURE,
   TOGGLE_TODO_REQUEST,
   TOGGLE_TODO_SUCCESS,
@@ -21,18 +23,15 @@ export function* addTodoList(action) {
     const { name } = action.payload;
 
     const { request: { response } } = yield call(createTodoList, name);
-    const { content: { id }, responseCode } = JSON.parse(response);
+    const { content: { id }, responseCode, message } = JSON.parse(response);
 
     if (responseCode !== 200) {
-      throw Error(`Request failed! status=${responseCode}`);
+      throw Error(`Request failed! ${message}`);
     }
 
     yield put({
       type: ADD_TODOLIST_SUCCESS,
-      payload: {
-        name,
-        id,
-      },
+      payload: { name, id },
     });
   } catch (e) {
     yield put({
@@ -57,11 +56,7 @@ export function* addTodo(action) {
 
     yield put({
       type: ADD_TODO_SUCCESS,
-      payload: {
-        name,
-        submissionID,
-        formId,
-      },
+      payload: { name, submissionID, formId },
     });
   } catch (e) {
     yield put({
@@ -84,11 +79,7 @@ export function* toggleTodo(action) {
 
     yield put({
       type: TOGGLE_TODO_SUCCESS,
-      payload: {
-        formId,
-        submissionId,
-        done: !done,
-      },
+      payload: { formId, submissionId, done: !done },
     });
   } catch (e) {
     yield put({

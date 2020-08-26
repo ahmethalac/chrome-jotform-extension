@@ -1,41 +1,36 @@
-import { addTodo, addTodoList, toggleTodo } from '../actions/todoListsActions';
+import { addTodo, addTodoList, toggleTodo } from '../actions';
 import { ADD_TODO_REQUEST, ADD_TODOLIST_REQUEST, TOGGLE_TODO_REQUEST } from '../constants/actionTypes';
 
 describe('actions', () => {
   it('should create an action to toggle a todo', () => {
-    const formId = 5;
-    const submissionId = 1;
     const expectedAction = {
       type: TOGGLE_TODO_REQUEST,
       payload: {
-        formId,
-        submissionId,
+        formId: 5,
+        submissionId: 1,
       },
     };
-    expect(toggleTodo(formId, submissionId)).toEqual(expectedAction);
+    expect(toggleTodo(5, 1)).toEqual(expectedAction);
   });
 
   it('should create an action to add a todo', () => {
-    const formId = 5;
-    const name = 'NewTodo';
     const expectedAction = {
       type: ADD_TODO_REQUEST,
       payload: {
-        formId,
-        name,
+        formId: 5,
+        name: 'NewTodo',
       },
     };
-    expect(addTodo(formId, name)).toEqual(expectedAction);
+    expect(addTodo(5, 'NewTodo')).toEqual(expectedAction);
   });
 
   it('should create an action to add a todoList', () => {
-    const name = 'NewList';
     const expectedAction = {
       type: ADD_TODOLIST_REQUEST,
       payload: {
-        name,
+        name: 'NewList',
       },
     };
-    expect(addTodoList(name)).toEqual(expectedAction);
+    expect(addTodoList('NewList')).toEqual(expectedAction);
   });
 });

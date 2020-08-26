@@ -6,22 +6,10 @@ export const baseURL = 'http://api.jotform.com/';
 export const createTodoList = name => {
   const requestBody = {
     questions: [
-      {
-        type: 'control_textbox',
-        text: 'Todo Name',
-        order: '1',
-        required: 'Yes',
-      },
-      {
-        type: 'control_textbox',
-        text: 'Done',
-        order: '2',
-      },
+      { type: 'control_textbox', text: 'Todo Name', order: '1' },
+      { type: 'control_textbox', text: 'Done', order: '2' },
     ],
-    properties: {
-      title: `todoList_${name}`,
-      height: '600',
-    },
+    properties: { title: `todoList_${name}` },
   };
   return axios.put(`${baseURL}user/forms?apiKey=${JOTFORM_API_KEY}`, requestBody);
 };
@@ -29,12 +17,8 @@ export const createTodoList = name => {
 export const submitTodo = (formId, name) => {
   const requestBody = [
     {
-      1: {
-        text: name,
-      },
-      2: {
-        text: 'false',
-      },
+      1: { text: name },
+      2: { text: 'false' },
     },
   ];
   return axios.put(`${baseURL}form/${formId}/submissions?apiKey=${JOTFORM_API_KEY}`, requestBody);

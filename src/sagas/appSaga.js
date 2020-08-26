@@ -5,10 +5,12 @@ import {
 
 export function* initApp() {
   try {
+    // INIT ALL SERVICES
     yield put({
       type: INIT_TODOLISTS_REQUEST,
     });
 
+    // ALL SERVICES INITIALIZED
     yield put({
       type: INIT_APP_SUCCESS,
     });

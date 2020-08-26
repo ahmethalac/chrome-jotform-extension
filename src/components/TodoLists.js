@@ -30,6 +30,7 @@ const TodoLists = ({
     <div>
       {todoLists.map(todoList => (
         <TodoList
+          key={getID(todoList)}
           name={getName(todoList)}
           formId={getID(todoList)}
           todos={getTodos(todoList)}
