@@ -38,4 +38,8 @@ export const DUMMY_STATE_FOR_TODOLISTS = {
   },
 };
 
+export const DUMMY_STATE_FOR_SEARCHBAR_SHORTCUTS = {
+  w: 'what is',
+  h: 'how to',
+};
 export default 'dummyExportForESLINT';

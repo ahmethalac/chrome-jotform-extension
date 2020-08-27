@@ -1,6 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import I from 'immutable';
 import SearchBar from '../components/SearchBar';
+import { DUMMY_STATE_FOR_SEARCHBAR_SHORTCUTS } from '../constants/dummyValues';
 
 describe('Rendering components', () => {
   let searchBar;
@@ -84,5 +86,29 @@ describe('Typing and submitting', () => {
     textBox.simulate('change', { target: { value: 'sometext' } });
     textBox.simulate('keyDown', { key: 'Enter' });
     expect(textBox.instance().value).toBe('');
+  });
+});
+
+describe('Custom shortcuts', () => {
+  let searchBar;
+  let textBox;
+  const shortcuts = I.fromJS(DUMMY_STATE_FOR_SEARCHBAR_SHORTCUTS);
+
+  beforeEach(() => {
+    searchBar = mount(<SearchBar shortcuts={shortcuts} />);
+    textBox = searchBar.find('input#searchInput');
+  });
+  afterEach(() => {
+    searchBar.unmount();
+  });
+
+  it('should change !w with "what is"', () => {
+    textBox.simulate('change', { target: { value: '!w' } });
+    expect(textBox.instance().value).toBe('what is');
+  });
+
+  it('should change !h with "how to"', () => {
+    textBox.simulate('change', { target: { value: '!h' } });
+    expect(textBox.instance().value).toBe('how to');
   });
 });

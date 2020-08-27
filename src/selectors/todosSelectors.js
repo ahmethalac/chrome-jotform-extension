@@ -1,11 +1,5 @@
 import { createSelector } from 'reselect';
 
-/**
- * TODO:
- * these are not true selectors,
- * you should use the createSelector helper func from the reselect package
-*/
-
 export const getTodoListsState = state => state.todoLists;
 
 export const getTodoLists = createSelector(

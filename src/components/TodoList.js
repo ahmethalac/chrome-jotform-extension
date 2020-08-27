@@ -5,7 +5,6 @@ import Todo from './Todo';
 const TodoList = ({
   newTodoPlaceholder,
   addButtonText,
-  deadlineLabel,
   name,
   todos,
   formId,
@@ -52,16 +51,6 @@ const TodoList = ({
         onChange={handleInputChange}
         onKeyDown={enterEvent}
       />
-      <label
-        htmlFor="deadlinePicker"
-        className="deadlineLabel"
-      >
-        {deadlineLabel}
-      </label>
-      <input
-        className="deadlinePicker"
-        type="datetime-local"
-      />
       <button
         type="button"
         className="addTodoButton"
@@ -76,7 +65,6 @@ const TodoList = ({
 TodoList.propTypes = {
   newTodoPlaceholder: PropTypes.string,
   addButtonText: PropTypes.string,
-  deadlineLabel: PropTypes.string,
   todos: PropTypes.arrayOf(PropTypes.object),
   name: PropTypes.string,
   formId: PropTypes.string,
@@ -87,7 +75,6 @@ TodoList.propTypes = {
 TodoList.defaultProps = {
   newTodoPlaceholder: 'Type a new todo',
   addButtonText: 'Add todo',
-  deadlineLabel: 'Set a deadline if you want',
   todos: [],
   name: 'Default List',
   formId: '0',
