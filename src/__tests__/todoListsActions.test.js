@@ -1,5 +1,12 @@
-import { addTodo, addTodoList, toggleTodo } from '../actions';
-import { ADD_TODO_REQUEST, ADD_TODOLIST_REQUEST, TOGGLE_TODO_REQUEST } from '../constants/actionTypes';
+import {
+  addTodo, addTodoList, deleteTodoList, toggleTodo,
+} from '../actions';
+import {
+  ADD_TODO_REQUEST,
+  ADD_TODOLIST_REQUEST,
+  DELETE_TODOLIST_REQUEST,
+  TOGGLE_TODO_REQUEST,
+} from '../constants/actionTypes';
 
 describe('actions', () => {
   it('should create an action to toggle a todo', () => {
@@ -32,5 +39,15 @@ describe('actions', () => {
       },
     };
     expect(addTodoList('NewList')).toEqual(expectedAction);
+  });
+
+  it('should create an action to delete a todolist', () => {
+    const expectedAction = {
+      type: DELETE_TODOLIST_REQUEST,
+      payload: {
+        formId: '5',
+      },
+    };
+    expect(deleteTodoList('5')).toEqual(expectedAction);
   });
 });

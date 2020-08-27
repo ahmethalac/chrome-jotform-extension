@@ -36,6 +36,10 @@ describe('Rendering components', () => {
   it('should render an input field for setting deadline for a todo', () => {
     expect(todos.exists('input.deadlinePicker')).toBe(true);
   });
+
+  it('should render a button for deleting the todoList', () => {
+    expect(todos.exists('button.deleteListButton')).toBe(true);
+  });
 });
 
 describe('Custom props', () => {

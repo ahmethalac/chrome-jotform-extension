@@ -4,12 +4,14 @@ import Todo from './Todo';
 
 const TodoList = ({
   newTodoPlaceholder,
-  addButtonText,
+  addTodoText,
+  deleteListText,
   name,
   todos,
   formId,
   toggleTodo,
   addTodo,
+  deleteTodoList,
 }) => {
   const [inputText, setInputText] = useState('');
 
@@ -56,7 +58,14 @@ const TodoList = ({
         className="addTodoButton"
         onClick={handleSend}
       >
-        {addButtonText}
+        {addTodoText}
+      </button>
+      <button
+        type="button"
+        className="deleteListButton"
+        onClick={() => deleteTodoList(formId)}
+      >
+        {deleteListText}
       </button>
     </div>
   );
@@ -64,22 +73,26 @@ const TodoList = ({
 
 TodoList.propTypes = {
   newTodoPlaceholder: PropTypes.string,
-  addButtonText: PropTypes.string,
+  addTodoText: PropTypes.string,
+  deleteListText: PropTypes.string,
   todos: PropTypes.arrayOf(PropTypes.object),
   name: PropTypes.string,
   formId: PropTypes.string,
   toggleTodo: PropTypes.func,
   addTodo: PropTypes.func,
+  deleteTodoList: PropTypes.func,
 };
 
 TodoList.defaultProps = {
   newTodoPlaceholder: 'Type a new todo',
-  addButtonText: 'Add todo',
+  addTodoText: 'Add todo',
+  deleteListText: 'Delete this todoList',
   todos: [],
   name: 'Default List',
   formId: '0',
   toggleTodo: (() => {}),
   addTodo: (() => {}),
+  deleteTodoList: (() => {}),
 };
 
 export default TodoList;

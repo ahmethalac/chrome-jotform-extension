@@ -8,6 +8,7 @@ const TodoLists = ({
   toggleTodo,
   addTodo,
   addTodoList,
+  deleteTodoList,
   newTodoListPlaceholder,
   addButtonText,
 }) => {
@@ -36,6 +37,7 @@ const TodoLists = ({
           todos={getTodos(todoList)}
           toggleTodo={toggleTodo}
           addTodo={addTodo}
+          deleteTodoList={deleteTodoList}
         />
       ))}
       <input
@@ -62,6 +64,7 @@ TodoLists.propTypes = {
   toggleTodo: PropTypes.func,
   addTodo: PropTypes.func,
   addTodoList: PropTypes.func,
+  deleteTodoList: PropTypes.func,
   newTodoListPlaceholder: PropTypes.string,
   addButtonText: PropTypes.string,
 };
@@ -71,6 +74,7 @@ TodoLists.defaultProps = {
   toggleTodo: (() => {}),
   addTodo: (() => {}),
   addTodoList: (() => {}),
+  deleteTodoList: (() => {}),
   newTodoListPlaceholder: 'Type a new todoList',
   addButtonText: 'Add todoList',
 };

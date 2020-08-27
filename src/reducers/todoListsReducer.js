@@ -1,7 +1,7 @@
 import I from 'immutable';
 import {
   ADD_TODO_SUCCESS,
-  ADD_TODOLIST_SUCCESS,
+  ADD_TODOLIST_SUCCESS, DELETE_TODOLIST_SUCCESS,
   INIT_A_TODOLIST,
   TOGGLE_TODO_SUCCESS,
 } from '../constants/actionTypes';
@@ -34,6 +34,9 @@ export default (state = INITIAL_STATE, action) => {
     }
     case INIT_A_TODOLIST: {
       return state.set(action.payload.id, I.fromJS(action.payload));
+    }
+    case DELETE_TODOLIST_SUCCESS: {
+      return state.delete(action.payload.formId);
     }
     default:
       return state;

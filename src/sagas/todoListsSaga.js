@@ -5,7 +5,7 @@ import {
   ADD_TODO_SUCCESS,
   ADD_TODOLIST_FAILURE,
   ADD_TODOLIST_REQUEST,
-  ADD_TODOLIST_SUCCESS,
+  ADD_TODOLIST_SUCCESS, DELETE_TODOLIST_FAILURE, DELETE_TODOLIST_REQUEST, DELETE_TODOLIST_SUCCESS,
   INIT_A_TODOLIST,
   INIT_TODOLISTS_FAILURE,
   INIT_TODOLISTS_REQUEST,
@@ -15,7 +15,7 @@ import {
   TOGGLE_TODO_SUCCESS,
 } from '../constants/actionTypes';
 import {
-  changeTodoState, createTodoList, getTodoLists, getTodos, submitTodo,
+  changeTodoState, createTodoList, deleteTodoList, getTodoLists, getTodos, submitTodo,
 } from '../lib/api';
 
 export function* addTodoList(action) {
@@ -120,11 +120,34 @@ export function* initTodoLists() {
   }
 }
 
+export function* removeTodoList(action) {
+  try {
+    const { formId } = action.payload;
+
+    const { request: { response } } = yield call(deleteTodoList, formId);
+    const { responseCode, message } = JSON.parse(response);
+
+    if (responseCode !== 200) {
+      throw Error(`Request failed! ${message}`);
+    }
+
+    yield put({
+      type: DELETE_TODOLIST_SUCCESS,
+      payload: { formId },
+    });
+  } catch (e) {
+    yield put({
+      type: DELETE_TODOLIST_FAILURE,
+      payload: e.message,
+    });
+  }
+}
 const appSagas = [
   takeEvery(ADD_TODOLIST_REQUEST, addTodoList),
   takeEvery(ADD_TODO_REQUEST, addTodo),
   takeEvery(TOGGLE_TODO_REQUEST, toggleTodo),
   takeEvery(INIT_TODOLISTS_REQUEST, initTodoLists),
+  takeEvery(DELETE_TODOLIST_REQUEST, removeTodoList),
 ];
 
 export default appSagas;
