@@ -3,34 +3,26 @@ import PropTypes from 'prop-types';
 
 const Todo = ({
   name,
-  deadline,
   id,
   done,
   toggleTodo,
 }) => (
   <li>
-    <label className="name" htmlFor={`done${id}`}>
-      {name}
-    </label>
-    <span
-      className="deadline"
-    >
-      {deadline}
-    </span>
     <input
       type="checkbox"
       id={`done${id}`}
       className="done"
       checked={done}
-      onChange={() => {}}
       onClick={() => toggleTodo(done)}
     />
+    <label className="name" htmlFor={`done${id}`}>
+      {name}
+    </label>
   </li>
 );
 
 Todo.propTypes = {
   name: PropTypes.string,
-  deadline: PropTypes.string,
   id: PropTypes.string,
   done: PropTypes.bool,
   toggleTodo: PropTypes.func,
@@ -38,7 +30,6 @@ Todo.propTypes = {
 
 Todo.defaultProps = {
   name: 'DefaultName',
-  deadline: '',
   id: '0',
   done: false,
   toggleTodo: (() => {}),

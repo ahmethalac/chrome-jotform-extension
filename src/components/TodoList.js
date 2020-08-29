@@ -7,7 +7,6 @@ import Filters from './Filters';
 
 const TodoList = ({
   newTodoPlaceholder,
-  addTodoText,
   deleteListText,
   name,
   todos,
@@ -18,19 +17,16 @@ const TodoList = ({
   uiState,
   changeFilter,
 }) => {
-  const [inputText, setInputText] = useState('');
+  const [newTodoInput, setNewTodoInput] = useState('');
 
-  const handleInputChange = event => setInputText(event.target.value);
-  const handleSend = () => {
-    if (inputText !== '') {
-      addTodo(formId, inputText);
-    }
-    setInputText('');
-  };
+  const handleInputChange = event => setNewTodoInput(event.target.value);
 
   const enterEvent = event => {
     if (event.key === 'Enter') {
-      handleSend();
+      if (newTodoInput !== '') {
+        addTodo(formId, newTodoInput);
+      }
+      setNewTodoInput('');
     }
   };
 
@@ -49,6 +45,7 @@ const TodoList = ({
         return {};
     }
   }, [todos, uiState]);
+
   return (
     <div>
       <div className="todoListName">
@@ -58,8 +55,8 @@ const TodoList = ({
         {visibleTodos.map(todo => (
           <Todo
             key={todo.get('id', '0')}
-            name={todo.get('name', 'undefined')}
             id={todo.get('id', '0')}
+            name={todo.get('name', 'undefined')}
             toggleTodo={done => toggleTodo(formId, todo.get('id', '0'), done)}
             done={todo.get('done', false)}
           />
@@ -68,18 +65,11 @@ const TodoList = ({
       <input
         type="text"
         className="newTodoInput"
-        value={inputText}
+        value={newTodoInput}
         placeholder={newTodoPlaceholder}
         onChange={handleInputChange}
         onKeyDown={enterEvent}
       />
-      <button
-        type="button"
-        className="addTodoButton"
-        onClick={handleSend}
-      >
-        {addTodoText}
-      </button>
       <button
         type="button"
         className="deleteListButton"
@@ -87,14 +77,16 @@ const TodoList = ({
       >
         {deleteListText}
       </button>
-      <Filters filter={uiState.get('filter')} changeFilter={filter => changeFilter(formId, filter)} />
+      <Filters
+        filter={uiState.get('filter')}
+        changeFilter={filter => changeFilter(formId, filter)}
+      />
     </div>
   );
 };
 
 TodoList.propTypes = {
   newTodoPlaceholder: PropTypes.string,
-  addTodoText: PropTypes.string,
   deleteListText: PropTypes.string,
   todos: PropTypes.arrayOf(PropTypes.object),
   name: PropTypes.string,
@@ -102,13 +94,12 @@ TodoList.propTypes = {
   toggleTodo: PropTypes.func,
   addTodo: PropTypes.func,
   deleteTodoList: PropTypes.func,
-  uiState: PropTypes.arrayOf(PropTypes.object),
+  uiState: PropTypes.instanceOf(Object),
   changeFilter: PropTypes.func,
 };
 
 TodoList.defaultProps = {
   newTodoPlaceholder: 'Type a new todo',
-  addTodoText: 'Add todo',
   deleteListText: 'Delete this todoList',
   todos: [],
   name: 'Default List',
@@ -116,9 +107,7 @@ TodoList.defaultProps = {
   toggleTodo: (() => {}),
   addTodo: (() => {}),
   deleteTodoList: (() => {}),
-  uiState: I.fromJS({
-    filter: SHOW_ALL,
-  }),
+  uiState: I.fromJS({ filter: SHOW_ALL }),
   changeFilter: (() => {}),
 };
 

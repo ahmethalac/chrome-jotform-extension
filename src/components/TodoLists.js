@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import I from 'immutable';
 import TodoList from './TodoList';
 import { getTodos } from '../selectors';
 
@@ -14,14 +15,14 @@ const TodoLists = ({
   todoListsUI,
   changeFilter,
 }) => {
-  const [inputText, setInputText] = useState('');
+  const [newTodoListInput, setNewTodoListInput] = useState('');
 
-  const handleInputChange = event => setInputText(event.target.value);
+  const handleInputChange = event => setNewTodoListInput(event.target.value);
   const handleSend = () => {
-    if (inputText !== '') {
-      addTodoList(inputText);
+    if (newTodoListInput !== '') {
+      addTodoList(newTodoListInput);
     }
-    setInputText('');
+    setNewTodoListInput('');
   };
 
   const enterEvent = event => {
@@ -29,6 +30,7 @@ const TodoLists = ({
       handleSend();
     }
   };
+
   return (
     <div>
       {todoLists.map(todoList => (
@@ -47,7 +49,7 @@ const TodoLists = ({
       <input
         type="text"
         className="newTodoListInput"
-        value={inputText}
+        value={newTodoListInput}
         placeholder={newTodoListPlaceholder}
         onChange={handleInputChange}
         onKeyDown={enterEvent}
@@ -71,7 +73,7 @@ TodoLists.propTypes = {
   deleteTodoList: PropTypes.func,
   newTodoListPlaceholder: PropTypes.string,
   addButtonText: PropTypes.string,
-  todoListsUI: PropTypes.arrayOf(PropTypes.object),
+  todoListsUI: PropTypes.instanceOf(Object),
   changeFilter: PropTypes.func,
 };
 
@@ -83,7 +85,7 @@ TodoLists.defaultProps = {
   deleteTodoList: (() => {}),
   newTodoListPlaceholder: 'Type a new todoList',
   addButtonText: 'Add todoList',
-  todoListsUI: [],
+  todoListsUI: I.fromJS({}),
   changeFilter: (() => {}),
 };
 

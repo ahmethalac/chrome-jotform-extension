@@ -25,10 +25,6 @@ describe('Rendering components', () => {
     expect(todos.exists('input.newTodoInput')).toBe(true);
   });
 
-  it('should render a button for adding new todo', () => {
-    expect(todos.exists('button.addTodoButton')).toBe(true);
-  });
-
   it('should render a button for deleting the todoList', () => {
     expect(todos.exists('button.deleteListButton')).toBe(true);
   });
@@ -47,12 +43,6 @@ describe('Custom props', () => {
     expect(inputField.prop('placeholder')).toBe('TestPlaceholder');
   });
 
-  it('should have a button with text from props', () => {
-    const todos = mount(<TodoList addTodoText="TestText" />);
-    const button = todos.find('button.addTodoButton');
-    expect(button.text()).toBe('TestText');
-  });
-
   it('should have todos in ul from props', () => {
     const dummyTodos = I.fromJS([
       { id: 1, name: 'test1', done: false },
@@ -61,14 +51,5 @@ describe('Custom props', () => {
     const todos = mount(<TodoList todos={dummyTodos} />);
     expect(todos.exists('Todo[name="test1"]')).toBe(true);
     expect(todos.exists('Todo[name="test2"]')).toBe(true);
-  });
-
-  it('should have a button whose onClick is obtained from props', () => {
-    const mockFunction = jest.fn();
-    const todos = mount(<TodoList addTodo={mockFunction} formId={5} />);
-    todos.find('input.newTodoInput').simulate('change', { target: { value: 'TestText' } });
-    todos.find('button.addTodoButton').simulate('click');
-    expect(mockFunction).toHaveBeenCalledTimes(1);
-    expect(mockFunction).toHaveBeenCalledWith(5, 'TestText');
   });
 });

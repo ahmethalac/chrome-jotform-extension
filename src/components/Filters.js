@@ -2,11 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilters';
 
-const Filters = ({
-  filter,
-  changeFilter,
-}) => (
-  <>
+const Filters = ({ filter, changeFilter }) => (
+  <div>
     <button
       type="button"
       disabled={filter === SHOW_ALL}
@@ -28,7 +25,7 @@ const Filters = ({
     >
       {SHOW_COMPLETED}
     </button>
-  </>
+  </div>
 );
 
 Filters.propTypes = {
