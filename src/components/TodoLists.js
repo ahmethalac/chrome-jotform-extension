@@ -15,6 +15,7 @@ const TodoLists = ({
   todoListsUI,
   changeFilter,
   deleteTodo,
+  swapTodo,
 }) => {
   const [newTodoListInput, setNewTodoListInput] = useState('');
 
@@ -46,6 +47,7 @@ const TodoLists = ({
           uiState={todoListsUI.get(todoList.get('id'))}
           changeFilter={changeFilter}
           deleteTodo={deleteTodo}
+          swapTodo={swapTodo}
         />
       ))}
       <input
@@ -78,6 +80,7 @@ TodoLists.propTypes = {
   todoListsUI: PropTypes.instanceOf(Object),
   changeFilter: PropTypes.func,
   deleteTodo: PropTypes.func,
+  swapTodo: PropTypes.func,
 };
 
 TodoLists.defaultProps = {
@@ -91,6 +94,7 @@ TodoLists.defaultProps = {
   todoListsUI: I.fromJS({}),
   changeFilter: (() => {}),
   deleteTodo: (() => {}),
+  swapTodo: (() => {}),
 };
 
 export default TodoLists;

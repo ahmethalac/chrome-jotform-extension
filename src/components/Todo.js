@@ -7,8 +7,12 @@ const Todo = ({
   done,
   toggleTodo,
   deleteTodo,
+  dragStart,
 }) => (
-  <li>
+  <li
+    draggable
+    onDragStart={dragStart}
+  >
     <input
       type="checkbox"
       id={`done${id}`}
@@ -34,6 +38,7 @@ Todo.propTypes = {
   done: PropTypes.bool,
   toggleTodo: PropTypes.func,
   deleteTodo: PropTypes.func,
+  dragStart: PropTypes.func,
 };
 
 Todo.defaultProps = {
@@ -42,5 +47,6 @@ Todo.defaultProps = {
   done: false,
   toggleTodo: (() => {}),
   deleteTodo: (() => {}),
+  dragStart: (() => {}),
 };
 export default Todo;

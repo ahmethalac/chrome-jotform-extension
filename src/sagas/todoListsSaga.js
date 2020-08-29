@@ -14,7 +14,7 @@ import {
   INIT_A_TODOLIST,
   INIT_TODOLISTS_FAILURE,
   INIT_TODOLISTS_REQUEST,
-  INIT_TODOLISTS_SUCCESS,
+  INIT_TODOLISTS_SUCCESS, SWAP_TODO_FAILURE, SWAP_TODO_REQUEST, SWAP_TODO_SUCCESS,
   TOGGLE_TODO_FAILURE,
   TOGGLE_TODO_REQUEST,
   TOGGLE_TODO_SUCCESS,
@@ -48,9 +48,9 @@ export function* addTodoList(action) {
 
 export function* addTodo(action) {
   try {
-    const { name, formId } = action.payload;
+    const { name, formId, done } = action.payload;
 
-    const { request: { response } } = yield call(submitTodo, formId, name);
+    const { request: { response } } = yield call(submitTodo, formId, name, done);
     const { content, responseCode, message } = JSON.parse(response);
 
     if (responseCode !== 200) {
@@ -170,6 +170,51 @@ export function* removeTodo(action) {
     });
   }
 }
+
+export function* swapSubmission(action) {
+  try {
+    const {
+      submissionId,
+      oldFormId,
+      newFormId,
+      name,
+      done,
+    } = action.payload;
+
+    const { request: { response: deleteResponse } } = yield call(deleteTodo, submissionId);
+    const { responseCode: deleteResponseCode, message: deleteMessage } = JSON.parse(deleteResponse);
+
+    if (deleteResponseCode !== 200) {
+      throw Error(`Request failed in deleting! ${deleteMessage}`);
+    }
+
+    const { request: { response: addResponse } } = yield call(submitTodo, newFormId, name, done);
+    const { content, responseCode: addResponseCode, message: addMessage } = JSON.parse(addResponse);
+
+    if (addResponseCode !== 200) {
+      throw Error(`Request failed in adding! ${addMessage}`);
+    }
+
+    const { submissionID: newSubmissionId } = content[0];
+
+    yield put({
+      type: SWAP_TODO_SUCCESS,
+      payload: {
+        oldSubmissionId: submissionId,
+        oldFormId,
+        newSubmissionId,
+        newFormId,
+        name,
+        done,
+      },
+    });
+  } catch (e) {
+    yield put({
+      type: SWAP_TODO_FAILURE,
+      payload: e.message,
+    });
+  }
+}
 const appSagas = [
   takeEvery(ADD_TODOLIST_REQUEST, addTodoList),
   takeEvery(ADD_TODO_REQUEST, addTodo),
@@ -177,6 +222,7 @@ const appSagas = [
   takeEvery(INIT_TODOLISTS_REQUEST, initTodoLists),
   takeEvery(DELETE_TODOLIST_REQUEST, removeTodoList),
   takeEvery(DELETE_TODO_REQUEST, removeTodo),
+  takeEvery(SWAP_TODO_REQUEST, swapSubmission),
 ];
 
 export default appSagas;

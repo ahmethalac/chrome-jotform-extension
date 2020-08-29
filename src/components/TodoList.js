@@ -16,6 +16,7 @@ const TodoList = ({
   uiState,
   changeFilter,
   deleteTodo,
+  swapTodo,
 }) => {
   const [newTodoInput, setNewTodoInput] = useState('');
 
@@ -24,7 +25,7 @@ const TodoList = ({
   const enterEvent = event => {
     if (event.key === 'Enter') {
       if (newTodoInput !== '') {
-        addTodo(formId, newTodoInput);
+        addTodo(formId, newTodoInput, false);
       }
       setNewTodoInput('');
     }
@@ -51,7 +52,20 @@ const TodoList = ({
       <div className="todoListName">
         {name}
       </div>
-      <ul>
+      <ul
+        onDrop={event => {
+          if (event.dataTransfer.getData('oldFormId') !== formId) {
+            swapTodo(
+              event.dataTransfer.getData('TodoId'),
+              event.dataTransfer.getData('oldFormId'),
+              formId,
+              event.dataTransfer.getData('name'),
+              event.dataTransfer.getData('done') === 'true',
+            );
+          }
+        }}
+        onDragOver={event => event.preventDefault()}
+      >
         {visibleTodos.map(todo => (
           <Todo
             key={todo.get('id', '0')}
@@ -60,6 +74,12 @@ const TodoList = ({
             toggleTodo={done => toggleTodo(formId, todo.get('id', '0'), done)}
             done={todo.get('done', false)}
             deleteTodo={id => deleteTodo(formId, id)}
+            dragStart={event => {
+              event.dataTransfer.setData('TodoId', todo.get('id', '0'));
+              event.dataTransfer.setData('oldFormId', formId);
+              event.dataTransfer.setData('name', todo.get('name'));
+              event.dataTransfer.setData('done', todo.get('done'));
+            }}
           />
         ))}
       </ul>
@@ -97,6 +117,7 @@ TodoList.propTypes = {
   uiState: PropTypes.instanceOf(Object),
   changeFilter: PropTypes.func,
   deleteTodo: PropTypes.func,
+  swapTodo: PropTypes.func,
 };
 
 TodoList.defaultProps = {
@@ -110,6 +131,7 @@ TodoList.defaultProps = {
   uiState: I.fromJS({ filter: SHOW_ALL }),
   changeFilter: (() => {}),
   deleteTodo: (() => {}),
+  swapTodo: (() => {}),
 };
 
 export default TodoList;

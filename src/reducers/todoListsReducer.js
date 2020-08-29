@@ -2,7 +2,7 @@ import I from 'immutable';
 import {
   ADD_TODO_SUCCESS,
   ADD_TODOLIST_SUCCESS, DELETE_TODO_SUCCESS, DELETE_TODOLIST_SUCCESS,
-  INIT_A_TODOLIST,
+  INIT_A_TODOLIST, SWAP_TODO_SUCCESS,
   TOGGLE_TODO_SUCCESS,
 } from '../constants/actionTypes';
 
@@ -40,6 +40,24 @@ export default (state = INITIAL_STATE, action) => {
     }
     case DELETE_TODO_SUCCESS: {
       return state.deleteIn([action.payload.formId, 'todos', action.payload.submissionId]);
+    }
+    case SWAP_TODO_SUCCESS: {
+      const {
+        oldSubmissionId,
+        oldFormId,
+        newSubmissionId,
+        newFormId,
+        name,
+        done,
+      } = action.payload;
+      return state
+        .deleteIn([oldFormId, 'todos', oldSubmissionId])
+        .setIn([newFormId, 'todos', newSubmissionId],
+          I.fromJS({
+            id: newSubmissionId,
+            name,
+            done,
+          }));
     }
     default:
       return state;

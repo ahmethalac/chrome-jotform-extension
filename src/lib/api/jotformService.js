@@ -17,11 +17,11 @@ export const createTodoList = name => {
   return axios.put(`${baseURL}user/forms?apiKey=${JOTFORM_API_KEY}`, requestBody);
 };
 
-export const submitTodo = (formId, name) => {
+export const submitTodo = (formId, name, done) => {
   const requestBody = [
     {
       1: { text: name },
-      2: { text: 'Not Done' },
+      2: { text: done ? 'Done' : 'Not Done' },
     },
   ];
   return axios.put(`${baseURL}form/${formId}/submissions?apiKey=${JOTFORM_API_KEY}`, requestBody);
