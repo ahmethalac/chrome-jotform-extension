@@ -12,6 +12,7 @@ const TodoLists = ({
   newTodoListPlaceholder,
   addButtonText,
   todoListsUI,
+  changeFilter,
 }) => {
   const [inputText, setInputText] = useState('');
 
@@ -40,6 +41,7 @@ const TodoLists = ({
           addTodo={addTodo}
           deleteTodoList={deleteTodoList}
           uiState={todoListsUI.get(todoList.get('id'))}
+          changeFilter={changeFilter}
         />
       ))}
       <input
@@ -70,6 +72,7 @@ TodoLists.propTypes = {
   newTodoListPlaceholder: PropTypes.string,
   addButtonText: PropTypes.string,
   todoListsUI: PropTypes.arrayOf(PropTypes.object),
+  changeFilter: PropTypes.func,
 };
 
 TodoLists.defaultProps = {
@@ -81,6 +84,7 @@ TodoLists.defaultProps = {
   newTodoListPlaceholder: 'Type a new todoList',
   addButtonText: 'Add todoList',
   todoListsUI: [],
+  changeFilter: (() => {}),
 };
 
 export default TodoLists;

@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import Todo from './Todo';
 import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilters';
+import Filters from './Filters';
 
 const TodoList = ({
   newTodoPlaceholder,
@@ -14,6 +15,7 @@ const TodoList = ({
   addTodo,
   deleteTodoList,
   uiState,
+  changeFilter,
 }) => {
   const [inputText, setInputText] = useState('');
 
@@ -84,6 +86,7 @@ const TodoList = ({
       >
         {deleteListText}
       </button>
+      <Filters filter={uiState.get('filter')} changeFilter={filter => changeFilter(formId, filter)} />
     </div>
   );
 };
@@ -99,6 +102,7 @@ TodoList.propTypes = {
   addTodo: PropTypes.func,
   deleteTodoList: PropTypes.func,
   uiState: PropTypes.arrayOf(PropTypes.object),
+  changeFilter: PropTypes.func,
 };
 
 TodoList.defaultProps = {
@@ -114,6 +118,7 @@ TodoList.defaultProps = {
   uiState: {
     filter: SHOW_ALL,
   },
+  changeFilter: (() => {}),
 };
 
 export default TodoList;
