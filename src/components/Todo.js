@@ -6,6 +6,7 @@ const Todo = ({
   id,
   done,
   toggleTodo,
+  deleteTodo,
 }) => (
   <li>
     <input
@@ -18,6 +19,12 @@ const Todo = ({
     <label className="name" htmlFor={`done${id}`}>
       {name}
     </label>
+    <button
+      type="button"
+      onClick={() => deleteTodo(id)}
+    >
+      Delete
+    </button>
   </li>
 );
 
@@ -26,6 +33,7 @@ Todo.propTypes = {
   id: PropTypes.string,
   done: PropTypes.bool,
   toggleTodo: PropTypes.func,
+  deleteTodo: PropTypes.func,
 };
 
 Todo.defaultProps = {
@@ -33,5 +41,6 @@ Todo.defaultProps = {
   id: '0',
   done: false,
   toggleTodo: (() => {}),
+  deleteTodo: (() => {}),
 };
 export default Todo;

@@ -1,6 +1,6 @@
 import {
   ADD_TODO_REQUEST,
-  ADD_TODOLIST_REQUEST, DELETE_TODOLIST_REQUEST,
+  ADD_TODOLIST_REQUEST, DELETE_TODO_REQUEST, DELETE_TODOLIST_REQUEST,
   TOGGLE_TODO_REQUEST,
 } from '../constants/actionTypes';
 
@@ -22,6 +22,11 @@ export const addTodoList = name => ({
 export const deleteTodoList = formId => ({
   type: DELETE_TODOLIST_REQUEST,
   payload: { formId },
+});
+
+export const deleteTodo = (formId, submissionId) => ({
+  type: DELETE_TODO_REQUEST,
+  payload: { formId, submissionId },
 });
 
 export default 'dummyExportForESLINT';

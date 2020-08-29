@@ -19,6 +19,10 @@ describe('Rendering components', () => {
   it('should render a checkbox', () => {
     expect(todo.exists('input.done[type="checkbox"]')).toBe(true);
   });
+
+  it('should render a delete button', () => {
+    expect(todo.exists('button.deleteTodo')).toBe(true);
+  });
 });
 
 describe('Custom props', () => {
@@ -42,12 +46,20 @@ describe('Custom props', () => {
   });
 });
 
-describe('Checkbox actions', () => {
+describe('Actions', () => {
   it('user can change the state of todo', () => {
     const onClick = jest.fn();
     const todo = mount(<Todo toggleTodo={onClick} />);
     const checkbox = todo.find('input.done[type="checkbox"]');
     checkbox.simulate('click');
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('user can delete todo', () => {
+    const onClick = jest.fn();
+    const todo = mount(<Todo deleteTodo={onClick} />);
+    const button = todo.find('button.deleteTodo');
+    button.simulate('click');
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 });

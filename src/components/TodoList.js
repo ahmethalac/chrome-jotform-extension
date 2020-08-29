@@ -7,7 +7,6 @@ import Filters from './Filters';
 
 const TodoList = ({
   newTodoPlaceholder,
-  deleteListText,
   name,
   todos,
   formId,
@@ -16,6 +15,7 @@ const TodoList = ({
   deleteTodoList,
   uiState,
   changeFilter,
+  deleteTodo,
 }) => {
   const [newTodoInput, setNewTodoInput] = useState('');
 
@@ -59,6 +59,7 @@ const TodoList = ({
             name={todo.get('name', 'undefined')}
             toggleTodo={done => toggleTodo(formId, todo.get('id', '0'), done)}
             done={todo.get('done', false)}
+            deleteTodo={id => deleteTodo(formId, id)}
           />
         ))}
       </ul>
@@ -75,7 +76,7 @@ const TodoList = ({
         className="deleteListButton"
         onClick={() => deleteTodoList(formId)}
       >
-        {deleteListText}
+        Delete
       </button>
       <Filters
         filter={uiState.get('filter')}
@@ -87,7 +88,6 @@ const TodoList = ({
 
 TodoList.propTypes = {
   newTodoPlaceholder: PropTypes.string,
-  deleteListText: PropTypes.string,
   todos: PropTypes.arrayOf(PropTypes.object),
   name: PropTypes.string,
   formId: PropTypes.string,
@@ -96,11 +96,11 @@ TodoList.propTypes = {
   deleteTodoList: PropTypes.func,
   uiState: PropTypes.instanceOf(Object),
   changeFilter: PropTypes.func,
+  deleteTodo: PropTypes.func,
 };
 
 TodoList.defaultProps = {
   newTodoPlaceholder: 'Type a new todo',
-  deleteListText: 'Delete this todoList',
   todos: [],
   name: 'Default List',
   formId: '0',
@@ -109,6 +109,7 @@ TodoList.defaultProps = {
   deleteTodoList: (() => {}),
   uiState: I.fromJS({ filter: SHOW_ALL }),
   changeFilter: (() => {}),
+  deleteTodo: (() => {}),
 };
 
 export default TodoList;

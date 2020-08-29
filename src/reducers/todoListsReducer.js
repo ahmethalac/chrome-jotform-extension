@@ -1,7 +1,7 @@
 import I from 'immutable';
 import {
   ADD_TODO_SUCCESS,
-  ADD_TODOLIST_SUCCESS, DELETE_TODOLIST_SUCCESS,
+  ADD_TODOLIST_SUCCESS, DELETE_TODO_SUCCESS, DELETE_TODOLIST_SUCCESS,
   INIT_A_TODOLIST,
   TOGGLE_TODO_SUCCESS,
 } from '../constants/actionTypes';
@@ -37,6 +37,9 @@ export default (state = INITIAL_STATE, action) => {
     }
     case DELETE_TODOLIST_SUCCESS: {
       return state.delete(action.payload.formId);
+    }
+    case DELETE_TODO_SUCCESS: {
+      return state.deleteIn([action.payload.formId, 'todos', action.payload.submissionId]);
     }
     default:
       return state;
