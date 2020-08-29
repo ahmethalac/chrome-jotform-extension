@@ -11,6 +11,7 @@ const TodoLists = ({
   deleteTodoList,
   newTodoListPlaceholder,
   addButtonText,
+  todoListsUI,
 }) => {
   const [inputText, setInputText] = useState('');
 
@@ -38,6 +39,7 @@ const TodoLists = ({
           toggleTodo={toggleTodo}
           addTodo={addTodo}
           deleteTodoList={deleteTodoList}
+          uiState={todoListsUI.get(todoList.get('id'))}
         />
       ))}
       <input
@@ -67,6 +69,7 @@ TodoLists.propTypes = {
   deleteTodoList: PropTypes.func,
   newTodoListPlaceholder: PropTypes.string,
   addButtonText: PropTypes.string,
+  todoListsUI: PropTypes.arrayOf(PropTypes.object),
 };
 
 TodoLists.defaultProps = {
@@ -77,6 +80,7 @@ TodoLists.defaultProps = {
   deleteTodoList: (() => {}),
   newTodoListPlaceholder: 'Type a new todoList',
   addButtonText: 'Add todoList',
+  todoListsUI: [],
 };
 
 export default TodoLists;

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import Todo from './Todo';
+import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilters';
 
 const TodoList = ({
   newTodoPlaceholder,
@@ -12,6 +13,7 @@ const TodoList = ({
   toggleTodo,
   addTodo,
   deleteTodoList,
+  uiState,
 }) => {
   const [inputText, setInputText] = useState('');
 
@@ -29,13 +31,28 @@ const TodoList = ({
     }
   };
 
+  const visibleTodos = useMemo(() => {
+    switch (uiState.get('filter')) {
+      case SHOW_ALL: {
+        return todos;
+      }
+      case SHOW_ACTIVE: {
+        return todos.filter(t => !t.get('done', false));
+      }
+      case SHOW_COMPLETED: {
+        return todos.filter(t => t.get('done', false));
+      }
+      default:
+        return {};
+    }
+  }, [todos, uiState]);
   return (
     <div>
       <div className="todoListName">
         {name}
       </div>
       <ul>
-        {todos.map(todo => (
+        {visibleTodos.map(todo => (
           <Todo
             key={todo.get('id', '0')}
             name={todo.get('name', 'undefined')}
@@ -81,6 +98,7 @@ TodoList.propTypes = {
   toggleTodo: PropTypes.func,
   addTodo: PropTypes.func,
   deleteTodoList: PropTypes.func,
+  uiState: PropTypes.arrayOf(PropTypes.object),
 };
 
 TodoList.defaultProps = {
@@ -93,6 +111,9 @@ TodoList.defaultProps = {
   toggleTodo: (() => {}),
   addTodo: (() => {}),
   deleteTodoList: (() => {}),
+  uiState: {
+    filter: SHOW_ALL,
+  },
 };
 
 export default TodoList;

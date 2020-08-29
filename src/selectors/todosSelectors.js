@@ -11,3 +11,10 @@ export const getTodos = createSelector(
   [todoList => todoList.get('todos', {})],
   todos => todos.toArray().map(value => value[1]),
 );
+
+export const getTodoListsUIState = state => state.todoListsUI;
+
+export const getTodoListsUI = createSelector(
+  [getTodoListsUIState],
+  todoListsUI => todoListsUI,
+);

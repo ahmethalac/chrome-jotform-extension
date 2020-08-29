@@ -1,3 +1,5 @@
+import { SHOW_ACTIVE, SHOW_COMPLETED } from './todolistFilters';
+
 export const DUMMY_STATE_FOR_TODOLISTS = {
   1: {
     id: 1,
@@ -42,4 +44,14 @@ export const DUMMY_STATE_FOR_SEARCHBAR_SHORTCUTS = {
   w: 'what is',
   h: 'how to',
 };
+
+export const DUMMY_STATE_FOR_TODOLISTS_UI = {
+  202414858940963: {
+    filter: SHOW_COMPLETED,
+  },
+  202414261222944: {
+    filter: SHOW_ACTIVE,
+  },
+};
+
 export default 'dummyExportForESLINT';

@@ -29,14 +29,6 @@ describe('Rendering components', () => {
     expect(todos.exists('button.addTodoButton')).toBe(true);
   });
 
-  it('should render a label for deadline picker', () => {
-    expect(todos.exists('label.deadlineLabel')).toBe(true);
-  });
-
-  it('should render an input field for setting deadline for a todo', () => {
-    expect(todos.exists('input.deadlinePicker')).toBe(true);
-  });
-
   it('should render a button for deleting the todoList', () => {
     expect(todos.exists('button.deleteListButton')).toBe(true);
   });
@@ -56,15 +48,9 @@ describe('Custom props', () => {
   });
 
   it('should have a button with text from props', () => {
-    const todos = mount(<TodoList addButtonText="TestText" />);
+    const todos = mount(<TodoList addTodoText="TestText" />);
     const button = todos.find('button.addTodoButton');
     expect(button.text()).toBe('TestText');
-  });
-
-  it('should have an datetime input field with label from props', () => {
-    const todos = mount(<TodoList deadlineLabel="TestText" />);
-    const label = todos.find('label.deadlineLabel');
-    expect(label.text()).toBe('TestText');
   });
 
   it('should have todos in ul from props', () => {

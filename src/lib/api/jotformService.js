@@ -41,8 +41,8 @@ export const getTodos = formId => axios.get(`${baseURL}form/${formId}/submission
   .then(response => response.data.content)
   .then(submissions => submissions.map(submission => ({
     id: submission.id,
-    name: submission.answers['1'].answer,
-    done: submission.answers['2'].answer === 'Done',
+    name: submission.answers['1'].prettyFormat,
+    done: submission.answers['2'].prettyFormat === 'Done',
   })));
 
 export const deleteTodoList = formId => axios.delete(`${baseURL}form/${formId}?apiKey=${JOTFORM_API_KEY}`);
