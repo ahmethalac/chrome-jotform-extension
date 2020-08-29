@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
+import I from 'immutable';
 import Todo from './Todo';
 import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilters';
 import Filters from './Filters';
@@ -34,7 +35,7 @@ const TodoList = ({
   };
 
   const visibleTodos = useMemo(() => {
-    switch (uiState.get('filter')) {
+    switch (uiState.get('filter', SHOW_ALL)) {
       case SHOW_ALL: {
         return todos;
       }
@@ -115,9 +116,9 @@ TodoList.defaultProps = {
   toggleTodo: (() => {}),
   addTodo: (() => {}),
   deleteTodoList: (() => {}),
-  uiState: {
+  uiState: I.fromJS({
     filter: SHOW_ALL,
-  },
+  }),
   changeFilter: (() => {}),
 };
 
