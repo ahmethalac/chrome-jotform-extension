@@ -2,7 +2,8 @@ import { takeEvery, put, call } from 'redux-saga/effects';
 import {
   ADD_TODO_FAILURE,
   ADD_TODO_REQUEST,
-  ADD_TODO_SUCCESS,
+  ADD_TODO_REAL_SUCCESS,
+  ADD_TODO_OPTIMISTIC_SUCCESS,
   ADD_TODOLIST_FAILURE,
   ADD_TODOLIST_OPTIMISTIC_SUCCESS,
   ADD_TODOLIST_REAL_SUCCESS,
@@ -57,8 +58,15 @@ export function* addTodoList(action) {
 }
 
 export function* addTodo(action) {
+  const tempSubmissionID = getTempID();
+  console.log(tempSubmissionID);
   try {
     const { name, formId, done } = action.payload;
+
+    yield put({
+      type: ADD_TODO_OPTIMISTIC_SUCCESS,
+      payload: { name, tempSubmissionID, formId },
+    });
 
     const { request: { response } } = yield call(submitTodo, formId, name, done);
     const { content, responseCode, message } = JSON.parse(response);
@@ -70,13 +78,19 @@ export function* addTodo(action) {
     const { submissionID } = content[0];
 
     yield put({
-      type: ADD_TODO_SUCCESS,
-      payload: { name, submissionID, formId },
+      type: ADD_TODO_REAL_SUCCESS,
+      payload: {
+        name, submissionID, formId, tempSubmissionID,
+      },
     });
   } catch (e) {
     yield put({
       type: ADD_TODO_FAILURE,
-      payload: e.message,
+      payload: {
+        error: e.message,
+        tempID: tempSubmissionID,
+        formId: action.payload.formId,
+      },
     });
   }
 }
