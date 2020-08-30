@@ -2,10 +2,14 @@ import I from 'immutable';
 import {
   ADD_TODO_REAL_SUCCESS, ADD_TODOLIST_FAILURE, ADD_TODO_OPTIMISTIC_SUCCESS,
   ADD_TODOLIST_OPTIMISTIC_SUCCESS, ADD_TODOLIST_REAL_SUCCESS,
-  DELETE_TODO_SUCCESS,
+  DELETE_TODO_OPTIMISTIC_SUCCESS,
   DELETE_TODOLIST_OPTIMISTIC_SUCCESS,
   INIT_A_TODOLIST, SWAP_TODO_SUCCESS,
-  TOGGLE_TODO_OPTIMISTIC_SUCCESS, ADD_TODO_FAILURE, TOGGLE_TODO_FAILURE, DELETE_TODOLIST_FAILURE,
+  TOGGLE_TODO_OPTIMISTIC_SUCCESS,
+  ADD_TODO_FAILURE,
+  TOGGLE_TODO_FAILURE,
+  DELETE_TODOLIST_FAILURE,
+  DELETE_TODO_FAILURE,
 } from '../constants/actionTypes';
 
 const INITIAL_STATE = I.fromJS({});
@@ -83,8 +87,15 @@ export default (state = INITIAL_STATE, action) => {
       console.error(action.payload.error);
       return state.set(action.payload.formId, action.payload.tempList);
     }
-    case DELETE_TODO_SUCCESS: {
+    case DELETE_TODO_OPTIMISTIC_SUCCESS: {
       return state.deleteIn([action.payload.formId, 'todos', action.payload.submissionId]);
+    }
+    case DELETE_TODO_FAILURE: {
+      const {
+        error, formId, submissionId, tempTodo,
+      } = action.payload;
+      console.error(error);
+      return state.setIn([formId, 'todos', submissionId], tempTodo);
     }
     case SWAP_TODO_SUCCESS: {
       const {

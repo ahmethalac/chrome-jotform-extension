@@ -11,7 +11,7 @@ import {
   ADD_TODOLIST_REAL_SUCCESS,
   ADD_TODOLIST_REQUEST,
   DELETE_TODO_FAILURE,
-  DELETE_TODO_REQUEST, DELETE_TODO_SUCCESS,
+  DELETE_TODO_REQUEST, DELETE_TODO_OPTIMISTIC_SUCCESS,
   DELETE_TODOLIST_FAILURE,
   DELETE_TODOLIST_REQUEST,
   DELETE_TODOLIST_OPTIMISTIC_SUCCESS,
@@ -184,8 +184,13 @@ export function* removeTodoList(action) {
 }
 
 export function* removeTodo(action) {
+  const { formId, submissionId } = action.payload;
+  const tempTodo = (yield select(getTodoListsState)).getIn([formId, 'todos', submissionId]);
   try {
-    const { formId, submissionId } = action.payload;
+    yield put({
+      type: DELETE_TODO_OPTIMISTIC_SUCCESS,
+      payload: { formId, submissionId },
+    });
 
     const { request: { response } } = yield call(deleteTodo, submissionId);
     const { responseCode, message } = JSON.parse(response);
@@ -193,15 +198,15 @@ export function* removeTodo(action) {
     if (responseCode !== 200) {
       throw Error(`Request failed! ${message}`);
     }
-
-    yield put({
-      type: DELETE_TODO_SUCCESS,
-      payload: { formId, submissionId },
-    });
   } catch (e) {
     yield put({
       type: DELETE_TODO_FAILURE,
-      payload: e.message,
+      payload: {
+        error: e.message,
+        formId,
+        submissionId,
+        tempTodo,
+      },
     });
   }
 }
