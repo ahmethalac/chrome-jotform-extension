@@ -19,7 +19,7 @@ import {
   INIT_TODOLISTS_SUCCESS, SWAP_TODO_FAILURE, SWAP_TODO_REQUEST, SWAP_TODO_SUCCESS,
   TOGGLE_TODO_FAILURE,
   TOGGLE_TODO_REQUEST,
-  TOGGLE_TODO_SUCCESS,
+  TOGGLE_TODO_OPTIMISTIC_SUCCESS,
 } from '../constants/actionTypes';
 import {
   changeTodoState, createTodoList, deleteTodo, deleteTodoList, getTodoLists, getTodos, submitTodo,
@@ -96,8 +96,12 @@ export function* addTodo(action) {
 }
 
 export function* toggleTodo(action) {
+  const { formId, submissionId, done } = action.payload;
   try {
-    const { formId, submissionId, done } = action.payload;
+    yield put({
+      type: TOGGLE_TODO_OPTIMISTIC_SUCCESS,
+      payload: { formId, submissionId, done: !done },
+    });
 
     const { request: { response } } = yield call(changeTodoState, submissionId, !done);
     const { responseCode, message } = JSON.parse(response);
@@ -105,15 +109,15 @@ export function* toggleTodo(action) {
     if (responseCode !== 200) {
       throw Error(`Request failed! ${message}`);
     }
-
-    yield put({
-      type: TOGGLE_TODO_SUCCESS,
-      payload: { formId, submissionId, done: !done },
-    });
   } catch (e) {
     yield put({
       type: TOGGLE_TODO_FAILURE,
-      payload: e.message,
+      payload: {
+        error: e.message,
+        formId,
+        submissionId,
+        done,
+      },
     });
   }
 }

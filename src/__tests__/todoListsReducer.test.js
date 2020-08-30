@@ -5,7 +5,7 @@ import {
   ADD_TODOLIST_REAL_SUCCESS,
   DELETE_TODOLIST_SUCCESS,
   INIT_A_TODOLIST,
-  TOGGLE_TODO_SUCCESS,
+  TOGGLE_TODO_OPTIMISTIC_SUCCESS,
 } from '../constants/actionTypes';
 
 it('should return the initial state', () => {
@@ -37,7 +37,7 @@ describe('Handling success actions', () => {
     expect(reducer(initialState, action)).toEqual(expectedState);
   });
 
-  it('should handle TOGGLE_TODO_SUCCESS', () => {
+  it('should handle TOGGLE_TODO_OPTIMISTIC_SUCCESS', () => {
     const initialState = I.fromJS({
       5: {
         id: 5,
@@ -48,7 +48,7 @@ describe('Handling success actions', () => {
       },
     });
     const action = {
-      type: TOGGLE_TODO_SUCCESS,
+      type: TOGGLE_TODO_OPTIMISTIC_SUCCESS,
       payload: { formId: '5', submissionId: '3', done: true },
     };
     const expectedState = I.fromJS({

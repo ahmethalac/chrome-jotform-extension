@@ -4,7 +4,7 @@ import {
   ADD_TODOLIST_OPTIMISTIC_SUCCESS, ADD_TODOLIST_REAL_SUCCESS,
   DELETE_TODO_SUCCESS, DELETE_TODOLIST_SUCCESS,
   INIT_A_TODOLIST, SWAP_TODO_SUCCESS,
-  TOGGLE_TODO_SUCCESS, ADD_TODO_FAILURE,
+  TOGGLE_TODO_OPTIMISTIC_SUCCESS, ADD_TODO_FAILURE, TOGGLE_TODO_FAILURE,
 } from '../constants/actionTypes';
 
 const INITIAL_STATE = I.fromJS({});
@@ -61,8 +61,15 @@ export default (state = INITIAL_STATE, action) => {
       console.error(error);
       return state.deleteIn([formId, 'todos', tempID]);
     }
-    case TOGGLE_TODO_SUCCESS: {
+    case TOGGLE_TODO_OPTIMISTIC_SUCCESS: {
       const { formId, submissionId, done } = action.payload;
+      return state.setIn([formId, 'todos', submissionId, 'done'], done);
+    }
+    case TOGGLE_TODO_FAILURE: {
+      const {
+        error, formId, submissionId, done,
+      } = action.payload;
+      console.error(error);
       return state.setIn([formId, 'todos', submissionId, 'done'], done);
     }
     case INIT_A_TODOLIST: {
