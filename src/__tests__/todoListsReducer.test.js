@@ -3,7 +3,7 @@ import reducer from '../reducers/todoListsReducer';
 import {
   ADD_TODO_REAL_SUCCESS,
   ADD_TODOLIST_REAL_SUCCESS,
-  DELETE_TODOLIST_SUCCESS,
+  DELETE_TODOLIST_OPTIMISTIC_SUCCESS,
   INIT_A_TODOLIST,
   TOGGLE_TODO_OPTIMISTIC_SUCCESS,
 } from '../constants/actionTypes';
@@ -85,10 +85,10 @@ describe('Handling success actions', () => {
     expect(reducer(initialState, action)).toEqual(expectedState);
   });
 
-  it('should handle DELETE_TODOLIST_SUCCESS', () => {
+  it('should handle DELETE_TODOLIST_OPTIMISTIC_SUCCESS', () => {
     const initialState = I.fromJS({ 5: { id: '5', name: 'testName', todos: {} } });
     const action = {
-      type: DELETE_TODOLIST_SUCCESS,
+      type: DELETE_TODOLIST_OPTIMISTIC_SUCCESS,
       payload: { formId: '5' },
     };
     const expectedState = I.fromJS({});

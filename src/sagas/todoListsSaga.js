@@ -1,4 +1,6 @@
-import { takeEvery, put, call } from 'redux-saga/effects';
+import {
+  takeEvery, put, call, select,
+} from 'redux-saga/effects';
 import {
   ADD_TODO_FAILURE,
   ADD_TODO_REQUEST,
@@ -12,7 +14,7 @@ import {
   DELETE_TODO_REQUEST, DELETE_TODO_SUCCESS,
   DELETE_TODOLIST_FAILURE,
   DELETE_TODOLIST_REQUEST,
-  DELETE_TODOLIST_SUCCESS,
+  DELETE_TODOLIST_OPTIMISTIC_SUCCESS,
   INIT_A_TODOLIST,
   INIT_TODOLISTS_FAILURE,
   INIT_TODOLISTS_REQUEST,
@@ -25,6 +27,7 @@ import {
   changeTodoState, createTodoList, deleteTodo, deleteTodoList, getTodoLists, getTodos, submitTodo,
 } from '../lib/api';
 import { getTempID } from '../helpers/utils';
+import { getTodoListsState } from '../selectors';
 
 export function* addTodoList(action) {
   const tempID = getTempID();
@@ -59,7 +62,6 @@ export function* addTodoList(action) {
 
 export function* addTodo(action) {
   const tempSubmissionID = getTempID();
-  console.log(tempSubmissionID);
   try {
     const { name, formId, done } = action.payload;
 
@@ -155,8 +157,13 @@ export function* initTodoLists() {
 }
 
 export function* removeTodoList(action) {
+  const { formId } = action.payload;
+  const tempList = (yield select(getTodoListsState)).get(formId);
   try {
-    const { formId } = action.payload;
+    yield put({
+      type: DELETE_TODOLIST_OPTIMISTIC_SUCCESS,
+      payload: { formId },
+    });
 
     const { request: { response } } = yield call(deleteTodoList, formId);
     const { responseCode, message } = JSON.parse(response);
@@ -164,15 +171,14 @@ export function* removeTodoList(action) {
     if (responseCode !== 200) {
       throw Error(`Request failed! ${message}`);
     }
-
-    yield put({
-      type: DELETE_TODOLIST_SUCCESS,
-      payload: { formId },
-    });
   } catch (e) {
     yield put({
       type: DELETE_TODOLIST_FAILURE,
-      payload: e.message,
+      payload: {
+        error: e.message,
+        formId,
+        tempList,
+      },
     });
   }
 }
