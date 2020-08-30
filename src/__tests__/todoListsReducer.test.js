@@ -2,7 +2,8 @@ import I from 'immutable';
 import reducer from '../reducers/todoListsReducer';
 import {
   ADD_TODO_SUCCESS,
-  ADD_TODOLIST_SUCCESS, DELETE_TODOLIST_SUCCESS,
+  ADD_TODOLIST_REAL_SUCCESS,
+  DELETE_TODOLIST_SUCCESS,
   INIT_A_TODOLIST,
   TOGGLE_TODO_SUCCESS,
 } from '../constants/actionTypes';
@@ -12,10 +13,10 @@ it('should return the initial state', () => {
 });
 
 describe('Handling success actions', () => {
-  it('should handle ADD_TODOLIST_SUCCESS', () => {
+  it('should handle ADD_TODOLIST_REAL_SUCCESS', () => {
     const initialState = I.fromJS({});
     const action = {
-      type: ADD_TODOLIST_SUCCESS,
+      type: ADD_TODOLIST_REAL_SUCCESS,
       payload: { name: 'testName', id: '5' },
     };
     const expectedState = I.fromJS({ 5: { id: '5', name: 'testName', todos: {} } });

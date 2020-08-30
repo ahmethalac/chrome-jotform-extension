@@ -1,7 +1,8 @@
 import I from 'immutable';
 import {
-  ADD_TODO_SUCCESS,
-  ADD_TODOLIST_SUCCESS, DELETE_TODO_SUCCESS, DELETE_TODOLIST_SUCCESS,
+  ADD_TODO_SUCCESS, ADD_TODOLIST_FAILURE,
+  ADD_TODOLIST_OPTIMISTIC_SUCCESS, ADD_TODOLIST_REAL_SUCCESS,
+  DELETE_TODO_SUCCESS, DELETE_TODOLIST_SUCCESS,
   INIT_A_TODOLIST, SWAP_TODO_SUCCESS,
   TOGGLE_TODO_SUCCESS,
 } from '../constants/actionTypes';
@@ -10,7 +11,7 @@ const INITIAL_STATE = I.fromJS({});
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case ADD_TODOLIST_SUCCESS: {
+    case ADD_TODOLIST_OPTIMISTIC_SUCCESS: {
       const { name, id } = action.payload;
       return state.set(id,
         I.fromJS({
@@ -18,6 +19,20 @@ export default (state = INITIAL_STATE, action) => {
           name,
           todos: {},
         }));
+    }
+    case ADD_TODOLIST_REAL_SUCCESS: {
+      const { name, id, tempID } = action.payload;
+      return state.delete(tempID).set(id,
+        I.fromJS({
+          id,
+          name,
+          todos: {},
+        }));
+    }
+    case ADD_TODOLIST_FAILURE: {
+      const { error, tempID } = action.payload;
+      console.error(error);
+      return state.delete(tempID);
     }
     case ADD_TODO_SUCCESS: {
       const { name, submissionID: id, formId } = action.payload;

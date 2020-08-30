@@ -4,8 +4,9 @@ import {
   ADD_TODO_REQUEST,
   ADD_TODO_SUCCESS,
   ADD_TODOLIST_FAILURE,
+  ADD_TODOLIST_OPTIMISTIC_SUCCESS,
+  ADD_TODOLIST_REAL_SUCCESS,
   ADD_TODOLIST_REQUEST,
-  ADD_TODOLIST_SUCCESS,
   DELETE_TODO_FAILURE,
   DELETE_TODO_REQUEST, DELETE_TODO_SUCCESS,
   DELETE_TODOLIST_FAILURE,
@@ -22,10 +23,16 @@ import {
 import {
   changeTodoState, createTodoList, deleteTodo, deleteTodoList, getTodoLists, getTodos, submitTodo,
 } from '../lib/api';
+import { getTempID } from '../helpers/utils';
 
 export function* addTodoList(action) {
+  const tempID = getTempID();
   try {
     const { name } = action.payload;
+    yield put({
+      type: ADD_TODOLIST_OPTIMISTIC_SUCCESS,
+      payload: { name, id: tempID },
+    });
 
     const { request: { response } } = yield call(createTodoList, name);
     const { content: { id }, responseCode, message } = JSON.parse(response);
@@ -35,13 +42,16 @@ export function* addTodoList(action) {
     }
 
     yield put({
-      type: ADD_TODOLIST_SUCCESS,
-      payload: { name, id },
+      type: ADD_TODOLIST_REAL_SUCCESS,
+      payload: { name, id, tempID },
     });
   } catch (e) {
     yield put({
       type: ADD_TODOLIST_FAILURE,
-      payload: e.message,
+      payload: {
+        error: e.message,
+        tempID,
+      },
     });
   }
 }
@@ -96,12 +106,13 @@ export function* toggleTodo(action) {
 
 export function* initTodoLists() {
   try {
-    const todoLists = yield call(getTodoLists);
+    let todoLists = yield call(getTodoLists);
+    todoLists = todoLists.reverse();
 
     for (let i = 0; i < todoLists.length; i += 1) {
       const rawTodos = yield call(getTodos, todoLists[i].id);
       const todos = {};
-      rawTodos.forEach(todo => {
+      rawTodos.reverse().forEach(todo => {
         todos[todo.id] = todo;
       });
       yield put({
