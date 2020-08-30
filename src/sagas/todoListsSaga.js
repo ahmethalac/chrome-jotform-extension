@@ -18,10 +18,10 @@ import {
   INIT_A_TODOLIST,
   INIT_TODOLISTS_FAILURE,
   INIT_TODOLISTS_REQUEST,
-  INIT_TODOLISTS_SUCCESS, SWAP_TODO_FAILURE, SWAP_TODO_REQUEST, SWAP_TODO_SUCCESS,
+  INIT_TODOLISTS_SUCCESS, SWAP_TODO_FAILURE, SWAP_TODO_REQUEST,
   TOGGLE_TODO_FAILURE,
   TOGGLE_TODO_REQUEST,
-  TOGGLE_TODO_OPTIMISTIC_SUCCESS,
+  TOGGLE_TODO_OPTIMISTIC_SUCCESS, SWAP_TODO_OPTIMISTIC_SUCCESS, SWAP_TODO_REAL_SUCCESS,
 } from '../constants/actionTypes';
 import {
   changeTodoState, createTodoList, deleteTodo, deleteTodoList, getTodoLists, getTodos, submitTodo,
@@ -212,14 +212,24 @@ export function* removeTodo(action) {
 }
 
 export function* swapSubmission(action) {
+  const {
+    submissionId,
+    oldFormId,
+    newFormId,
+    name,
+    done,
+  } = action.payload;
   try {
-    const {
-      submissionId,
-      oldFormId,
-      newFormId,
-      name,
-      done,
-    } = action.payload;
+    yield put({
+      type: SWAP_TODO_OPTIMISTIC_SUCCESS,
+      payload: {
+        submissionId,
+        oldFormId,
+        newFormId,
+        name,
+        done,
+      },
+    });
 
     const { request: { response: deleteResponse } } = yield call(deleteTodo, submissionId);
     const { responseCode: deleteResponseCode, message: deleteMessage } = JSON.parse(deleteResponse);
@@ -238,10 +248,9 @@ export function* swapSubmission(action) {
     const { submissionID: newSubmissionId } = content[0];
 
     yield put({
-      type: SWAP_TODO_SUCCESS,
+      type: SWAP_TODO_REAL_SUCCESS,
       payload: {
         oldSubmissionId: submissionId,
-        oldFormId,
         newSubmissionId,
         newFormId,
         name,
@@ -251,7 +260,14 @@ export function* swapSubmission(action) {
   } catch (e) {
     yield put({
       type: SWAP_TODO_FAILURE,
-      payload: e.message,
+      payload: {
+        error: e.message,
+        oldFormId,
+        newFormId,
+        submissionId,
+        name,
+        done,
+      },
     });
   }
 }

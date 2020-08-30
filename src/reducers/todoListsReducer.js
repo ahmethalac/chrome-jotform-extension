@@ -4,12 +4,12 @@ import {
   ADD_TODOLIST_OPTIMISTIC_SUCCESS, ADD_TODOLIST_REAL_SUCCESS,
   DELETE_TODO_OPTIMISTIC_SUCCESS,
   DELETE_TODOLIST_OPTIMISTIC_SUCCESS,
-  INIT_A_TODOLIST, SWAP_TODO_SUCCESS,
+  INIT_A_TODOLIST, SWAP_TODO_OPTIMISTIC_SUCCESS,
   TOGGLE_TODO_OPTIMISTIC_SUCCESS,
   ADD_TODO_FAILURE,
   TOGGLE_TODO_FAILURE,
   DELETE_TODOLIST_FAILURE,
-  DELETE_TODO_FAILURE,
+  DELETE_TODO_FAILURE, SWAP_TODO_REAL_SUCCESS, SWAP_TODO_FAILURE,
 } from '../constants/actionTypes';
 
 const INITIAL_STATE = I.fromJS({});
@@ -97,20 +97,51 @@ export default (state = INITIAL_STATE, action) => {
       console.error(error);
       return state.setIn([formId, 'todos', submissionId], tempTodo);
     }
-    case SWAP_TODO_SUCCESS: {
+    case SWAP_TODO_OPTIMISTIC_SUCCESS: {
+      const {
+        submissionId,
+        oldFormId,
+        newFormId,
+        name,
+        done,
+      } = action.payload;
+      return state
+        .deleteIn([oldFormId, 'todos', submissionId])
+        .setIn([newFormId, 'todos', submissionId],
+          I.fromJS({ id: submissionId, name, done }));
+    }
+    case SWAP_TODO_REAL_SUCCESS: {
       const {
         oldSubmissionId,
-        oldFormId,
         newSubmissionId,
         newFormId,
         name,
         done,
       } = action.payload;
       return state
-        .deleteIn([oldFormId, 'todos', oldSubmissionId])
+        .deleteIn([newFormId, 'todos', oldSubmissionId])
         .setIn([newFormId, 'todos', newSubmissionId],
           I.fromJS({
             id: newSubmissionId,
+            name,
+            done,
+          }));
+    }
+    case SWAP_TODO_FAILURE: {
+      const {
+        error,
+        oldFormId,
+        newFormId,
+        submissionId,
+        name,
+        done,
+      } = action.payload;
+      console.error(error);
+      return state
+        .deleteIn([newFormId, 'todos', submissionId])
+        .setIn([oldFormId, 'todos', submissionId],
+          I.fromJS({
+            id: submissionId,
             name,
             done,
           }));
