@@ -1,0 +1,51 @@
+@import "common";
+
+.todoList{
+  overflow: hidden;
+  background-color: white;
+  border-radius: 5px;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+}
+
+.todolistHeader{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+  font-size: 18px;
+}
+
+.todolistName{
+  color: white;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.deleteListButton{
+  @extend iconButton;
+  background-image: url('../assets/deleteIcon.png');
+  margin: 5px 10px 5px 0;
+  height: 17px;
+  width: 17px;
+}
+
+.newTodoInput{
+  border: none;
+  background-color: #E5E5E5;
+  padding: 7px 10px;
+}
+
+.newTodoInput:focus{
+  outline: none;
+}
+
+.todos{
+  list-style-type: none;
+  padding: 0 10px;
+  max-height: 300px;
+  overflow: auto;
+  margin-top: 0;
+}

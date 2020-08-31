@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../styles/Todo.scss';
 
 const Todo = ({
   name,
@@ -12,6 +13,7 @@ const Todo = ({
   <li
     draggable
     onDragStart={dragStart}
+    className="todo"
   >
     <input
       type="checkbox"
@@ -20,15 +22,15 @@ const Todo = ({
       checked={done}
       onClick={() => toggleTodo(done)}
     />
-    <label className="name" htmlFor={`done${id}`}>
+    <label className="todoName" htmlFor={`done${id}`}>
       {name}
     </label>
     <button
       type="button"
+      className="deleteTodoButton"
       onClick={() => deleteTodo(id)}
-    >
-      Delete
-    </button>
+      aria-label="deleteTodoButton"
+    />
   </li>
 );
 

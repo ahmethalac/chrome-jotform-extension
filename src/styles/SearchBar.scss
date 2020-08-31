@@ -1,0 +1,37 @@
+@import "common";
+
+.searchBar{
+  margin-bottom: 100px;
+  border-bottom: 1px solid white;
+  width: 25vw;
+  min-width: 300px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+}
+
+#searchButton{
+  @extend iconButton;
+  background-image: url('../assets/searchIcon.png');
+  margin-right: 10px;
+  margin-bottom: 3px;
+}
+
+#searchInput{
+  background-color: transparent;
+  border: none;
+  flex-grow: 1;
+  color: white;
+  font-size: 18px;
+}
+
+#searchInput::placeholder{
+  color: rgba(255,255,255,0.7);
+}
+
+#shortcutsButton{
+  @extend iconButton;
+  background-image: url('../assets/shortcutsIcon.png');
+  margin-bottom: 3px;
+}

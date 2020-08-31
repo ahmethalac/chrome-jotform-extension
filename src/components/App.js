@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import '../styles/App.scss';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import VisibleTodoLists from './VisibleTodoLists';
 import { initApp } from '../actions';
 import SearchBarContainer from './SearchBarContainer';
+import TodoListsContainer from './TodoListsContainer';
 
 /** TODO:
  * We need to start thinking about the markup skeleton of the
@@ -19,10 +19,8 @@ const App = ({
   }, [_initApp]);
   return (
     <div className="App">
-      <header className="App-header">
-        <SearchBarContainer />
-        <VisibleTodoLists />
-      </header>
+      <SearchBarContainer />
+      <TodoListsContainer />
     </div>
   );
 };

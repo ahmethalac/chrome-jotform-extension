@@ -4,6 +4,7 @@ import I from 'immutable';
 import Todo from './Todo';
 import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilters';
 import Filters from './Filters';
+import '../styles/TodoList.scss';
 
 const TodoList = ({
   newTodoPlaceholder,
@@ -48,11 +49,37 @@ const TodoList = ({
   }, [todos, uiState]);
 
   return (
-    <div>
-      <div className="todoListName">
-        {name}
+    <div
+      className="todoList"
+    >
+      <div
+        className="todolistHeader"
+        style={{ backgroundColor: uiState.get('color', '#FF1616') }}
+      >
+        <div className="todolistName">
+          {name}
+        </div>
+        <button
+          type="button"
+          className="deleteListButton"
+          onClick={() => deleteTodoList(formId)}
+          aria-label="deleteListButton"
+        />
       </div>
+      <input
+        type="text"
+        className="newTodoInput"
+        value={newTodoInput}
+        placeholder={newTodoPlaceholder}
+        onChange={handleInputChange}
+        onKeyDown={enterEvent}
+      />
+      <Filters
+        filter={uiState.get('filter')}
+        changeFilter={filter => changeFilter(formId, filter)}
+      />
       <ul
+        className="todos"
         onDrop={event => {
           if (event.dataTransfer.getData('oldFormId') !== formId) {
             swapTodo(
@@ -83,25 +110,6 @@ const TodoList = ({
           />
         ))}
       </ul>
-      <input
-        type="text"
-        className="newTodoInput"
-        value={newTodoInput}
-        placeholder={newTodoPlaceholder}
-        onChange={handleInputChange}
-        onKeyDown={enterEvent}
-      />
-      <button
-        type="button"
-        className="deleteListButton"
-        onClick={() => deleteTodoList(formId)}
-      >
-        Delete
-      </button>
-      <Filters
-        filter={uiState.get('filter')}
-        changeFilter={filter => changeFilter(formId, filter)}
-      />
     </div>
   );
 };
@@ -121,7 +129,7 @@ TodoList.propTypes = {
 };
 
 TodoList.defaultProps = {
-  newTodoPlaceholder: 'Type a new todo',
+  newTodoPlaceholder: 'Add New To-Do',
   todos: [],
   name: 'Default List',
   formId: '0',

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import '../styles/SearchBar.scss';
 
 const SearchBar = ({
   handleSubmit,
-  searchButtonText,
   searchbarPlaceholder,
   shortcuts,
 }) => {
@@ -35,37 +35,40 @@ const SearchBar = ({
   };
 
   return (
-    <div>
+    <div
+      className="searchBar"
+    >
+      <button
+        id="searchButton"
+        onClick={handleSend}
+        type="button"
+        aria-label="searchButton"
+      />
       <input
         id="searchInput"
-        type="search"
+        type="text"
         value={inputText}
         onChange={handleInputChange}
         onKeyDown={enterEvent}
         placeholder={searchbarPlaceholder}
       />
       <button
-        id="searchButton"
-        onClick={handleSend}
+        id="shortcutsButton"
         type="button"
-      >
-        {searchButtonText}
-      </button>
+        aria-label="shortcutsButton"
+      />
     </div>
   );
 };
 
 SearchBar.propTypes = {
   handleSubmit: PropTypes.func,
-  searchButtonText: PropTypes.string,
   searchbarPlaceholder: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  shortcuts: PropTypes.object,
+  shortcuts: PropTypes.instanceOf(Object),
 };
 
 SearchBar.defaultProps = {
   handleSubmit: (searchTerm => window.open(`https://www.google.com/search?q=${searchTerm}`, '_top')),
-  searchButtonText: 'Search',
   searchbarPlaceholder: 'Search in Web',
   shortcuts: {},
 };

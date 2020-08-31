@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import I from 'immutable';
 import TodoList from './TodoList';
 import { getTodos } from '../selectors';
+import '../styles/TodoLists.scss';
 
 const TodoLists = ({
   todoLists,
@@ -11,13 +12,13 @@ const TodoLists = ({
   addTodoList,
   deleteTodoList,
   newTodoListPlaceholder,
-  addButtonText,
   todoListsUI,
   changeFilter,
   deleteTodo,
   swapTodo,
 }) => {
   const [newTodoListInput, setNewTodoListInput] = useState('');
+  const [flipState, setFlipState] = useState('rotateY(0deg)');
 
   const handleInputChange = event => setNewTodoListInput(event.target.value);
   const handleSend = () => {
@@ -25,6 +26,7 @@ const TodoLists = ({
       addTodoList(newTodoListInput);
     }
     setNewTodoListInput('');
+    setFlipState('rotateY(0deg)');
   };
 
   const enterEvent = event => {
@@ -34,36 +36,53 @@ const TodoLists = ({
   };
 
   return (
-    <div>
-      {todoLists.map(todoList => (
-        <TodoList
-          key={todoList.get('id', '0')}
-          name={todoList.get('name', 'undefined')}
-          formId={todoList.get('id', '0')}
-          todos={getTodos(todoList)}
-          toggleTodo={toggleTodo}
-          addTodo={addTodo}
-          deleteTodoList={deleteTodoList}
-          uiState={todoListsUI.get(todoList.get('id'))}
-          changeFilter={changeFilter}
-          deleteTodo={deleteTodo}
-          swapTodo={swapTodo}
-        />
-      ))}
-      <input
-        type="text"
-        className="newTodoListInput"
-        value={newTodoListInput}
-        placeholder={newTodoListPlaceholder}
-        onChange={handleInputChange}
-        onKeyDown={enterEvent}
-      />
+    <div
+      id="listContainer"
+    >
+      <div
+        id="todoLists"
+      >
+        {todoLists.map(todoList => (
+          <TodoList
+            key={todoList.get('id', '0')}
+            name={todoList.get('name', 'undefined')}
+            formId={todoList.get('id', '0')}
+            todos={getTodos(todoList)}
+            toggleTodo={toggleTodo}
+            addTodo={addTodo}
+            deleteTodoList={deleteTodoList}
+            uiState={todoListsUI.get(todoList.get('id'))}
+            changeFilter={changeFilter}
+            deleteTodo={deleteTodo}
+            swapTodo={swapTodo}
+          />
+        ))}
+      </div>
       <button
         type="button"
-        className="addTodoListButton"
-        onClick={handleSend}
+        className="addTodoList"
+        onClick={() => setFlipState('rotateY(180deg)')}
       >
-        {addButtonText}
+        <div
+          className="addTodoListSkeleton"
+          style={{ transform: flipState }}
+        >
+          <div className="addTodoListFront">
+            <div
+              className="frontAddButton"
+            />
+          </div>
+          <div className="addTodoListBack">
+            <input
+              type="text"
+              className="newTodoListInput"
+              value={newTodoListInput}
+              placeholder={newTodoListPlaceholder}
+              onChange={handleInputChange}
+              onKeyDown={enterEvent}
+            />
+          </div>
+        </div>
       </button>
     </div>
   );
@@ -76,7 +95,6 @@ TodoLists.propTypes = {
   addTodoList: PropTypes.func,
   deleteTodoList: PropTypes.func,
   newTodoListPlaceholder: PropTypes.string,
-  addButtonText: PropTypes.string,
   todoListsUI: PropTypes.instanceOf(Object),
   changeFilter: PropTypes.func,
   deleteTodo: PropTypes.func,
@@ -89,8 +107,7 @@ TodoLists.defaultProps = {
   addTodo: (() => {}),
   addTodoList: (() => {}),
   deleteTodoList: (() => {}),
-  newTodoListPlaceholder: 'Type a new todoList',
-  addButtonText: 'Add todoList',
+  newTodoListPlaceholder: 'TodoList Name',
   todoListsUI: I.fromJS({}),
   changeFilter: (() => {}),
   deleteTodo: (() => {}),

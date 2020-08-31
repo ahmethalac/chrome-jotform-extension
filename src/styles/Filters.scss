@@ -1,0 +1,18 @@
+#filterContainer{
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.filterButton{
+  border: none;
+  background-color: transparent;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.filterButton:disabled{
+  background-color: #1665FF;
+  color: white;
+  border-radius: 20px;
+}

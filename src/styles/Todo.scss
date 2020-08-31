@@ -1,0 +1,40 @@
+@import "common";
+
+.todo{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.todo:hover .deleteTodoButton{
+  transition: 0.3s ease-in;
+  opacity: 1;
+}
+
+.deleteTodoButton{
+  @extend iconButton;
+  background-image: url("../assets/deleteTodoIcon.png");
+  height: 12px;
+  width: 12px;
+  opacity: 0;
+}
+
+.todoName{
+  flex-grow: 1;
+  line-height: 30px;
+  height: 30px;
+  font-family: Arial, serif;
+  margin-left: 5px;
+}
+
+.done{
+  height: 15px;
+  width: 15px;
+  background-color: transparent;
+  border: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

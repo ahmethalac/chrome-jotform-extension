@@ -11,31 +11,46 @@ import {
   ADD_TODOLIST_REAL_SUCCESS,
   ADD_TODOLIST_REQUEST,
   DELETE_TODO_FAILURE,
-  DELETE_TODO_REQUEST, DELETE_TODO_OPTIMISTIC_SUCCESS,
+  DELETE_TODO_REQUEST,
+  DELETE_TODO_OPTIMISTIC_SUCCESS,
   DELETE_TODOLIST_FAILURE,
   DELETE_TODOLIST_REQUEST,
   DELETE_TODOLIST_OPTIMISTIC_SUCCESS,
   INIT_A_TODOLIST,
   INIT_TODOLISTS_FAILURE,
   INIT_TODOLISTS_REQUEST,
-  INIT_TODOLISTS_SUCCESS, SWAP_TODO_FAILURE, SWAP_TODO_REQUEST,
+  INIT_TODOLISTS_SUCCESS,
+  SWAP_TODO_FAILURE,
+  SWAP_TODO_REQUEST,
   TOGGLE_TODO_FAILURE,
   TOGGLE_TODO_REQUEST,
-  TOGGLE_TODO_OPTIMISTIC_SUCCESS, SWAP_TODO_OPTIMISTIC_SUCCESS, SWAP_TODO_REAL_SUCCESS,
+  TOGGLE_TODO_OPTIMISTIC_SUCCESS,
+  SWAP_TODO_OPTIMISTIC_SUCCESS,
+  SWAP_TODO_REAL_SUCCESS,
+  OPTIMISTIC_SET_TODOLIST_COLOR,
+  REAL_SET_TODOLIST_COLOR,
 } from '../constants/actionTypes';
 import {
   changeTodoState, createTodoList, deleteTodo, deleteTodoList, getTodoLists, getTodos, submitTodo,
 } from '../lib/api';
-import { getTempID } from '../helpers/utils';
+import { getRandomColor, getTempID } from '../helpers/utils';
 import { getTodoListsState } from '../selectors';
 
 export function* addTodoList(action) {
   const tempID = getTempID();
+  const color = getRandomColor();
   try {
     const { name } = action.payload;
     yield put({
       type: ADD_TODOLIST_OPTIMISTIC_SUCCESS,
       payload: { name, id: tempID },
+    });
+    yield put({
+      type: OPTIMISTIC_SET_TODOLIST_COLOR,
+      payload: {
+        id: tempID,
+        color,
+      },
     });
 
     const { request: { response } } = yield call(createTodoList, name);
@@ -48,6 +63,14 @@ export function* addTodoList(action) {
     yield put({
       type: ADD_TODOLIST_REAL_SUCCESS,
       payload: { name, id, tempID },
+    });
+    yield put({
+      type: REAL_SET_TODOLIST_COLOR,
+      payload: {
+        id,
+        tempID,
+        color,
+      },
     });
   } catch (e) {
     yield put({
@@ -141,6 +164,13 @@ export function* initTodoLists() {
           id: todoLists[i].id,
           name: todoLists[i].title.replace('todoList_', ''),
           todos,
+        },
+      });
+      yield put({
+        type: OPTIMISTIC_SET_TODOLIST_COLOR,
+        payload: {
+          id: todoLists[i].id,
+          color: getRandomColor(),
         },
       });
     }

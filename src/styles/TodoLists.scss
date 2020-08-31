@@ -1,0 +1,67 @@
+@import "common";
+
+#listContainer{
+  display: flex;
+}
+
+#todoLists{
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: flex-start;
+}
+
+.addTodoList {
+  background-color: transparent;
+  min-width: 250px;
+  height: 128px;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.addTodoListSkeleton {
+  height: 100%;
+  transition: transform 0.3s;
+  transform-style: preserve-3d;
+}
+
+.addTodoListFront, .addTodoListBack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
+.frontAddButton{
+  @extend iconButton;
+  background-image: url("../assets/addIcon.png");
+  height: 50px;
+  width: 50px;
+}
+
+.addTodoListBack {
+  transform: rotateY(180deg);
+}
+
+.newTodoListInput{
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-size: 20px;
+  text-align: center;
+  border-bottom: 1px solid white;
+  width: 200px;
+}
+
+.newTodoListInput::placeholder{
+  color: white;
+}
+
