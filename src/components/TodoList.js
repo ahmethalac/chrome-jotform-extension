@@ -48,9 +48,23 @@ const TodoList = ({
     }
   }, [todos, uiState]);
 
+  const onDrop = event => {
+    if (event.dataTransfer.getData('oldFormId') !== formId) {
+      swapTodo(
+        event.dataTransfer.getData('TodoId'),
+        event.dataTransfer.getData('oldFormId'),
+        formId,
+        event.dataTransfer.getData('name'),
+        event.dataTransfer.getData('done') === 'true',
+      );
+    }
+  };
+
   return (
     <div
       className="todoList"
+      onDrop={onDrop}
+      onDragOver={event => event.preventDefault()}
     >
       <div
         className="todolistHeader"
@@ -78,21 +92,7 @@ const TodoList = ({
         filter={uiState.get('filter')}
         changeFilter={filter => changeFilter(formId, filter)}
       />
-      <ul
-        className="todos"
-        onDrop={event => {
-          if (event.dataTransfer.getData('oldFormId') !== formId) {
-            swapTodo(
-              event.dataTransfer.getData('TodoId'),
-              event.dataTransfer.getData('oldFormId'),
-              formId,
-              event.dataTransfer.getData('name'),
-              event.dataTransfer.getData('done') === 'true',
-            );
-          }
-        }}
-        onDragOver={event => event.preventDefault()}
-      >
+      <ul className="todos">
         {visibleTodos.map(todo => (
           <Todo
             key={todo.get('id', '0')}

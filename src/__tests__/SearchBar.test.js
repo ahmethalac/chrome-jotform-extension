@@ -24,12 +24,6 @@ describe('Rendering components', () => {
 });
 
 describe('Custom props', () => {
-  it('should have a button with text from props', () => {
-    const searchBar = mount(<SearchBar searchButtonText="TestButton" />);
-    const searchButton = searchBar.find('button#searchButton');
-    expect(searchButton.text()).toBe('TestButton');
-  });
-
   it('should have an input field with placeholder from props', () => {
     const searchBar = mount(<SearchBar searchbarPlaceholder="TestPlaceholder" />);
     const searchInput = searchBar.find('input#searchInput');

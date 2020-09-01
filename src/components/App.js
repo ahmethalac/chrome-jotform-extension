@@ -6,11 +6,6 @@ import { initApp } from '../actions';
 import SearchBarContainer from './SearchBarContainer';
 import TodoListsContainer from './TodoListsContainer';
 
-/** TODO:
- * We need to start thinking about the markup skeleton of the
- * application and implement the basic styles.
- */
-
 const App = ({
   initApp: _initApp,
 }) => {

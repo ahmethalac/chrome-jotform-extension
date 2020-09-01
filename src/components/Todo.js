@@ -21,6 +21,7 @@ const Todo = ({
       className="done"
       checked={done}
       onClick={() => toggleTodo(done)}
+      onChange={() => {}}
     />
     <label className="todoName" htmlFor={`done${id}`}>
       {name}

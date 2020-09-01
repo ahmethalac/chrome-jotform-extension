@@ -27,8 +27,8 @@ import {
   TOGGLE_TODO_OPTIMISTIC_SUCCESS,
   SWAP_TODO_OPTIMISTIC_SUCCESS,
   SWAP_TODO_REAL_SUCCESS,
-  OPTIMISTIC_SET_TODOLIST_COLOR,
-  REAL_SET_TODOLIST_COLOR,
+  SET_TODOLIST_COLOR_OPTIMISTIC,
+  SET_TODOLIST_COLOR_REAL,
 } from '../constants/actionTypes';
 import {
   changeTodoState, createTodoList, deleteTodo, deleteTodoList, getTodoLists, getTodos, submitTodo,
@@ -46,11 +46,8 @@ export function* addTodoList(action) {
       payload: { name, id: tempID },
     });
     yield put({
-      type: OPTIMISTIC_SET_TODOLIST_COLOR,
-      payload: {
-        id: tempID,
-        color,
-      },
+      type: SET_TODOLIST_COLOR_OPTIMISTIC,
+      payload: { id: tempID, color },
     });
 
     const { request: { response } } = yield call(createTodoList, name);
@@ -65,20 +62,13 @@ export function* addTodoList(action) {
       payload: { name, id, tempID },
     });
     yield put({
-      type: REAL_SET_TODOLIST_COLOR,
-      payload: {
-        id,
-        tempID,
-        color,
-      },
+      type: SET_TODOLIST_COLOR_REAL,
+      payload: { id, tempID, color },
     });
   } catch (e) {
     yield put({
       type: ADD_TODOLIST_FAILURE,
-      payload: {
-        error: e.message,
-        tempID,
-      },
+      payload: { error: e.message, tempID },
     });
   }
 }
@@ -167,7 +157,7 @@ export function* initTodoLists() {
         },
       });
       yield put({
-        type: OPTIMISTIC_SET_TODOLIST_COLOR,
+        type: SET_TODOLIST_COLOR_OPTIMISTIC,
         payload: {
           id: todoLists[i].id,
           color: getRandomColor(),

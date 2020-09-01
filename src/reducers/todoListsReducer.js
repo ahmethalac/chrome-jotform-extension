@@ -1,15 +1,21 @@
 import I from 'immutable';
 import {
-  ADD_TODO_REAL_SUCCESS, ADD_TODOLIST_FAILURE, ADD_TODO_OPTIMISTIC_SUCCESS,
-  ADD_TODOLIST_OPTIMISTIC_SUCCESS, ADD_TODOLIST_REAL_SUCCESS,
+  ADD_TODO_REAL_SUCCESS,
+  ADD_TODOLIST_FAILURE,
+  ADD_TODO_OPTIMISTIC_SUCCESS,
+  ADD_TODOLIST_OPTIMISTIC_SUCCESS,
+  ADD_TODOLIST_REAL_SUCCESS,
   DELETE_TODO_OPTIMISTIC_SUCCESS,
   DELETE_TODOLIST_OPTIMISTIC_SUCCESS,
-  INIT_A_TODOLIST, SWAP_TODO_OPTIMISTIC_SUCCESS,
+  INIT_A_TODOLIST,
+  SWAP_TODO_OPTIMISTIC_SUCCESS,
   TOGGLE_TODO_OPTIMISTIC_SUCCESS,
   ADD_TODO_FAILURE,
   TOGGLE_TODO_FAILURE,
   DELETE_TODOLIST_FAILURE,
-  DELETE_TODO_FAILURE, SWAP_TODO_REAL_SUCCESS, SWAP_TODO_FAILURE,
+  DELETE_TODO_FAILURE,
+  SWAP_TODO_REAL_SUCCESS,
+  SWAP_TODO_FAILURE,
 } from '../constants/actionTypes';
 
 const INITIAL_STATE = I.fromJS({});
@@ -18,21 +24,13 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_TODOLIST_OPTIMISTIC_SUCCESS: {
       const { name, id } = action.payload;
-      return state.set(id,
-        I.fromJS({
-          id,
-          name,
-          todos: {},
-        }));
+      return state.set(id, I.fromJS({ id, name, todos: {} }));
     }
     case ADD_TODOLIST_REAL_SUCCESS: {
       const { name, id, tempID } = action.payload;
-      return state.delete(tempID).set(id,
-        I.fromJS({
-          id,
-          name,
-          todos: {},
-        }));
+      return state
+        .delete(tempID)
+        .set(id, I.fromJS({ id, name, todos: {} }));
     }
     case ADD_TODOLIST_FAILURE: {
       const { error, tempID } = action.payload;
@@ -41,25 +39,19 @@ export default (state = INITIAL_STATE, action) => {
     }
     case ADD_TODO_OPTIMISTIC_SUCCESS: {
       const { name, tempSubmissionID: id, formId } = action.payload;
-      return state.setIn([formId, 'todos', id],
-        I.fromJS({
-          id,
-          name,
-          done: false,
-        }));
+      return state
+        .setIn([formId, 'todos', id], I.fromJS({ id, name, done: false }));
     }
     case ADD_TODO_REAL_SUCCESS: {
       const {
-        name, submissionID: id, formId, tempSubmissionID,
+        name,
+        submissionID: id,
+        formId,
+        tempSubmissionID,
       } = action.payload;
       return state
         .deleteIn([formId, 'todos', tempSubmissionID])
-        .setIn([formId, 'todos', id],
-          I.fromJS({
-            id,
-            name,
-            done: false,
-          }));
+        .setIn([formId, 'todos', id], I.fromJS({ id, name, done: false }));
     }
     case ADD_TODO_FAILURE: {
       const { error, tempID, formId } = action.payload;
@@ -72,7 +64,10 @@ export default (state = INITIAL_STATE, action) => {
     }
     case TOGGLE_TODO_FAILURE: {
       const {
-        error, formId, submissionId, done,
+        error,
+        formId,
+        submissionId,
+        done,
       } = action.payload;
       console.error(error);
       return state.setIn([formId, 'todos', submissionId, 'done'], done);
@@ -92,7 +87,10 @@ export default (state = INITIAL_STATE, action) => {
     }
     case DELETE_TODO_FAILURE: {
       const {
-        error, formId, submissionId, tempTodo,
+        error,
+        formId,
+        submissionId,
+        tempTodo,
       } = action.payload;
       console.error(error);
       return state.setIn([formId, 'todos', submissionId], tempTodo);
@@ -121,11 +119,7 @@ export default (state = INITIAL_STATE, action) => {
       return state
         .deleteIn([newFormId, 'todos', oldSubmissionId])
         .setIn([newFormId, 'todos', newSubmissionId],
-          I.fromJS({
-            id: newSubmissionId,
-            name,
-            done,
-          }));
+          I.fromJS({ id: newSubmissionId, name, done }));
     }
     case SWAP_TODO_FAILURE: {
       const {
@@ -140,11 +134,7 @@ export default (state = INITIAL_STATE, action) => {
       return state
         .deleteIn([newFormId, 'todos', submissionId])
         .setIn([oldFormId, 'todos', submissionId],
-          I.fromJS({
-            id: submissionId,
-            name,
-            done,
-          }));
+          I.fromJS({ id: submissionId, name, done }));
     }
     default:
       return state;

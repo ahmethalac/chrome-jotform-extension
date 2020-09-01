@@ -21,6 +21,7 @@ const TodoLists = ({
   const [flipState, setFlipState] = useState('rotateY(0deg)');
 
   const handleInputChange = event => setNewTodoListInput(event.target.value);
+
   const handleSend = () => {
     if (newTodoListInput !== '') {
       addTodoList(newTodoListInput);
@@ -36,12 +37,8 @@ const TodoLists = ({
   };
 
   return (
-    <div
-      id="listContainer"
-    >
-      <div
-        id="todoLists"
-      >
+    <div id="listContainer">
+      <div id="todoLists">
         {todoLists.map(todoList => (
           <TodoList
             key={todoList.get('id', '0')}
@@ -68,9 +65,7 @@ const TodoLists = ({
           style={{ transform: flipState }}
         >
           <div className="addTodoListFront">
-            <div
-              className="frontAddButton"
-            />
+            <div className="frontAddButton" />
           </div>
           <div className="addTodoListBack">
             <input

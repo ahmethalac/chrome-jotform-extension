@@ -14,7 +14,7 @@ describe('Rendering components', () => {
   });
 
   it('should render a name for list', () => {
-    expect(todos.exists('div.todoListName')).toBe(true);
+    expect(todos.exists('div.todolistName')).toBe(true);
   });
 
   it('should render an unordered list', () => {
@@ -33,7 +33,7 @@ describe('Rendering components', () => {
 describe('Custom props', () => {
   it('should have a name from props', () => {
     const todos = mount(<TodoList name="Name" />);
-    const name = todos.find('div.todoListName');
+    const name = todos.find('div.todolistName');
     expect(name.text()).toBe('Name');
   });
 

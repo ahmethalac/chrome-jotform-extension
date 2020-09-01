@@ -4,9 +4,7 @@ import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilt
 import '../styles/Filters.scss';
 
 const Filters = ({ filter, changeFilter }) => (
-  <div
-    id="filterContainer"
-  >
+  <div id="filterContainer">
     <button
       type="button"
       disabled={filter === SHOW_ALL}

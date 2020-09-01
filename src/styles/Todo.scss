@@ -26,6 +26,7 @@
   height: 30px;
   font-family: Arial, serif;
   margin-left: 5px;
+  cursor: grab;
 }
 
 .done{
@@ -33,8 +34,5 @@
   width: 15px;
   background-color: transparent;
   border: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  cursor: pointer;
 }

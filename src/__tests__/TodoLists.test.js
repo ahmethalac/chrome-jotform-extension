@@ -16,10 +16,6 @@ describe('Rendering components', () => {
   it('should render an input for typing a new todoList', () => {
     expect(todoLists.exists('input.newTodoListInput')).toBe(true);
   });
-
-  it('should render a button for adding new todoList', () => {
-    expect(todoLists.exists('button.addTodoListButton')).toBe(true);
-  });
 });
 
 describe('Custom props', () => {
@@ -56,7 +52,7 @@ describe('Adding a new todoList', () => {
     const mockFunction = jest.fn();
     const todoLists = mount(<TodoLists addTodoList={mockFunction} />);
     todoLists.find('input.newTodoListInput').simulate('change', { target: { value: 'TestText' } });
-    todoLists.find('button.addTodoListButton').simulate('click');
+    todoLists.find('input.newTodoListInput').simulate('keyDown', { key: 'Enter' });
     expect(mockFunction).toHaveBeenNthCalledWith(1, 'TestText');
   });
 });

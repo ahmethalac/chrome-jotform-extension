@@ -28,6 +28,7 @@ const SearchBar = ({
     }
     setInputText('');
   };
+
   const enterEvent = event => {
     if (event.key === 'Enter') {
       handleSend();
@@ -35,9 +36,7 @@ const SearchBar = ({
   };
 
   return (
-    <div
-      className="searchBar"
-    >
+    <div className="searchBar">
       <button
         id="searchButton"
         onClick={handleSend}

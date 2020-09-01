@@ -13,7 +13,7 @@ describe('Rendering components', () => {
   });
 
   it('should render a label text for checkbox', () => {
-    expect(todo.exists('label.name')).toBe(true);
+    expect(todo.exists('label.todoName')).toBe(true);
   });
 
   it('should render a checkbox', () => {
@@ -21,14 +21,14 @@ describe('Rendering components', () => {
   });
 
   it('should render a delete button', () => {
-    expect(todo.exists('button.deleteTodo')).toBe(true);
+    expect(todo.exists('button.deleteTodoButton')).toBe(true);
   });
 });
 
 describe('Custom props', () => {
   it('should have a label text from props', () => {
     const todo = mount(<Todo name="TestName" />);
-    const name = todo.find('label.name');
+    const name = todo.find('label.todoName');
     expect(name.text()).toBe('TestName');
   });
 
@@ -40,7 +40,7 @@ describe('Custom props', () => {
 
   it('htmlFor attribute of label and id of checkbox should be done"id"', () => {
     const todo = mount(<Todo id={12} />);
-    const name = todo.find('label.name');
+    const name = todo.find('label.todoName');
     expect(name.prop('htmlFor')).toBe('done12');
     expect(todo.exists('input#done12')).toBe(true);
   });
@@ -58,7 +58,7 @@ describe('Actions', () => {
   it('user can delete todo', () => {
     const onClick = jest.fn();
     const todo = mount(<Todo deleteTodo={onClick} />);
-    const button = todo.find('button.deleteTodo');
+    const button = todo.find('button.deleteTodoButton');
     button.simulate('click');
     expect(onClick).toHaveBeenCalledTimes(1);
   });

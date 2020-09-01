@@ -1,8 +1,8 @@
 import I from 'immutable';
 import {
   CHANGE_FILTER,
-  OPTIMISTIC_SET_TODOLIST_COLOR,
-  REAL_SET_TODOLIST_COLOR,
+  SET_TODOLIST_COLOR_OPTIMISTIC,
+  SET_TODOLIST_COLOR_REAL,
 } from '../constants/actionTypes';
 
 const INITIAL_STATE = I.fromJS({});
@@ -12,10 +12,10 @@ export default (state = INITIAL_STATE, action) => {
     case CHANGE_FILTER: {
       return state.setIn([action.payload.formId, 'filter'], action.payload.filter);
     }
-    case OPTIMISTIC_SET_TODOLIST_COLOR: {
+    case SET_TODOLIST_COLOR_OPTIMISTIC: {
       return state.setIn([action.payload.id, 'color'], action.payload.color);
     }
-    case REAL_SET_TODOLIST_COLOR: {
+    case SET_TODOLIST_COLOR_REAL: {
       return state
         .delete(action.payload.tempID)
         .setIn([action.payload.id, 'color'], action.payload.color);
