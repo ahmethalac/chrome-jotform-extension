@@ -1,6 +1,11 @@
 /* global chrome */
 
-const mockStorage = {};
+const mockStorage = {
+  shortcuts: {
+    w: 'what is',
+    h: 'how to',
+  },
+};
 
 export const storeInChrome = (key, value) => {
   switch (process.env.NODE_ENV) {
@@ -21,10 +26,16 @@ export const storeInChrome = (key, value) => {
 export const getFromChrome = key => {
   switch (process.env.NODE_ENV) {
     case 'production': {
-      return chrome.storage.sync.get(key);
+      return new Promise(resolve => chrome.storage.sync.get(key, r => {
+        if (key) {
+          resolve(r[key]);
+        } else {
+          resolve(r);
+        }
+      }));
     }
     case 'development': {
-      return mockStorage[key];
+      return new Promise(resolve => resolve(mockStorage[key]));
     }
     default: {
       return false;

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../styles/SearchBar.scss';
+import Shortcuts from './Shortcuts';
 
 const SearchBar = ({
   handleSubmit,
   searchbarPlaceholder,
   shortcuts,
+  addShortcut,
 }) => {
   const [inputText, setInputText] = useState('');
+  const [shortcutsVisible, setShortcutsVisible] = useState(false);
 
   const handleInputChange = event => {
     let input = event.target.value;
@@ -55,6 +58,12 @@ const SearchBar = ({
         id="shortcutsButton"
         type="button"
         aria-label="shortcutsButton"
+        onClick={() => setShortcutsVisible(!shortcutsVisible)}
+      />
+      <Shortcuts
+        visible={shortcutsVisible}
+        shortcuts={shortcuts}
+        addShortcut={addShortcut}
       />
     </div>
   );
@@ -64,12 +73,14 @@ SearchBar.propTypes = {
   handleSubmit: PropTypes.func,
   searchbarPlaceholder: PropTypes.string,
   shortcuts: PropTypes.instanceOf(Object),
+  addShortcut: PropTypes.func,
 };
 
 SearchBar.defaultProps = {
   handleSubmit: (searchTerm => window.open(`https://www.google.com/search?q=${searchTerm}`, '_top')),
   searchbarPlaceholder: 'Search in Web',
   shortcuts: {},
+  addShortcut: (() => {}),
 };
 
 export default SearchBar;

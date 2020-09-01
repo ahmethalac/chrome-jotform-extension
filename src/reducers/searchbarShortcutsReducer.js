@@ -1,10 +1,16 @@
 import I from 'immutable';
-import { DUMMY_STATE_FOR_SEARCHBAR_SHORTCUTS } from '../constants/dummyValues';
+import { ADD_SHORTCUT_SUCCESS, INIT_SHORTCUTS_SUCCESS } from '../constants/actionTypes';
 
-const INITIAL_STATE = I.fromJS(DUMMY_STATE_FOR_SEARCHBAR_SHORTCUTS);
+const INITIAL_STATE = I.fromJS({});
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case INIT_SHORTCUTS_SUCCESS: {
+      return I.fromJS(action.payload);
+    }
+    case ADD_SHORTCUT_SUCCESS: {
+      return state.set(action.payload.key, action.payload.value);
+    }
     default:
       return state;
   }

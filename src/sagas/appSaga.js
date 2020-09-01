@@ -1,6 +1,10 @@
 import { takeEvery, put } from 'redux-saga/effects';
 import {
-  INIT_APP_FAILURE, INIT_APP_REQUEST, INIT_APP_SUCCESS, INIT_TODOLISTS_REQUEST,
+  INIT_APP_FAILURE,
+  INIT_APP_REQUEST,
+  INIT_APP_SUCCESS,
+  INIT_SHORTCUTS_REQUEST,
+  INIT_TODOLISTS_REQUEST,
 } from '../constants/actionTypes';
 
 export function* initApp() {
@@ -10,6 +14,9 @@ export function* initApp() {
       type: INIT_TODOLISTS_REQUEST,
     });
 
+    yield put({
+      type: INIT_SHORTCUTS_REQUEST,
+    });
     // ALL SERVICES INITIALIZED
     yield put({
       type: INIT_APP_SUCCESS,

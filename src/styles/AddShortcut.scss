@@ -1,0 +1,43 @@
+.addShortcut{
+  height: 36px;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  border-top: 1px solid rgba(130,157,182,0.3);
+}
+
+.addShortcutButton{
+  position: absolute;
+  cursor: pointer;
+  width: inherit;
+  height: inherit;
+  background-color: white;
+  border: none;
+  color: #829DB6;
+}
+
+.inputs{
+  display: flex;
+  width: inherit;
+  height: inherit;
+  border: none;
+}
+
+.shortFormInput{
+  width: 35px;
+  padding-left: 15px;
+  font-size: 16px;
+  border: inherit;
+}
+
+.longFormInput{
+  flex-grow: 3;
+  border: inherit;
+  font-size: 16px;
+  color: #829DB6;
+}
+
+.longFormInput::placeholder{
+  color: #829DB6;
+  font-size: 14px;
+}

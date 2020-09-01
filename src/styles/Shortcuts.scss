@@ -1,0 +1,19 @@
+#shortcuts{
+  background-color: white;
+  position: absolute;
+  left: calc(7vw + 355px);
+  border-radius: 10px;
+  transition: 0.2s ease-in-out;
+  overflow: hidden;
+}
+
+.shortcutTitle{
+  font-weight: bold;
+  font-size: 18px;
+  padding: 5px 42px;
+}
+
+.shortcutList{
+  max-height: 100px;
+  overflow: auto;
+}

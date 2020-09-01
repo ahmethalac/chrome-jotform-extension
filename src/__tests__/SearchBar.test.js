@@ -8,7 +8,7 @@ describe('Rendering components', () => {
   let searchBar;
 
   beforeEach(() => {
-    searchBar = mount(<SearchBar />);
+    searchBar = mount(<SearchBar shortcuts={I.fromJS({})} />);
   });
   afterEach(() => {
     searchBar.unmount();
@@ -25,7 +25,7 @@ describe('Rendering components', () => {
 
 describe('Custom props', () => {
   it('should have an input field with placeholder from props', () => {
-    const searchBar = mount(<SearchBar searchbarPlaceholder="TestPlaceholder" />);
+    const searchBar = mount(<SearchBar searchbarPlaceholder="TestPlaceholder" shortcuts={I.fromJS({})} />);
     const searchInput = searchBar.find('input#searchInput');
     expect(searchInput.prop('placeholder')).toBe('TestPlaceholder');
   });
@@ -39,7 +39,7 @@ describe('Typing and submitting', () => {
 
   beforeEach(() => {
     handleSubmit = jest.fn();
-    searchBar = mount(<SearchBar handleSubmit={handleSubmit} />);
+    searchBar = mount(<SearchBar handleSubmit={handleSubmit} shortcuts={I.fromJS({})} />);
     textBox = searchBar.find('input#searchInput');
     submitButton = searchBar.find('button#searchButton');
   });
