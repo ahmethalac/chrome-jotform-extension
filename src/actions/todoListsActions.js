@@ -2,7 +2,7 @@ import {
   ADD_TODO_REQUEST,
   ADD_TODOLIST_REQUEST,
   DELETE_TODO_REQUEST,
-  DELETE_TODOLIST_REQUEST,
+  DELETE_TODOLIST_REQUEST, EDIT_LIST_TITLE_REQUEST,
   SWAP_TODO_REQUEST,
   TOGGLE_TODO_REQUEST,
 } from '../constants/actionTypes';
@@ -42,4 +42,10 @@ export const swapTodo = (submissionId, oldFormId, newFormId, name, done) => ({
     done,
   },
 });
+
+export const editListTitle = (formId, newTitle) => ({
+  type: EDIT_LIST_TITLE_REQUEST,
+  payload: { formId, newTitle },
+});
+
 export default 'dummyExportForESLINT';

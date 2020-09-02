@@ -2,7 +2,14 @@ import { connect } from 'react-redux';
 import TodoLists from './TodoLists';
 import { getTodoLists, getTodoListsUI } from '../selectors';
 import {
-  addTodo, addTodoList, toggleTodo, deleteTodoList, changeFilter, deleteTodo, swapTodo,
+  addTodo,
+  addTodoList,
+  toggleTodo,
+  deleteTodoList,
+  changeFilter,
+  deleteTodo,
+  swapTodo,
+  editListTitle,
 } from '../actions';
 
 const mapStateToProps = state => ({
@@ -18,6 +25,7 @@ const mapActionsToProps = {
   changeFilter,
   deleteTodo,
   swapTodo,
+  editListTitle,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(TodoLists);

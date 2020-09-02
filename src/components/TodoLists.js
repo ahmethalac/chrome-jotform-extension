@@ -16,6 +16,7 @@ const TodoLists = ({
   changeFilter,
   deleteTodo,
   swapTodo,
+  editListTitle,
 }) => {
   const [newTodoListInput, setNewTodoListInput] = useState('');
   const [flipState, setFlipState] = useState('rotateY(0deg)');
@@ -52,6 +53,7 @@ const TodoLists = ({
             changeFilter={changeFilter}
             deleteTodo={deleteTodo}
             swapTodo={swapTodo}
+            editListTitle={editListTitle}
           />
         ))}
       </div>
@@ -94,6 +96,7 @@ TodoLists.propTypes = {
   changeFilter: PropTypes.func,
   deleteTodo: PropTypes.func,
   swapTodo: PropTypes.func,
+  editListTitle: PropTypes.func,
 };
 
 TodoLists.defaultProps = {
@@ -107,6 +110,7 @@ TodoLists.defaultProps = {
   changeFilter: (() => {}),
   deleteTodo: (() => {}),
   swapTodo: (() => {}),
+  editListTitle: (() => {}),
 };
 
 export default TodoLists;

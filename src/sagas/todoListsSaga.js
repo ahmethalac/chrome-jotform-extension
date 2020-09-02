@@ -29,8 +29,12 @@ import {
   SWAP_TODO_REAL_SUCCESS,
   SET_TODOLIST_COLOR_OPTIMISTIC,
   SET_TODOLIST_COLOR_REAL,
+  EDIT_LIST_TITLE_FAILURE,
+  EDIT_LIST_TITLE_REQUEST,
+  EDIT_LIST_TITLE_SUCCESS,
 } from '../constants/actionTypes';
 import {
+  changeTitle,
   changeTodoState, createTodoList, deleteTodo, deleteTodoList, getTodoLists, getTodos, submitTodo,
 } from '../lib/api';
 import { getRandomColor, getTempID } from '../helpers/utils';
@@ -291,7 +295,30 @@ export function* swapSubmission(action) {
     });
   }
 }
-const appSagas = [
+
+export function* editListTitle(action) {
+  const { formId, newTitle } = action.payload;
+  try {
+    const { request: { response } } = yield call(changeTitle, formId, newTitle);
+    const { responseCode, message } = JSON.parse(response);
+
+    if (responseCode !== 200) {
+      throw Error(`Request failed! ${message}`);
+    }
+
+    yield put({
+      type: EDIT_LIST_TITLE_SUCCESS,
+      payload: { formId, newTitle },
+    });
+  } catch (e) {
+    yield put({
+      type: EDIT_LIST_TITLE_FAILURE,
+      payload: { formId, error: e.message },
+    });
+  }
+}
+
+const todoListsSagas = [
   takeEvery(ADD_TODOLIST_REQUEST, addTodoList),
   takeEvery(ADD_TODO_REQUEST, addTodo),
   takeEvery(TOGGLE_TODO_REQUEST, toggleTodo),
@@ -299,6 +326,7 @@ const appSagas = [
   takeEvery(DELETE_TODOLIST_REQUEST, removeTodoList),
   takeEvery(DELETE_TODO_REQUEST, removeTodo),
   takeEvery(SWAP_TODO_REQUEST, swapSubmission),
+  takeEvery(EDIT_LIST_TITLE_REQUEST, editListTitle),
 ];
 
-export default appSagas;
+export default todoListsSagas;

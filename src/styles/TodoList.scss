@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   min-width: 250px;
+  max-width: 350px;
 }
 
 .todolistHeader{
@@ -22,6 +23,8 @@
   color: white;
   margin-left: 10px;
   font-weight: bold;
+  white-space: nowrap;
+  outline: 0
 }
 
 .deleteListButton{

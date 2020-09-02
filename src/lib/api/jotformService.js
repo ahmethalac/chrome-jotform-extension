@@ -48,3 +48,12 @@ export const getTodos = formId => axios.get(`${baseURL}form/${formId}/submission
 export const deleteTodoList = formId => axios.delete(`${baseURL}form/${formId}?apiKey=${JOTFORM_API_KEY}`);
 
 export const deleteTodo = submissionId => axios.delete(`${baseURL}submission/${submissionId}?apiKey=${JOTFORM_API_KEY}`);
+
+export const changeTitle = (formId, newTitle) => {
+  const requestBody = {
+    properties: {
+      title: `todoList_${newTitle}`,
+    },
+  };
+  return axios.put(`${baseURL}form/${formId}/properties?apiKey=${JOTFORM_API_KEY}`, requestBody);
+};

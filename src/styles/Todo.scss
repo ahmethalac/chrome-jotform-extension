@@ -3,7 +3,7 @@
 .todo{
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 5px;
 }
 
@@ -18,12 +18,13 @@
   height: 12px;
   width: 12px;
   opacity: 0;
+  margin-top: 7px;
 }
 
 .todoName{
   flex-grow: 1;
   line-height: 27px;
-  height: 25px;
+  min-height: 25px;
   font-family: Arial, serif;
   margin-left: 5px;
   cursor: grab;
@@ -36,8 +37,8 @@
 
 .done{
   position: relative;
-  width: 20px;
-  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
   color: black;
   border: 1px solid gray;
   border-radius: 10px;

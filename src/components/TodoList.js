@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import I from 'immutable';
 import Todo from './Todo';
@@ -18,17 +18,32 @@ const TodoList = ({
   changeFilter,
   deleteTodo,
   swapTodo,
+  editListTitle,
 }) => {
   const [newTodoInput, setNewTodoInput] = useState('');
+  const [newTitle, setNewTitle] = useState(name);
+  const [nameRef, setNameRef] = useState(null);
 
   const handleInputChange = event => setNewTodoInput(event.target.value);
 
-  const enterEvent = event => {
+  const newTodoEnter = event => {
     if (event.key === 'Enter') {
       if (newTodoInput !== '') {
         addTodo(formId, newTodoInput, false);
       }
       setNewTodoInput('');
+    }
+  };
+
+  useEffect(() => {
+    setNewTitle(name);
+  }, [name]);
+
+  const editTitleEnter = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      editListTitle(formId, newTitle);
+      nameRef.blur();
     }
   };
 
@@ -70,7 +85,17 @@ const TodoList = ({
         className="todolistHeader"
         style={{ backgroundColor: uiState.get('color', '#FF1616') }}
       >
-        <div className="todolistName">
+        <div
+          role="button"
+          className="todolistName"
+          tabIndex={0}
+          contentEditable
+          onInput={event => setNewTitle(event.target.textContent)}
+          onKeyPress={editTitleEnter}
+          suppressContentEditableWarning
+          ref={ref => setNameRef(ref)}
+          spellCheck={false}
+        >
           {name}
         </div>
         <button
@@ -86,7 +111,7 @@ const TodoList = ({
         value={newTodoInput}
         placeholder={newTodoPlaceholder}
         onChange={handleInputChange}
-        onKeyDown={enterEvent}
+        onKeyDown={newTodoEnter}
       />
       <Filters
         filter={uiState.get('filter')}
@@ -126,6 +151,7 @@ TodoList.propTypes = {
   changeFilter: PropTypes.func,
   deleteTodo: PropTypes.func,
   swapTodo: PropTypes.func,
+  editListTitle: PropTypes.func,
 };
 
 TodoList.defaultProps = {
@@ -140,6 +166,7 @@ TodoList.defaultProps = {
   changeFilter: (() => {}),
   deleteTodo: (() => {}),
   swapTodo: (() => {}),
+  editListTitle: (() => {}),
 };
 
 export default TodoList;
