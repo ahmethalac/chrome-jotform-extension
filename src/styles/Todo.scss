@@ -19,6 +19,7 @@
   width: 12px;
   opacity: 0;
   margin-top: 7px;
+  margin-left: 5px;
 }
 
 .todoName{
@@ -35,8 +36,8 @@
 .successfulEdit{
   margin-top: 3px;
   margin-left: 5px;
-  min-width: 20px;
-  min-height: 20px;
+  min-width: 17px;
+  min-height: 17px;
   background-image: url("../assets/successfulEditIcon.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -46,6 +47,7 @@
 
 .done{
   position: relative;
+  margin-left: 10px;
   min-width: 20px;
   min-height: 20px;
   color: black;
@@ -77,4 +79,16 @@
       opacity: 1;
     }
   }
+}
+
+.dragHandle{
+  margin: 4px 5px 0 5px;
+  min-height: 17px;
+  min-width: 17px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  background-color: transparent;
+  background-image: url("../assets/dragHandleIcon.png");
+  cursor: grab;
 }

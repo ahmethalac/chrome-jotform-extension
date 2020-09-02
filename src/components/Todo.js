@@ -14,6 +14,7 @@ const Todo = ({
   const [newName, setNewName] = useState('');
   const [nameRef, setNameRef] = useState(null);
   const [editIconVisible, setEditIconVisible] = useState(false);
+  const [liRef, setLiRef] = useState(null);
 
   const editNameEnter = event => {
     if (event.key === 'Enter') {
@@ -32,9 +33,9 @@ const Todo = ({
 
   return (
     <li
-      draggable
       onDragStart={dragStart}
       className="todo"
+      ref={ref => setLiRef(ref)}
     >
       <input
         type="checkbox"
@@ -71,6 +72,14 @@ const Todo = ({
         className="deleteTodoButton"
         onClick={() => deleteTodo(id)}
         aria-label="deleteTodoButton"
+      />
+      <button
+        type="button"
+        className="dragHandle"
+        aria-label="dragHandle"
+        onMouseDown={() => {
+          liRef.draggable = 'true';
+        }}
       />
     </li>
   );

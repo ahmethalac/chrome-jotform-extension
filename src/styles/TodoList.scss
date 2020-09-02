@@ -31,7 +31,7 @@
 .deleteListButton{
   @extend iconButton;
   background-image: url('../assets/deleteIcon.png');
-  margin: 5px 10px 5px 0;
+  margin: 5px 10px 5px 5px;
   height: 17px;
   width: 17px;
 }
@@ -43,6 +43,7 @@
   min-height: 18px;
   height: 18px;
   resize: vertical;
+  max-height: 100px;
 }
 
 .newTodoInput:focus{
@@ -51,20 +52,26 @@
 
 .todos{
   list-style-type: none;
-  padding: 0 10px;
   max-height: 300px;
   overflow: auto;
   margin-top: 0;
+  padding-left: 0;
+  padding-top: 5px;
 }
 
 .successfulTitleEdit{
   margin-top: 3px;
   margin-left: 5px;
-  min-width: 20px;
-  min-height: 20px;
+  min-width: 17px;
+  min-height: 17px;
   background-image: url("../assets/successfulEditIconWhite.png");
   background-size: contain;
   background-repeat: no-repeat;
   transition: opacity 0.5s;
   flex-grow: 1;
+}
+
+.cloneList{
+  @extend iconButton;
+  background-image: url("../assets/cloneIcon.png");
 }

@@ -7,7 +7,7 @@ export const getTodoLists = createSelector(
   todoLists => todoLists.toArray().map(value => value[1]),
 );
 
-export const getTodos = createSelector(
+export const selectTodos = createSelector(
   [todoList => todoList.get('todos', {})],
   todos => todos.toArray().map(value => value[1]),
 );

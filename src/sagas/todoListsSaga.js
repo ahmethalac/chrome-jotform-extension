@@ -31,14 +31,18 @@ import {
   SET_TODOLIST_COLOR_REAL,
   EDIT_LIST_TITLE_FAILURE,
   EDIT_LIST_TITLE_REQUEST,
-  EDIT_LIST_TITLE_SUCCESS, EDIT_TODO_NAME_REQUEST, EDIT_TODO_NAME_FAILURE, EDIT_TODO_NAME_SUCCESS,
+  EDIT_LIST_TITLE_SUCCESS,
+  EDIT_TODO_NAME_REQUEST,
+  EDIT_TODO_NAME_FAILURE,
+  EDIT_TODO_NAME_SUCCESS,
+  CLONE_TODOLIST_REQUEST, CLONE_TODOLIST_FAILURE,
 } from '../constants/actionTypes';
 import {
   changeTitle, changeTodoName,
   changeTodoState, createTodoList, deleteTodo, deleteTodoList, getTodoLists, getTodos, submitTodo,
 } from '../lib/api';
 import { getRandomColor, getTempID } from '../helpers/utils';
-import { getTodoListsState } from '../selectors';
+import { getTodoListsState, selectTodos } from '../selectors';
 
 export function* addTodoList(action) {
   const tempID = getTempID();
@@ -339,6 +343,59 @@ export function* editTodoName(action) {
     });
   }
 }
+
+export function* cloneTodoList(action) {
+  const { formId } = action.payload;
+  const oldList = (yield select(getTodoListsState)).get(formId);
+  try {
+    const { request: { response } } = yield call(createTodoList, oldList.get('name'));
+    const { responseCode, message, content: { id } } = JSON.parse(response);
+
+    if (responseCode !== 200) {
+      throw Error(`Request failed! ${message}`);
+    }
+
+    yield put({
+      type: ADD_TODOLIST_OPTIMISTIC_SUCCESS,
+      payload: { name: oldList.get('name'), id },
+    });
+
+    const oldTodos = selectTodos(oldList);
+    for (let i = 0; i < oldTodos.length; i += 1) {
+      const { request: { response: submissionResponse } } = yield call(
+        submitTodo,
+        id,
+        oldTodos[i].get('name', 'error'),
+        oldTodos[i].get('done', false),
+      );
+      const {
+        content,
+        responseCode: submissionResponseCode,
+        message: submissionMessage,
+      } = JSON.parse(submissionResponse);
+
+      if (submissionResponseCode !== 200) {
+        throw Error(`Request failed! ${submissionMessage}`);
+      }
+
+      const { submissionID } = content[0];
+      yield put({
+        type: ADD_TODO_OPTIMISTIC_SUCCESS,
+        payload: {
+          name: oldTodos[i].get('name'),
+          tempSubmissionID: submissionID,
+          formId: id,
+          done: oldTodos[i].get('done'),
+        },
+      });
+    }
+  } catch (e) {
+    yield put({
+      type: CLONE_TODOLIST_FAILURE,
+      payload: e.message,
+    });
+  }
+}
 const todoListsSagas = [
   takeEvery(ADD_TODOLIST_REQUEST, addTodoList),
   takeEvery(ADD_TODO_REQUEST, addTodo),
@@ -349,6 +406,7 @@ const todoListsSagas = [
   takeEvery(SWAP_TODO_REQUEST, swapSubmission),
   takeEvery(EDIT_LIST_TITLE_REQUEST, editListTitle),
   takeEvery(EDIT_TODO_NAME_REQUEST, editTodoName),
+  takeEvery(CLONE_TODOLIST_REQUEST, cloneTodoList),
 ];
 
 export default todoListsSagas;

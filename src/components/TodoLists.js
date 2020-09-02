@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import I from 'immutable';
 import TodoList from './TodoList';
-import { getTodos } from '../selectors';
+import { selectTodos } from '../selectors';
 import '../styles/TodoLists.scss';
 
 const TodoLists = ({
@@ -18,6 +18,7 @@ const TodoLists = ({
   swapTodo,
   editListTitle,
   editTodoName,
+  cloneList,
 }) => {
   const [newTodoListInput, setNewTodoListInput] = useState('');
   const [flipState, setFlipState] = useState('rotateY(0deg)');
@@ -46,7 +47,7 @@ const TodoLists = ({
             key={todoList.get('id', '0')}
             name={todoList.get('name', 'undefined')}
             formId={todoList.get('id', '0')}
-            todos={getTodos(todoList)}
+            todos={selectTodos(todoList)}
             toggleTodo={toggleTodo}
             addTodo={addTodo}
             deleteTodoList={deleteTodoList}
@@ -56,6 +57,7 @@ const TodoLists = ({
             swapTodo={swapTodo}
             editListTitle={editListTitle}
             editTodoName={editTodoName}
+            cloneList={cloneList}
           />
         ))}
       </div>
@@ -106,6 +108,7 @@ TodoLists.propTypes = {
   swapTodo: PropTypes.func,
   editListTitle: PropTypes.func,
   editTodoName: PropTypes.func,
+  cloneList: PropTypes.func,
 };
 
 TodoLists.defaultProps = {
@@ -121,6 +124,7 @@ TodoLists.defaultProps = {
   swapTodo: (() => {}),
   editListTitle: (() => {}),
   editTodoName: (() => {}),
+  cloneList: (() => {}),
 };
 
 export default TodoLists;

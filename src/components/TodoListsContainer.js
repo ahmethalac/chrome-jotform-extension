@@ -9,7 +9,7 @@ import {
   changeFilter,
   deleteTodo,
   swapTodo,
-  editListTitle, editTodoName,
+  editListTitle, editTodoName, cloneList,
 } from '../actions';
 
 const mapStateToProps = state => ({
@@ -27,6 +27,7 @@ const mapActionsToProps = {
   swapTodo,
   editListTitle,
   editTodoName,
+  cloneList,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(TodoLists);

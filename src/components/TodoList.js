@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import I from 'immutable';
+import autosize from 'autosize';
 import Todo from './Todo';
 import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilters';
 import Filters from './Filters';
@@ -20,11 +21,17 @@ const TodoList = ({
   swapTodo,
   editListTitle,
   editTodoName,
+  cloneList,
 }) => {
   const [newTodoInput, setNewTodoInput] = useState('');
   const [newTitle, setNewTitle] = useState('');
   const [nameRef, setNameRef] = useState(null);
   const [editIconVisible, setEditIconVisible] = useState(false);
+  const [textareaRef, setTextareaRef] = useState(null);
+
+  useEffect(() => {
+    autosize(textareaRef);
+  }, [textareaRef]);
 
   const handleInputChange = event => setNewTodoInput(event.target.value);
 
@@ -35,6 +42,7 @@ const TodoList = ({
         addTodo(formId, newTodoInput, false);
       }
       setNewTodoInput('');
+      textareaRef.style.height = '18px';
     }
   };
 
@@ -80,6 +88,7 @@ const TodoList = ({
       setTimeout(() => setEditIconVisible(false), 1000);
     }
   };
+
   return (
     <div
       className="todoList"
@@ -110,12 +119,19 @@ const TodoList = ({
         />
         <button
           type="button"
+          className="cloneList"
+          aria-label="cloneList"
+          onClick={() => cloneList(formId)}
+        />
+        <button
+          type="button"
           className="deleteListButton"
           onClick={() => deleteTodoList(formId)}
           aria-label="deleteListButton"
         />
       </div>
       <textarea
+        ref={ref => setTextareaRef(ref)}
         className="newTodoInput"
         value={newTodoInput}
         placeholder={newTodoPlaceholder}
@@ -163,6 +179,7 @@ TodoList.propTypes = {
   swapTodo: PropTypes.func,
   editListTitle: PropTypes.func,
   editTodoName: PropTypes.func,
+  cloneList: PropTypes.func,
 };
 
 TodoList.defaultProps = {
@@ -179,6 +196,7 @@ TodoList.defaultProps = {
   swapTodo: (() => {}),
   editListTitle: (() => {}),
   editTodoName: (() => {}),
+  cloneList: (() => {}),
 };
 
 export default TodoList;

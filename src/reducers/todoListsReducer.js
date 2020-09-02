@@ -42,9 +42,11 @@ export default (state = INITIAL_STATE, action) => {
       return state.delete(tempID);
     }
     case ADD_TODO_OPTIMISTIC_SUCCESS: {
-      const { name, tempSubmissionID: id, formId } = action.payload;
+      const {
+        name, tempSubmissionID: id, formId, done,
+      } = action.payload;
       return state
-        .setIn([formId, 'todos', id], I.fromJS({ id, name, done: false }));
+        .setIn([formId, 'todos', id], I.fromJS({ id, name, done }));
     }
     case ADD_TODO_REAL_SUCCESS: {
       const {
