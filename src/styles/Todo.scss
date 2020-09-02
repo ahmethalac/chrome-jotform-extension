@@ -22,18 +22,49 @@
 
 .todoName{
   flex-grow: 1;
-  line-height: 30px;
-  height: 30px;
+  line-height: 27px;
+  height: 25px;
   font-family: Arial, serif;
   margin-left: 5px;
   cursor: grab;
   font-size: 16px;
+  &:active{
+    cursor: grabbing;
+  }
+  transition: 0.1s ease-in-out;
 }
 
 .done{
-  height: 15px;
-  width: 15px;
-  background-color: transparent;
-  border: none;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  color: black;
+  border: 1px solid gray;
+  border-radius: 10px;
+  appearance: none;
+  outline: 0;
   cursor: pointer;
+  transition: background 0.1s ease-in-out;
+  &::before {
+    position: absolute;
+    content: '';
+    display: block;
+    top: 3px;
+    left: 6px;
+    width: 4px;
+    height: 8px;
+    border-style: solid;
+    border-color: white;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transform: rotate(45deg);
+  }
+  &:checked {
+    color: white;
+    border-color: #13b716;
+    background: #13b716;
+    &::before {
+      opacity: 1;
+    }
+  }
 }

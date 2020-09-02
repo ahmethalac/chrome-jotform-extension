@@ -22,8 +22,17 @@ const Todo = ({
       checked={done}
       onClick={() => toggleTodo(done)}
       onChange={() => {}}
+
     />
-    <label className="todoName" htmlFor={`done${id}`}>
+    <label
+      className="todoName"
+      htmlFor={`done${id}`}
+      style={done ? {
+        color: '#13b716',
+      } : {
+        color: 'black',
+      }}
+    >
       {name}
     </label>
     <button
