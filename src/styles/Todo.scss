@@ -23,7 +23,6 @@
 
 .todoName{
   position: relative;
-  flex-grow: 1;
   line-height: 27px;
   min-height: 25px;
   font-family: Arial, serif;
@@ -31,6 +30,18 @@
   font-size: 16px;
   transition: 0.1s ease-in-out;
   outline: 0;
+}
+
+.successfulEdit{
+  margin-top: 3px;
+  margin-left: 5px;
+  min-width: 20px;
+  min-height: 20px;
+  background-image: url("../assets/successfulEditIcon.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: opacity 0.5s;
+  flex-grow: 1;
 }
 
 .done{

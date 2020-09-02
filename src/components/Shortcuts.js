@@ -17,10 +17,24 @@ const Shortcuts = ({
       width: 0,
     }}
   >
-    <div className="shortcutTitle">
+    <div
+      className="shortcutTitle"
+      ref={ref => {
+        if (ref) {
+          ref.addEventListener('click', event => event.stopPropagation());
+        }
+      }}
+    >
       {title}
     </div>
-    <div className="shortcutList">
+    <div
+      className="shortcutList"
+      ref={ref => {
+        if (ref) {
+          ref.addEventListener('click', event => event.stopPropagation());
+        }
+      }}
+    >
       {shortcuts.toArray().map(s => (
         <Shortcut
           key={s[0]}
@@ -31,7 +45,6 @@ const Shortcuts = ({
     </div>
     <AddShortcut
       addShortcut={addShortcut}
-      visible={visible}
     />
   </div>
 );

@@ -38,6 +38,7 @@ const SearchBar = ({
     }
   };
 
+  document.body.addEventListener('click', () => setShortcutsVisible(false));
   return (
     <div className="searchBar">
       <button
@@ -47,6 +48,11 @@ const SearchBar = ({
         aria-label="searchButton"
       />
       <input
+        ref={ref => {
+          if (ref) {
+            ref.addEventListener('click', event => event.stopPropagation());
+          }
+        }}
         id="searchInput"
         type="text"
         value={inputText}
@@ -55,10 +61,17 @@ const SearchBar = ({
         placeholder={searchbarPlaceholder}
       />
       <button
+        ref={ref => {
+          if (ref) {
+            ref.addEventListener('click', event => {
+              event.stopPropagation();
+              setShortcutsVisible(!shortcutsVisible);
+            });
+          }
+        }}
         id="shortcutsButton"
         type="button"
         aria-label="shortcutsButton"
-        onClick={() => setShortcutsVisible(!shortcutsVisible)}
       />
       <Shortcuts
         visible={shortcutsVisible}

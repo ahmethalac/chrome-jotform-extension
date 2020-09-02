@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import I from 'immutable';
 import Todo from './Todo';
@@ -22,13 +22,15 @@ const TodoList = ({
   editTodoName,
 }) => {
   const [newTodoInput, setNewTodoInput] = useState('');
-  const [newTitle, setNewTitle] = useState(name);
+  const [newTitle, setNewTitle] = useState('');
   const [nameRef, setNameRef] = useState(null);
+  const [editIconVisible, setEditIconVisible] = useState(false);
 
   const handleInputChange = event => setNewTodoInput(event.target.value);
 
   const newTodoEnter = event => {
     if (event.key === 'Enter') {
+      event.preventDefault();
       if (newTodoInput !== '') {
         addTodo(formId, newTodoInput, false);
       }
@@ -36,14 +38,9 @@ const TodoList = ({
     }
   };
 
-  useEffect(() => {
-    setNewTitle(name);
-  }, [name]);
-
   const editTitleEnter = event => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      editListTitle(formId, newTitle);
       nameRef.blur();
     }
   };
@@ -76,6 +73,13 @@ const TodoList = ({
     }
   };
 
+  const handleEdit = () => {
+    if (newTitle !== '') {
+      editListTitle(formId, newTitle);
+      setEditIconVisible(true);
+      setTimeout(() => setEditIconVisible(false), 1000);
+    }
+  };
   return (
     <div
       className="todoList"
@@ -93,12 +97,17 @@ const TodoList = ({
           contentEditable
           onInput={event => setNewTitle(event.target.textContent)}
           onKeyPress={editTitleEnter}
+          onBlur={handleEdit}
           suppressContentEditableWarning
           ref={ref => setNameRef(ref)}
           spellCheck={false}
         >
           {name}
         </div>
+        <div
+          className="successfulTitleEdit"
+          style={{ opacity: editIconVisible ? 1 : 0 }}
+        />
         <button
           type="button"
           className="deleteListButton"
@@ -106,8 +115,7 @@ const TodoList = ({
           aria-label="deleteListButton"
         />
       </div>
-      <input
-        type="text"
+      <textarea
         className="newTodoInput"
         value={newTodoInput}
         placeholder={newTodoPlaceholder}
@@ -158,7 +166,7 @@ TodoList.propTypes = {
 };
 
 TodoList.defaultProps = {
-  newTodoPlaceholder: 'Add New To-Do',
+  newTodoPlaceholder: 'Add New Element',
   todos: [],
   name: 'Default List',
   formId: '0',

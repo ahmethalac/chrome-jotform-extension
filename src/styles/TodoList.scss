@@ -9,13 +9,14 @@
   flex-direction: column;
   min-width: 250px;
   max-width: 350px;
+  max-height: 400px;
 }
 
 .todolistHeader{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 40px;
+  min-height: 40px;
   font-size: 18px;
 }
 
@@ -24,7 +25,7 @@
   margin-left: 10px;
   font-weight: bold;
   white-space: nowrap;
-  outline: 0
+  outline: 0;
 }
 
 .deleteListButton{
@@ -39,6 +40,9 @@
   border: none;
   background-color: #E5E5E5;
   padding: 7px 10px;
+  min-height: 18px;
+  height: 18px;
+  resize: vertical;
 }
 
 .newTodoInput:focus{
@@ -51,4 +55,16 @@
   max-height: 300px;
   overflow: auto;
   margin-top: 0;
+}
+
+.successfulTitleEdit{
+  margin-top: 3px;
+  margin-left: 5px;
+  min-width: 20px;
+  min-height: 20px;
+  background-image: url("../assets/successfulEditIconWhite.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: opacity 0.5s;
+  flex-grow: 1;
 }

@@ -73,12 +73,18 @@ const TodoLists = ({
           </div>
           <div className="addTodoListBack">
             <input
+              ref={ref => {
+                if (ref && flipState === 'rotateY(180deg)') {
+                  ref.focus();
+                }
+              }}
               type="text"
               className="newTodoListInput"
               value={newTodoListInput}
               placeholder={newTodoListPlaceholder}
               onChange={handleInputChange}
               onKeyDown={enterEvent}
+              onBlur={handleSend}
             />
           </div>
         </div>
@@ -108,7 +114,7 @@ TodoLists.defaultProps = {
   addTodo: (() => {}),
   addTodoList: (() => {}),
   deleteTodoList: (() => {}),
-  newTodoListPlaceholder: 'TodoList Name',
+  newTodoListPlaceholder: 'List Name',
   todoListsUI: I.fromJS({}),
   changeFilter: (() => {}),
   deleteTodo: (() => {}),

@@ -11,13 +11,22 @@ const Todo = ({
   dragStart,
   editTodoName,
 }) => {
-  const [newName, setNewName] = useState(name);
+  const [newName, setNewName] = useState('');
   const [nameRef, setNameRef] = useState(null);
+  const [editIconVisible, setEditIconVisible] = useState(false);
+
   const editNameEnter = event => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      editTodoName(id, newName);
       nameRef.blur();
+    }
+  };
+
+  const handleEdit = () => {
+    if (newName !== '') {
+      editTodoName(id, newName);
+      setEditIconVisible(true);
+      setTimeout(() => setEditIconVisible(false), 1000);
     }
   };
 
@@ -43,6 +52,7 @@ const Todo = ({
         onInput={event => setNewName(event.target.textContent)}
         className="todoName"
         suppressContentEditableWarning
+        onBlur={handleEdit}
         style={done ? {
           color: '#13b716',
         } : {
@@ -52,6 +62,10 @@ const Todo = ({
       >
         {name}
       </div>
+      <div
+        className="successfulEdit"
+        style={{ opacity: editIconVisible ? 1 : 0 }}
+      />
       <button
         type="button"
         className="deleteTodoButton"
