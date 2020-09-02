@@ -19,6 +19,7 @@ const TodoList = ({
   deleteTodo,
   swapTodo,
   editListTitle,
+  editTodoName,
 }) => {
   const [newTodoInput, setNewTodoInput] = useState('');
   const [newTitle, setNewTitle] = useState(name);
@@ -132,6 +133,7 @@ const TodoList = ({
               event.dataTransfer.setData('name', todo.get('name'));
               event.dataTransfer.setData('done', todo.get('done'));
             }}
+            editTodoName={(submissionId, newName) => editTodoName(formId, submissionId, newName)}
           />
         ))}
       </ul>
@@ -152,6 +154,7 @@ TodoList.propTypes = {
   deleteTodo: PropTypes.func,
   swapTodo: PropTypes.func,
   editListTitle: PropTypes.func,
+  editTodoName: PropTypes.func,
 };
 
 TodoList.defaultProps = {
@@ -167,6 +170,7 @@ TodoList.defaultProps = {
   deleteTodo: (() => {}),
   swapTodo: (() => {}),
   editListTitle: (() => {}),
+  editTodoName: (() => {}),
 };
 
 export default TodoList;

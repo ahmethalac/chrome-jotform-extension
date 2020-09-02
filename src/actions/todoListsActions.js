@@ -2,7 +2,7 @@ import {
   ADD_TODO_REQUEST,
   ADD_TODOLIST_REQUEST,
   DELETE_TODO_REQUEST,
-  DELETE_TODOLIST_REQUEST, EDIT_LIST_TITLE_REQUEST,
+  DELETE_TODOLIST_REQUEST, EDIT_LIST_TITLE_REQUEST, EDIT_TODO_NAME_REQUEST,
   SWAP_TODO_REQUEST,
   TOGGLE_TODO_REQUEST,
 } from '../constants/actionTypes';
@@ -48,4 +48,8 @@ export const editListTitle = (formId, newTitle) => ({
   payload: { formId, newTitle },
 });
 
+export const editTodoName = (formId, submissionId, newName) => ({
+  type: EDIT_TODO_NAME_REQUEST,
+  payload: { formId, submissionId, newName },
+});
 export default 'dummyExportForESLINT';

@@ -57,3 +57,8 @@ export const changeTitle = (formId, newTitle) => {
   };
   return axios.put(`${baseURL}form/${formId}/properties?apiKey=${JOTFORM_API_KEY}`, requestBody);
 };
+
+export const changeTodoName = (submissionId, newName) => {
+  const requestBody = `submission[1]=${newName}`;
+  return axios.post(`${baseURL}submission/${submissionId}?apiKey=${JOTFORM_API_KEY}`, requestBody);
+};

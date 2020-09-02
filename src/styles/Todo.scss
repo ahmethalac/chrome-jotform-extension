@@ -22,17 +22,15 @@
 }
 
 .todoName{
+  position: relative;
   flex-grow: 1;
   line-height: 27px;
   min-height: 25px;
   font-family: Arial, serif;
   margin-left: 5px;
-  cursor: grab;
   font-size: 16px;
-  &:active{
-    cursor: grabbing;
-  }
   transition: 0.1s ease-in-out;
+  outline: 0;
 }
 
 .done{

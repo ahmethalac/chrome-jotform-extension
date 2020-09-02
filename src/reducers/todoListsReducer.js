@@ -15,7 +15,11 @@ import {
   DELETE_TODOLIST_FAILURE,
   DELETE_TODO_FAILURE,
   SWAP_TODO_REAL_SUCCESS,
-  SWAP_TODO_FAILURE, EDIT_LIST_TITLE_SUCCESS, EDIT_LIST_TITLE_FAILURE,
+  SWAP_TODO_FAILURE,
+  EDIT_LIST_TITLE_SUCCESS,
+  EDIT_LIST_TITLE_FAILURE,
+  EDIT_TODO_NAME_SUCCESS,
+  EDIT_TODO_NAME_FAILURE,
 } from '../constants/actionTypes';
 
 const INITIAL_STATE = I.fromJS({});
@@ -145,6 +149,16 @@ export default (state = INITIAL_STATE, action) => {
       const oldName = state.getIn([formId, 'name']);
       return state
         .setIn([formId, 'name'], `${oldName} `);
+    }
+    case EDIT_TODO_NAME_SUCCESS: {
+      const { formId, submissionId, newName } = action.payload;
+      return state.setIn([formId, 'todos', submissionId, 'name'], newName);
+    }
+    case EDIT_TODO_NAME_FAILURE: {
+      const { formId, submissionId } = action.payload;
+      const oldName = state.getIn([formId, 'todos', submissionId, 'name']);
+      return state
+        .setIn([formId, 'todos', submissionId, 'name'], `${oldName} `);
     }
     default:
       return state;
