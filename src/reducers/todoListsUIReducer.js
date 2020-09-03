@@ -1,6 +1,6 @@
 import I from 'immutable';
 import {
-  CHANGE_FILTER, DELETE_UI_STATE, INIT_UI_STATE_SUCCESS,
+  CHANGE_FILTER_SUCCESS, DELETE_UI_STATE, INIT_UI_STATE_SUCCESS,
   SET_TODOLIST_COLOR_OPTIMISTIC,
   SET_TODOLIST_COLOR_REAL,
 } from '../constants/actionTypes';
@@ -9,7 +9,7 @@ const INITIAL_STATE = I.fromJS({});
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case CHANGE_FILTER: {
+    case CHANGE_FILTER_SUCCESS: {
       return state.setIn([action.payload.formId, 'filter'], action.payload.filter);
     }
     case SET_TODOLIST_COLOR_OPTIMISTIC: {

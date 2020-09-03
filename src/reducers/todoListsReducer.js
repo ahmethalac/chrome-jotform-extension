@@ -1,4 +1,4 @@
-import I from 'immutable';
+import I, { isKeyed } from 'immutable';
 import {
   ADD_TODO_REAL_SUCCESS,
   ADD_TODOLIST_FAILURE,
@@ -79,7 +79,9 @@ export default (state = INITIAL_STATE, action) => {
       return state.setIn([formId, 'todos', submissionId, 'done'], done);
     }
     case INIT_A_TODOLIST: {
-      return state.set(action.payload.id, I.fromJS(action.payload));
+      return state.set(action.payload.id,
+        I.fromJS(action.payload,
+          (key, value) => (isKeyed(value) ? value.toOrderedMap() : value.toList())));
     }
     case DELETE_TODOLIST_OPTIMISTIC_SUCCESS: {
       return state.delete(action.payload.formId);

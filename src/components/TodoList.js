@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useEffect, useMemo, useRef, useState,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -8,6 +9,8 @@ import Todo from './Todo';
 import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilters';
 import Filters from './Filters';
 import '../styles/TodoList.scss';
+import TodoListMenu from './TodoListMenu';
+import Popup from './Popup';
 
 const TodoList = ({
   newTodoPlaceholder,
@@ -28,12 +31,21 @@ const TodoList = ({
   const [newTodoInput, setNewTodoInput] = useState('');
   const [newTitle, setNewTitle] = useState('');
   const [editIconVisible, setEditIconVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
   const nameRef = useRef(null);
   const textareaRef = useRef(null);
+  const menuButtonRef = useRef(null);
+
+  useEffect(() => {
+    menuButtonRef.current.addEventListener('click', event => {
+      event.stopPropagation();
+      setMenuVisible(true);
+    });
+  });
 
   useEffect(() => {
     autosize(textareaRef.current);
-  }, []);
+  }, [todos]);
 
   const handleInputChange = event => setNewTodoInput(event.target.value);
 
@@ -92,77 +104,82 @@ const TodoList = ({
   };
 
   return (
-    <div
-      className="todoList"
-      onDrop={onDrop}
-      onDragOver={event => event.preventDefault()}
-    >
+    <div className="todoListOuterContainer">
       <div
-        className="todolistHeader"
-        style={{ backgroundColor: uiState.get('color', '#FF1616') }}
+        className="todoList"
+        onDrop={onDrop}
+        onDragOver={event => event.preventDefault()}
       >
         <div
-          role="button"
-          className="todolistName"
-          tabIndex={0}
-          contentEditable
-          onInput={event => setNewTitle(event.target.textContent)}
-          onKeyPress={editTitleEnter}
-          onBlur={handleEdit}
-          suppressContentEditableWarning
-          ref={nameRef}
-          spellCheck={false}
+          className="todolistHeader"
+          style={{ backgroundColor: uiState.get('color', '#FF1616') }}
         >
-          {name}
-        </div>
-        <div
-          className="successfulTitleEdit"
-          style={{ opacity: editIconVisible ? 1 : 0 }}
-        />
-        <button
-          type="button"
-          className="cloneList"
-          aria-label="cloneList"
-          onClick={() => cloneList(formId)}
-        />
-        <button
-          type="button"
-          className="deleteListButton"
-          onClick={() => deleteTodoList(formId)}
-          aria-label="deleteListButton"
-        />
-      </div>
-      <textarea
-        ref={textareaRef}
-        className="newTodoInput"
-        value={newTodoInput}
-        placeholder={newTodoPlaceholder}
-        onChange={handleInputChange}
-        onKeyDown={newTodoEnter}
-      />
-      <Filters
-        filter={uiState.get('filter')}
-        changeFilter={filter => changeFilter(formId, filter)}
-      />
-      <ul className="todos">
-        {visibleTodos.map(todo => (
-          <Todo
-            key={todo.get('id', '0')}
-            id={todo.get('id', '0')}
-            name={todo.get('name', 'undefined')}
-            toggleTodo={done => toggleTodo(formId, todo.get('id', '0'), done)}
-            done={todo.get('done', false)}
-            deleteTodo={id => deleteTodo(formId, id)}
-            dragStart={event => {
-              event.dataTransfer.setData('TodoId', todo.get('id', '0'));
-              event.dataTransfer.setData('oldFormId', formId);
-              event.dataTransfer.setData('name', todo.get('name'));
-              event.dataTransfer.setData('done', todo.get('done'));
-            }}
-            editTodoName={(submissionId, newName) => editTodoName(formId, submissionId, newName)}
+          <div
+            role="button"
+            className="todolistName"
+            tabIndex={0}
+            contentEditable
+            onInput={event => setNewTitle(event.target.textContent)}
+            onKeyPress={editTitleEnter}
+            onBlur={handleEdit}
+            suppressContentEditableWarning
+            ref={nameRef}
+            spellCheck={false}
+          >
+            {name}
+          </div>
+          <div
+            className="successfulTitleEdit"
+            style={{ opacity: editIconVisible ? 1 : 0 }}
           />
-        ))}
-      </ul>
+          <button
+            ref={menuButtonRef}
+            type="button"
+            className="menuButton"
+            aria-label="menuButton"
+          />
+        </div>
+        <textarea
+          ref={textareaRef}
+          className="newTodoInput"
+          value={newTodoInput}
+          placeholder={newTodoPlaceholder}
+          onChange={handleInputChange}
+          onKeyDown={newTodoEnter}
+        />
+        <Filters
+          filter={uiState.get('filter')}
+          changeFilter={filter => changeFilter(formId, filter)}
+        />
+        <ul className="todos">
+          {visibleTodos.map(todo => (
+            <Todo
+              key={todo.get('id', '0')}
+              id={todo.get('id', '0')}
+              name={todo.get('name', 'undefined')}
+              toggleTodo={done => toggleTodo(formId, todo.get('id', '0'), done)}
+              done={todo.get('done', false)}
+              deleteTodo={id => deleteTodo(formId, id)}
+              dragStart={event => {
+                event.dataTransfer.setData('TodoId', todo.get('id', '0'));
+                event.dataTransfer.setData('oldFormId', formId);
+                event.dataTransfer.setData('name', todo.get('name'));
+                event.dataTransfer.setData('done', todo.get('done'));
+              }}
+              editTodoName={(submissionId, newName) => editTodoName(formId, submissionId, newName)}
+            />
+          ))}
+        </ul>
+      </div>
+      <Popup
+        open={menuVisible}
+        onClose={useCallback(() => setMenuVisible(false), [])}
+      >
+        <TodoListMenu
+          cloneList={() => cloneList(formId)}
+          deleteTodoList={() => deleteTodoList(formId)}
+        />
+      </Popup>
     </div>
   );
 };

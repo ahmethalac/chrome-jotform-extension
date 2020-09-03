@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import '../styles/SearchBar.scss';
 import Shortcuts from './Shortcuts';
+import Popup from './Popup';
 
 const SearchBar = ({
   handleSubmit,
@@ -56,7 +59,10 @@ const SearchBar = ({
     <div className="searchBar">
       <button
         id="searchButton"
-        onClick={handleSend}
+        onClick={() => {
+          inputRef.current.focus();
+          handleSend();
+        }}
         type="button"
         aria-label="searchButton"
       />
@@ -76,11 +82,15 @@ const SearchBar = ({
         type="button"
         aria-label="shortcutsButton"
       />
-      <Shortcuts
-        visible={shortcutsVisible}
-        shortcuts={shortcuts}
-        addShortcut={addShortcut}
-      />
+      <Popup
+        open={shortcutsVisible}
+        onClose={useCallback(() => setShortcutsVisible(false), [])}
+      >
+        <Shortcuts
+          shortcuts={shortcuts}
+          addShortcut={addShortcut}
+        />
+      </Popup>
     </div>
   );
 };

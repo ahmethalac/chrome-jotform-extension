@@ -1,10 +1,16 @@
 @import "common";
 
+.todoListOuterContainer{
+  margin-right: 20px;
+  display: flex;
+  flex-direction: row-reverse;
+  position: relative;
+}
+
 .todoList{
   overflow: hidden;
   background-color: white;
   border-radius: 5px;
-  margin-right: 20px;
   display: flex;
   flex-direction: column;
   min-width: 250px;
@@ -26,14 +32,6 @@
   font-weight: bold;
   white-space: nowrap;
   outline: 0;
-}
-
-.deleteListButton{
-  @extend iconButton;
-  background-image: url('../assets/deleteIcon.png');
-  margin: 5px 10px 5px 5px;
-  height: 17px;
-  width: 17px;
 }
 
 .newTodoInput{
@@ -71,7 +69,8 @@
   flex-grow: 1;
 }
 
-.cloneList{
+.menuButton{
   @extend iconButton;
-  background-image: url("../assets/cloneIcon.png");
+  background-image: url("../assets/menuIcon.png");
+  margin-right: 10px;
 }

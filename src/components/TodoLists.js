@@ -4,7 +4,6 @@ import I from 'immutable';
 import TodoList from './TodoList';
 import { selectTodos } from '../selectors';
 import '../styles/TodoLists.scss';
-import { storeInChrome } from '../lib/api';
 
 const TodoLists = ({
   todoLists,
@@ -24,16 +23,6 @@ const TodoLists = ({
   const [newTodoListInput, setNewTodoListInput] = useState('');
   const [flipState, setFlipState] = useState('rotateY(0deg)');
   const inputRef = useRef(null);
-
-  useEffect(() => {
-    const storedUI = {};
-    todoListsUI
-      .toArray()
-      .forEach(element => {
-        storedUI[element[0]] = element[1].toJSON();
-      });
-    window.addEventListener('beforeunload', () => storeInChrome('uiState', storedUI));
-  }, [todoListsUI]);
 
   useEffect(() => {
     if (flipState === 'rotateY(180deg)') {
