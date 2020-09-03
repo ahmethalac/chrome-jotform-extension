@@ -5,6 +5,7 @@ import {
   INIT_APP_SUCCESS,
   INIT_SHORTCUTS_REQUEST,
   INIT_TODOLISTS_REQUEST,
+  INIT_UI_STATE_REQUEST,
 } from '../constants/actionTypes';
 
 export function* initApp() {
@@ -16,6 +17,10 @@ export function* initApp() {
 
     yield put({
       type: INIT_SHORTCUTS_REQUEST,
+    });
+
+    yield put({
+      type: INIT_UI_STATE_REQUEST,
     });
     // ALL SERVICES INITIALIZED
     yield put({

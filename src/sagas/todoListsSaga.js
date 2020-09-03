@@ -35,7 +35,7 @@ import {
   EDIT_TODO_NAME_REQUEST,
   EDIT_TODO_NAME_FAILURE,
   EDIT_TODO_NAME_SUCCESS,
-  CLONE_TODOLIST_REQUEST, CLONE_TODOLIST_FAILURE,
+  CLONE_TODOLIST_REQUEST, CLONE_TODOLIST_FAILURE, DELETE_UI_STATE,
 } from '../constants/actionTypes';
 import {
   changeTitle, changeTodoName,
@@ -164,13 +164,15 @@ export function* initTodoLists() {
           todos,
         },
       });
-      yield put({
-        type: SET_TODOLIST_COLOR_OPTIMISTIC,
-        payload: {
-          id: todoLists[i].id,
-          color: getRandomColor(),
-        },
-      });
+      if (process.env.NODE_ENV === 'development') {
+        yield put({
+          type: SET_TODOLIST_COLOR_OPTIMISTIC,
+          payload: {
+            id: todoLists[i].id,
+            color: getRandomColor(),
+          },
+        });
+      }
     }
 
     yield put({
@@ -199,6 +201,11 @@ export function* removeTodoList(action) {
     if (responseCode !== 200) {
       throw Error(`Request failed! ${message}`);
     }
+
+    yield put({
+      type: DELETE_UI_STATE,
+      payload: formId,
+    });
   } catch (e) {
     yield put({
       type: DELETE_TODOLIST_FAILURE,

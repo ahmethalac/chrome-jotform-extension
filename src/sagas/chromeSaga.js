@@ -5,6 +5,9 @@ import {
   INIT_SHORTCUTS_FAILURE,
   INIT_SHORTCUTS_REQUEST,
   INIT_SHORTCUTS_SUCCESS,
+  INIT_UI_STATE_FAILURE,
+  INIT_UI_STATE_REQUEST,
+  INIT_UI_STATE_SUCCESS,
 } from '../constants/actionTypes';
 import { getFromChrome, storeInChrome } from '../lib/api';
 
@@ -49,9 +52,30 @@ export function* addShortcut(action) {
     });
   }
 }
+
+export function* initUIState() {
+  try {
+    const uiState = yield call(getFromChrome, 'uiState');
+
+    if (uiState === undefined) {
+      throw Error('development mode!');
+    }
+
+    yield put({
+      type: INIT_UI_STATE_SUCCESS,
+      payload: uiState,
+    });
+  } catch (e) {
+    yield put({
+      type: INIT_UI_STATE_FAILURE,
+      payload: e.message,
+    });
+  }
+}
 const chromeSagas = [
   takeEvery(INIT_SHORTCUTS_REQUEST, initShortcuts),
   takeEvery(ADD_SHORTCUT_REQUEST, addShortcut),
+  takeEvery(INIT_UI_STATE_REQUEST, initUIState),
 ];
 
 export default chromeSagas;
