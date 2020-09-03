@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import I from 'immutable';
 import autosize from 'autosize';
@@ -25,13 +27,13 @@ const TodoList = ({
 }) => {
   const [newTodoInput, setNewTodoInput] = useState('');
   const [newTitle, setNewTitle] = useState('');
-  const [nameRef, setNameRef] = useState(null);
   const [editIconVisible, setEditIconVisible] = useState(false);
-  const [textareaRef, setTextareaRef] = useState(null);
+  const nameRef = useRef(null);
+  const textareaRef = useRef(null);
 
   useEffect(() => {
-    autosize(textareaRef);
-  }, [textareaRef]);
+    autosize(textareaRef.current);
+  }, []);
 
   const handleInputChange = event => setNewTodoInput(event.target.value);
 
@@ -42,14 +44,14 @@ const TodoList = ({
         addTodo(formId, newTodoInput, false);
       }
       setNewTodoInput('');
-      textareaRef.style.height = '18px';
+      textareaRef.current.style.height = '18px';
     }
   };
 
   const editTitleEnter = event => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      nameRef.blur();
+      nameRef.current.blur();
     }
   };
 
@@ -108,7 +110,7 @@ const TodoList = ({
           onKeyPress={editTitleEnter}
           onBlur={handleEdit}
           suppressContentEditableWarning
-          ref={ref => setNameRef(ref)}
+          ref={nameRef}
           spellCheck={false}
         >
           {name}
@@ -131,7 +133,7 @@ const TodoList = ({
         />
       </div>
       <textarea
-        ref={ref => setTextareaRef(ref)}
+        ref={textareaRef}
         className="newTodoInput"
         value={newTodoInput}
         placeholder={newTodoPlaceholder}

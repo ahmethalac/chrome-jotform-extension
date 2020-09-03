@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../styles/AddShortcut.scss';
 import PropTypes from 'prop-types';
 
@@ -6,6 +6,23 @@ const AddShortcut = ({ addShortcut }) => {
   const [inputsVisible, setInputsVisible] = useState(false);
   const [shortForm, setShortForm] = useState('!');
   const [longForm, setLongForm] = useState('');
+  const buttonRef = useRef(null);
+  const shortInputRef = useRef(null);
+  const longInputRef = useRef(null);
+
+  const insideClick = event => {
+    event.stopPropagation();
+    setInputsVisible(true);
+  };
+
+  useEffect(() => {
+    const refs = [buttonRef.current, shortInputRef.current, longInputRef.current];
+    refs.forEach(ref => ref.addEventListener('click', insideClick));
+
+    return () => {
+      refs.forEach(ref => ref.removeEventListener('click', insideClick));
+    };
+  }, []);
 
   const handleSend = () => {
     if (shortForm.substring(1) !== '' && longForm !== '') {
@@ -25,42 +42,19 @@ const AddShortcut = ({ addShortcut }) => {
   return (
     <div className="addShortcut">
       <button
-        ref={ref => {
-          if (ref) {
-            ref.addEventListener('click', event => {
-              event.stopPropagation();
-              setInputsVisible(true);
-            });
-          }
-        }}
+        ref={buttonRef}
         className="addShortcutButton"
         type="button"
-        style={inputsVisible ? {
-          zIndex: -1,
-          opacity: 0,
-        } : {
-          zIndex: 1,
-          opacity: 1,
-        }}
+        style={inputsVisible ? { zIndex: -1, opacity: 0 } : { zIndex: 1, opacity: 1 }}
       >
         Add New Shortcut
       </button>
       <div
         className="inputs"
-        style={inputsVisible ? {
-          zIndex: 1,
-          opacity: 1,
-        } : {
-          zIndex: -1,
-          opacity: 0,
-        }}
+        style={inputsVisible ? { zIndex: 1, opacity: 1 } : { zIndex: -1, opacity: 0 }}
       >
         <input
-          ref={ref => {
-            if (ref) {
-              ref.addEventListener('click', event => event.stopPropagation());
-            }
-          }}
+          ref={shortInputRef}
           className="shortFormInput"
           value={shortForm}
           onChange={event => {
@@ -75,11 +69,7 @@ const AddShortcut = ({ addShortcut }) => {
 
         />
         <input
-          ref={ref => {
-            if (ref) {
-              ref.addEventListener('click', event => event.stopPropagation());
-            }
-          }}
+          ref={longInputRef}
           onBlur={handleSend}
           className="longFormInput"
           placeholder="Long Form"

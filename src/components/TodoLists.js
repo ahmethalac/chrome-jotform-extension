@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import I from 'immutable';
 import TodoList from './TodoList';
@@ -21,17 +21,25 @@ const TodoLists = ({
   editTodoName,
   cloneList,
 }) => {
-  window.addEventListener('beforeunload', () => {
+  const [newTodoListInput, setNewTodoListInput] = useState('');
+  const [flipState, setFlipState] = useState('rotateY(0deg)');
+  const inputRef = useRef(null);
+
+  useEffect(() => {
     const storedUI = {};
     todoListsUI
       .toArray()
       .forEach(element => {
         storedUI[element[0]] = element[1].toJSON();
       });
-    storeInChrome('uiState', storedUI);
-  });
-  const [newTodoListInput, setNewTodoListInput] = useState('');
-  const [flipState, setFlipState] = useState('rotateY(0deg)');
+    window.addEventListener('beforeunload', () => storeInChrome('uiState', storedUI));
+  }, [todoListsUI]);
+
+  useEffect(() => {
+    if (flipState === 'rotateY(180deg)') {
+      inputRef.current.focus();
+    }
+  }, [flipState]);
 
   const handleInputChange = event => setNewTodoListInput(event.target.value);
 
@@ -85,11 +93,7 @@ const TodoLists = ({
           </div>
           <div className="addTodoListBack">
             <input
-              ref={ref => {
-                if (ref && flipState === 'rotateY(180deg)') {
-                  ref.focus();
-                }
-              }}
+              ref={inputRef}
               type="text"
               className="newTodoListInput"
               value={newTodoListInput}

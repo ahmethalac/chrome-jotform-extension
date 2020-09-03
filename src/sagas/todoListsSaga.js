@@ -35,7 +35,7 @@ import {
   EDIT_TODO_NAME_REQUEST,
   EDIT_TODO_NAME_FAILURE,
   EDIT_TODO_NAME_SUCCESS,
-  CLONE_TODOLIST_REQUEST, CLONE_TODOLIST_FAILURE, DELETE_UI_STATE,
+  CLONE_TODOLIST_REQUEST, CLONE_TODOLIST_FAILURE, DELETE_UI_STATE, UPDATE_CHROME_UI_STORAGE,
 } from '../constants/actionTypes';
 import {
   changeTitle, changeTodoName,
@@ -72,6 +72,9 @@ export function* addTodoList(action) {
     yield put({
       type: SET_TODOLIST_COLOR_REAL,
       payload: { id, tempID, color },
+    });
+    yield put({
+      type: UPDATE_CHROME_UI_STORAGE,
     });
   } catch (e) {
     yield put({
@@ -205,6 +208,9 @@ export function* removeTodoList(action) {
     yield put({
       type: DELETE_UI_STATE,
       payload: formId,
+    });
+    yield put({
+      type: UPDATE_CHROME_UI_STORAGE,
     });
   } catch (e) {
     yield put({
@@ -365,6 +371,15 @@ export function* cloneTodoList(action) {
     yield put({
       type: ADD_TODOLIST_OPTIMISTIC_SUCCESS,
       payload: { name: oldList.get('name'), id },
+    });
+
+    yield put({
+      type: SET_TODOLIST_COLOR_OPTIMISTIC,
+      payload: { id, color: getRandomColor() },
+    });
+
+    yield put({
+      type: UPDATE_CHROME_UI_STORAGE,
     });
 
     const oldTodos = selectTodos(oldList);

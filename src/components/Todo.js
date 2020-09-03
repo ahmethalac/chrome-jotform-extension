@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import '../styles/Todo.scss';
 
@@ -12,14 +12,14 @@ const Todo = ({
   editTodoName,
 }) => {
   const [newName, setNewName] = useState('');
-  const [nameRef, setNameRef] = useState(null);
   const [editIconVisible, setEditIconVisible] = useState(false);
-  const [liRef, setLiRef] = useState(null);
+  const liRef = useRef(null);
+  const nameRef = useRef(null);
 
   const editNameEnter = event => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      nameRef.blur();
+      nameRef.current.blur();
     }
   };
 
@@ -35,7 +35,7 @@ const Todo = ({
     <li
       onDragStart={dragStart}
       className="todo"
-      ref={ref => setLiRef(ref)}
+      ref={liRef}
     >
       <input
         type="checkbox"
@@ -45,7 +45,7 @@ const Todo = ({
         onChange={() => {}}
       />
       <div
-        ref={ref => setNameRef(ref)}
+        ref={nameRef}
         onKeyPress={editNameEnter}
         role="button"
         tabIndex={-1}
@@ -78,7 +78,7 @@ const Todo = ({
         className="dragHandle"
         aria-label="dragHandle"
         onMouseDown={() => {
-          liRef.draggable = 'true';
+          liRef.current.draggable = 'true';
         }}
       />
     </li>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import '../styles/SearchBar.scss';
 import Shortcuts from './Shortcuts';
@@ -11,6 +11,20 @@ const SearchBar = ({
 }) => {
   const [inputText, setInputText] = useState('');
   const [shortcutsVisible, setShortcutsVisible] = useState(false);
+  const inputRef = useRef(null);
+  const shortcutsButtonRef = useRef(null);
+
+  const stopPropagation = event => event.stopPropagation();
+
+  useEffect(() => {
+    const refs = [inputRef.current, shortcutsButtonRef.current];
+    refs.forEach(ref => ref.addEventListener('click', stopPropagation));
+    document.body.addEventListener('click', () => setShortcutsVisible(false));
+    return () => {
+      refs.forEach(ref => ref.removeEventListener('click', stopPropagation));
+      document.body.removeEventListener('click', () => setShortcutsVisible(false));
+    };
+  }, []);
 
   const handleInputChange = event => {
     let input = event.target.value;
@@ -38,7 +52,6 @@ const SearchBar = ({
     }
   };
 
-  document.body.addEventListener('click', () => setShortcutsVisible(false));
   return (
     <div className="searchBar">
       <button
@@ -48,11 +61,7 @@ const SearchBar = ({
         aria-label="searchButton"
       />
       <input
-        ref={ref => {
-          if (ref) {
-            ref.addEventListener('click', event => event.stopPropagation());
-          }
-        }}
+        ref={inputRef}
         id="searchInput"
         type="text"
         value={inputText}
@@ -61,14 +70,8 @@ const SearchBar = ({
         placeholder={searchbarPlaceholder}
       />
       <button
-        ref={ref => {
-          if (ref) {
-            ref.addEventListener('click', event => {
-              event.stopPropagation();
-              setShortcutsVisible(!shortcutsVisible);
-            });
-          }
-        }}
+        ref={shortcutsButtonRef}
+        onMouseDown={() => setShortcutsVisible(!shortcutsVisible)}
         id="shortcutsButton"
         type="button"
         aria-label="shortcutsButton"
