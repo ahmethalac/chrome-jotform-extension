@@ -1,7 +1,11 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
 import {
   ADD_SHORTCUT_FAILURE,
-  ADD_SHORTCUT_REQUEST, ADD_SHORTCUT_SUCCESS,
+  ADD_SHORTCUT_REQUEST,
+  ADD_SHORTCUT_SUCCESS,
+  DELETE_SHORTCUT_FAILURE,
+  DELETE_SHORTCUT_REQUEST,
+  DELETE_SHORTCUT_SUCCESS,
   INIT_SHORTCUTS_FAILURE,
   INIT_SHORTCUTS_REQUEST,
   INIT_SHORTCUTS_SUCCESS,
@@ -50,9 +54,33 @@ export function* addShortcut(action) {
   }
 }
 
+export function* removeShortcut(action) {
+  try {
+    const shortcuts = yield call(getFromChrome, 'shortcuts');
+    if (shortcuts === undefined) {
+      throw Error('There is no shortcut');
+    }
+
+    delete shortcuts[action.payload.shortForm];
+
+    yield call(storeInChrome, 'shortcuts', shortcuts);
+
+    yield put({
+      type: DELETE_SHORTCUT_SUCCESS,
+      payload: { key: action.payload.shortForm },
+    });
+  } catch (e) {
+    yield put({
+      type: DELETE_SHORTCUT_FAILURE,
+      payload: e.message,
+    });
+  }
+}
+
 const shortcutsSagas = [
   takeEvery(INIT_SHORTCUTS_REQUEST, initShortcuts),
   takeEvery(ADD_SHORTCUT_REQUEST, addShortcut),
+  takeEvery(DELETE_SHORTCUT_REQUEST, removeShortcut),
 ];
 
 export default shortcutsSagas;

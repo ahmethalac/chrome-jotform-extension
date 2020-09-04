@@ -9,6 +9,7 @@ const Shortcuts = ({
   shortcuts,
   title,
   addShortcut,
+  deleteShortcut,
 }) => (
   <div
     id="shortcuts"
@@ -25,6 +26,7 @@ const Shortcuts = ({
           key={s[0]}
           shortForm={s[0]}
           longForm={s[1]}
+          deleteShortcut={() => deleteShortcut(s[0])}
         />
       ))}
     </div>
@@ -38,11 +40,13 @@ Shortcuts.propTypes = {
   shortcuts: PropTypes.instanceOf(Object),
   title: PropTypes.string,
   addShortcut: PropTypes.func,
+  deleteShortcut: PropTypes.func,
 };
 
 Shortcuts.defaultProps = {
   shortcuts: {},
   title: 'Shortcuts',
   addShortcut: (() => {}),
+  deleteShortcut: (() => {}),
 };
 export default withClickOutside(Shortcuts);

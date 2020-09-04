@@ -12,6 +12,7 @@ const SearchBar = ({
   searchbarPlaceholder,
   shortcuts,
   addShortcut,
+  deleteShortcut,
 }) => {
   const [inputText, setInputText] = useState('');
   const [shortcutsVisible, setShortcutsVisible] = useState(false);
@@ -78,6 +79,7 @@ const SearchBar = ({
           shortcuts={shortcuts}
           addShortcut={addShortcut}
           onClickOutside={closeShortcuts}
+          deleteShortcut={deleteShortcut}
         />
       )}
     </div>
@@ -89,6 +91,7 @@ SearchBar.propTypes = {
   searchbarPlaceholder: PropTypes.string,
   shortcuts: PropTypes.instanceOf(Object),
   addShortcut: PropTypes.func,
+  deleteShortcut: PropTypes.func,
 };
 
 SearchBar.defaultProps = {
@@ -96,6 +99,7 @@ SearchBar.defaultProps = {
   searchbarPlaceholder: 'Search in Web',
   shortcuts: {},
   addShortcut: (() => {}),
+  deleteShortcut: (() => {}),
 };
 
 export default SearchBar;
