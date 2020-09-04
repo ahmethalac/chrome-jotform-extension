@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback, useRef, useState,
+} from 'react';
 import '../styles/AddShortcut.scss';
 import PropTypes from 'prop-types';
 
@@ -6,23 +8,7 @@ const AddShortcut = ({ addShortcut }) => {
   const [inputsVisible, setInputsVisible] = useState(false);
   const [shortForm, setShortForm] = useState('!');
   const [longForm, setLongForm] = useState('');
-  const buttonRef = useRef(null);
-  const shortInputRef = useRef(null);
-  const longInputRef = useRef(null);
-
-  const insideClick = event => {
-    event.stopPropagation();
-    setInputsVisible(true);
-  };
-
-  useEffect(() => {
-    const refs = [buttonRef.current, shortInputRef.current, longInputRef.current];
-    refs.forEach(ref => ref.addEventListener('click', insideClick));
-
-    return () => {
-      refs.forEach(ref => ref.removeEventListener('click', insideClick));
-    };
-  }, []);
+  const shortInput = useRef(null);
 
   const handleSend = () => {
     if (shortForm.substring(1) !== '' && longForm !== '') {
@@ -39,11 +25,13 @@ const AddShortcut = ({ addShortcut }) => {
     }
   };
 
+  const showInputs = useCallback(() => setInputsVisible(true), []);
+
   return (
     <div className="addShortcut">
       <button
-        ref={buttonRef}
-        className="addShortcutButton"
+        onClick={showInputs}
+        className="addShortcutTextButton"
         type="button"
         style={inputsVisible ? { zIndex: -1, opacity: 0 } : { zIndex: 1, opacity: 1 }}
       >
@@ -54,8 +42,8 @@ const AddShortcut = ({ addShortcut }) => {
         style={inputsVisible ? { zIndex: 1, opacity: 1 } : { zIndex: -1, opacity: 0 }}
       >
         <input
-          ref={shortInputRef}
           className="shortFormInput"
+          ref={shortInput}
           value={shortForm}
           onChange={event => {
             if (event.target.value === '') {
@@ -69,13 +57,18 @@ const AddShortcut = ({ addShortcut }) => {
 
         />
         <input
-          ref={longInputRef}
           onBlur={handleSend}
           className="longFormInput"
           placeholder="Long Form"
           value={longForm}
           onChange={event => setLongForm(event.target.value)}
           onKeyDown={enterEvent}
+        />
+        <button
+          type="button"
+          className="addShortcutButton"
+          aria-label="addShortcutButton"
+          onClick={handleSend}
         />
       </div>
     </div>

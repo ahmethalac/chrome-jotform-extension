@@ -76,6 +76,7 @@ const SearchBar = ({
       />
       {shortcutsVisible && (
         <Shortcuts
+          externalRefs={[inputRef.current]}
           shortcuts={shortcuts}
           addShortcut={addShortcut}
           onClickOutside={closeShortcuts}

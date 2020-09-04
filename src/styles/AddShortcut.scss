@@ -1,3 +1,5 @@
+@import "common";
+
 .addShortcut{
   height: 36px;
   width: 100%;
@@ -6,7 +8,7 @@
   border-top: 1px solid rgba(130,157,182,0.3);
 }
 
-.addShortcutButton{
+.addShortcutTextButton{
   position: absolute;
   cursor: pointer;
   width: inherit;
@@ -23,6 +25,7 @@
   height: inherit;
   border: none;
   transition: 0.5s;
+  align-items: center;
 }
 
 .shortFormInput{
@@ -33,7 +36,7 @@
 }
 
 .longFormInput{
-  flex-grow: 3;
+  width: 78px;
   border: inherit;
   font-size: 16px;
   color: #829DB6;
@@ -42,4 +45,11 @@
 .longFormInput::placeholder{
   color: #829DB6;
   font-size: 14px;
+}
+
+.addShortcutButton{
+  @extend iconButton;
+  background-image: url("../assets/plus.png");
+  height: 12px;
+  width: 12px;
 }

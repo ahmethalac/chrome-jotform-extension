@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 const withClickOutside = WrappedComponent => {
   const WithClickOutside = ({
+    externalRefs,
     onClickOutside,
     wrapperClassname,
     ...passThroughProps
@@ -11,10 +12,13 @@ const withClickOutside = WrappedComponent => {
     const wrapperRef = useRef(null);
 
     const handleClickOutside = useCallback(event => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+      if (
+        (wrapperRef.current && !wrapperRef.current.contains(event.target))
+        && !externalRefs.some(ref => ref.contains(event.target))
+      ) {
         onClickOutside();
       }
-    }, [onClickOutside]);
+    }, [externalRefs, onClickOutside]);
 
     useEffect(() => {
       window.addEventListener('mousedown', handleClickOutside, { passive: true });
@@ -34,11 +38,13 @@ const withClickOutside = WrappedComponent => {
   };
 
   WithClickOutside.propTypes = {
+    externalRefs: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object, PropTypes.element])),
     onClickOutside: PropTypes.func.isRequired,
     wrapperClassname: PropTypes.string,
   };
 
   WithClickOutside.defaultProps = {
+    externalRefs: [],
     wrapperClassname: '',
   };
 
