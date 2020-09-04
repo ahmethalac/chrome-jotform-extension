@@ -10,7 +10,6 @@ import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilt
 import Filters from './Filters';
 import '../styles/TodoList.scss';
 import TodoListMenu from './TodoListMenu';
-import Popup from './Popup';
 
 const TodoList = ({
   newTodoPlaceholder,
@@ -37,17 +36,12 @@ const TodoList = ({
   const menuButtonRef = useRef(null);
 
   useEffect(() => {
-    menuButtonRef.current.addEventListener('click', event => {
-      event.stopPropagation();
-      setMenuVisible(true);
-    });
-  });
-
-  useEffect(() => {
     autosize(textareaRef.current);
   }, [todos]);
 
-  const handleInputChange = event => setNewTodoInput(event.target.value);
+  const handleInputChange = event => {
+    setNewTodoInput(event.target.value);
+  };
 
   const newTodoEnter = event => {
     if (event.key === 'Enter') {
@@ -103,6 +97,9 @@ const TodoList = ({
     }
   };
 
+  const openMenu = useCallback(() => setMenuVisible(true), []);
+  const closeMenu = useCallback(() => setMenuVisible(false), []);
+
   return (
     <div className="todoListOuterContainer">
       <div
@@ -137,6 +134,7 @@ const TodoList = ({
             type="button"
             className="menuButton"
             aria-label="menuButton"
+            onClick={openMenu}
           />
         </div>
         <textarea
@@ -171,15 +169,14 @@ const TodoList = ({
           ))}
         </ul>
       </div>
-      <Popup
-        open={menuVisible}
-        onClose={useCallback(() => setMenuVisible(false), [])}
-      >
+      {menuVisible && (
         <TodoListMenu
           cloneList={() => cloneList(formId)}
           deleteTodoList={() => deleteTodoList(formId)}
+          onClickOutside={closeMenu}
+          position={menuButtonRef.current.getBoundingClientRect()}
         />
-      </Popup>
+      )}
     </div>
   );
 };

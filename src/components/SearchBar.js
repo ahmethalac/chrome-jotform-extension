@@ -78,7 +78,6 @@ const SearchBar = ({
           shortcuts={shortcuts}
           addShortcut={addShortcut}
           onClickOutside={closeShortcuts}
-          wrapperClassname="selam"
         />
       )}
     </div>

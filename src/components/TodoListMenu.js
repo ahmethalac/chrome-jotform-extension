@@ -1,29 +1,26 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import '../styles/TodoListMenu.scss';
 import PropTypes from 'prop-types';
+import withClickOutside from '../helpers/hocs/withClickOutside';
 
 const TodoListMenu = ({
   cloneList,
   cloneListText,
   deleteTodoList,
   deleteTodoListText,
-  visible,
-}) => (
+  position,
+}) => createPortal(
   <div
     className="todoListMenu"
-    style={visible ? {
-      opacity: 1,
-    } : {
-      opacity: 0,
-      height: 0,
-    }}
+    style={{ top: position.y, left: position.right }}
   >
     <div>
       <button
         className="listButton"
         type="button"
         aria-label="cloneList"
-        onClick={cloneList}
+        onMouseDown={cloneList}
       >
         <div className="cloneIcon" />
         {cloneListText}
@@ -33,14 +30,15 @@ const TodoListMenu = ({
       <button
         type="button"
         className="listButton"
-        onClick={deleteTodoList}
+        onMouseDown={deleteTodoList}
         aria-label="deleteListButton"
       >
         <div className="deleteListIcon" />
         {deleteTodoListText}
       </button>
     </div>
-  </div>
+  </div>,
+  document.getElementById('modalRoot'),
 );
 
 TodoListMenu.propTypes = {
@@ -48,7 +46,7 @@ TodoListMenu.propTypes = {
   cloneListText: PropTypes.string,
   deleteTodoList: PropTypes.func,
   deleteTodoListText: PropTypes.string,
-  visible: PropTypes.bool,
+  position: PropTypes.instanceOf(DOMRect),
 };
 
 TodoListMenu.defaultProps = {
@@ -56,6 +54,6 @@ TodoListMenu.defaultProps = {
   cloneListText: 'Clone List',
   deleteTodoList: (() => {}),
   deleteTodoListText: 'Delete List',
-  visible: true,
+  position: new DOMRect(),
 };
-export default TodoListMenu;
+export default withClickOutside(TodoListMenu);

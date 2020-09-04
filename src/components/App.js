@@ -13,7 +13,7 @@ const App = ({
     _initApp();
   }, [_initApp]);
   return (
-    <div className="App">
+    <div className="App" id="App">
       <SearchBarContainer />
       <TodoListsContainer />
     </div>

@@ -14,7 +14,6 @@ const Shortcuts = ({
     id="shortcuts"
     style={{
       height: Math.min(shortcuts.size, 4) * 25 + 70,
-      width: 165,
     }}
   >
     <div className="shortcutTitle">
