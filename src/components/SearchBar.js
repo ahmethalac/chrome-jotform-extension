@@ -1,10 +1,11 @@
 import React, {
-  useCallback, useEffect, useRef, useState,
+  useCallback,
+  useRef,
+  useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import '../styles/SearchBar.scss';
 import Shortcuts from './Shortcuts';
-import Popup from './Popup';
 
 const SearchBar = ({
   handleSubmit,
@@ -16,18 +17,6 @@ const SearchBar = ({
   const [shortcutsVisible, setShortcutsVisible] = useState(false);
   const inputRef = useRef(null);
   const shortcutsButtonRef = useRef(null);
-
-  const stopPropagation = event => event.stopPropagation();
-
-  useEffect(() => {
-    const refs = [inputRef.current, shortcutsButtonRef.current];
-    refs.forEach(ref => ref.addEventListener('click', stopPropagation));
-    document.body.addEventListener('click', () => setShortcutsVisible(false));
-    return () => {
-      refs.forEach(ref => ref.removeEventListener('click', stopPropagation));
-      document.body.removeEventListener('click', () => setShortcutsVisible(false));
-    };
-  }, []);
 
   const handleInputChange = event => {
     let input = event.target.value;
@@ -54,6 +43,8 @@ const SearchBar = ({
       handleSend();
     }
   };
+
+  const closeShortcuts = useCallback(() => setShortcutsVisible(false), []);
 
   return (
     <div className="searchBar">
@@ -82,15 +73,14 @@ const SearchBar = ({
         type="button"
         aria-label="shortcutsButton"
       />
-      <Popup
-        open={shortcutsVisible}
-        onClose={useCallback(() => setShortcutsVisible(false), [])}
-      >
+      {shortcutsVisible && (
         <Shortcuts
           shortcuts={shortcuts}
           addShortcut={addShortcut}
+          onClickOutside={closeShortcuts}
+          wrapperClassname="selam"
         />
-      </Popup>
+      )}
     </div>
   );
 };
