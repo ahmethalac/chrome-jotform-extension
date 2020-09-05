@@ -35,7 +35,12 @@ import {
   EDIT_TODO_NAME_REQUEST,
   EDIT_TODO_NAME_FAILURE,
   EDIT_TODO_NAME_SUCCESS,
-  CLONE_TODOLIST_REQUEST, CLONE_TODOLIST_FAILURE, DELETE_UI_STATE, UPDATE_CHROME_UI_STORAGE,
+  CLONE_TODOLIST_REQUEST,
+  CLONE_TODOLIST_FAILURE,
+  DELETE_UI_STATE,
+  UPDATE_CHROME_UI_STORAGE,
+  DELETE_FROM_LIST_ORDER,
+  ADD_TO_LIST_ORDER_OPTIMISTIC, ADD_TO_LIST_ORDER_REAL,
 } from '../constants/actionTypes';
 import {
   changeTitle, changeTodoName,
@@ -57,7 +62,10 @@ export function* addTodoList(action) {
       type: SET_TODOLIST_COLOR_OPTIMISTIC,
       payload: { id: tempID, color },
     });
-
+    yield put({
+      type: ADD_TO_LIST_ORDER_OPTIMISTIC,
+      payload: { id: tempID },
+    });
     const { request: { response } } = yield call(createTodoList, name);
     const { content: { id }, responseCode, message } = JSON.parse(response);
 
@@ -72,6 +80,10 @@ export function* addTodoList(action) {
     yield put({
       type: SET_TODOLIST_COLOR_REAL,
       payload: { id, tempID, color },
+    });
+    yield put({
+      type: ADD_TO_LIST_ORDER_REAL,
+      payload: { id, tempID },
     });
     yield put({
       type: UPDATE_CHROME_UI_STORAGE,
@@ -175,6 +187,10 @@ export function* initTodoLists() {
             color: getRandomColor(),
           },
         });
+        yield put({
+          type: ADD_TO_LIST_ORDER_OPTIMISTIC,
+          payload: { id: todoLists[i].id },
+        });
       }
     }
 
@@ -209,6 +225,12 @@ export function* removeTodoList(action) {
       type: DELETE_UI_STATE,
       payload: formId,
     });
+
+    yield put({
+      type: DELETE_FROM_LIST_ORDER,
+      payload: formId,
+    });
+
     yield put({
       type: UPDATE_CHROME_UI_STORAGE,
     });
@@ -376,6 +398,11 @@ export function* cloneTodoList(action) {
     yield put({
       type: SET_TODOLIST_COLOR_OPTIMISTIC,
       payload: { id, color: getRandomColor() },
+    });
+
+    yield put({
+      type: ADD_TO_LIST_ORDER_OPTIMISTIC,
+      payload: { id },
     });
 
     yield put({

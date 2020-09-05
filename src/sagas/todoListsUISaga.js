@@ -9,6 +9,8 @@ import {
   INIT_UI_STATE_REQUEST,
   INIT_UI_STATE_SUCCESS,
   UPDATE_CHROME_UI_STORAGE,
+  UPDATE_LIST_ORDER_REQUEST,
+  UPDATE_LIST_ORDER_SUCCESS,
 } from '../constants/actionTypes';
 import { getTodoListsUIState } from '../selectors';
 
@@ -38,7 +40,11 @@ export function* updateChromeStorage() {
   todoListsUI
     .toArray()
     .forEach(element => {
-      storedUI[element[0]] = element[1].toJSON();
+      if (element[0] === 'listOrder') {
+        storedUI[element[0]] = element[1].toArray();
+      } else {
+        storedUI[element[0]] = element[1].toJSON();
+      }
     });
   storeInChrome('uiState', storedUI);
 }
@@ -62,10 +68,21 @@ export function* changeFilterSaga(action) {
   }
 }
 
+export function* storeListOrder(action) {
+  yield put({
+    type: UPDATE_LIST_ORDER_SUCCESS,
+    payload: action.payload,
+  });
+
+  yield put({
+    type: UPDATE_CHROME_UI_STORAGE,
+  });
+}
 const todolistsUISagas = [
   takeEvery(INIT_UI_STATE_REQUEST, initUIState),
   takeEvery(UPDATE_CHROME_UI_STORAGE, updateChromeStorage),
   takeEvery(CHANGE_FILTER_REQUEST, changeFilterSaga),
+  takeEvery(UPDATE_LIST_ORDER_REQUEST, storeListOrder),
 ];
 
 export default todolistsUISagas;

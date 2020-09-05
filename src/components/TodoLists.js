@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import I from 'immutable';
 import { ReactSortable } from 'react-sortablejs';
 import TodoList from './TodoList';
 import { selectTodos } from '../selectors';
 import '../styles/TodoLists.scss';
-import { getFromChrome, storeInChrome } from '../lib/api';
 
 const TodoLists = ({
   todoLists,
@@ -21,43 +22,23 @@ const TodoLists = ({
   editListTitle,
   editTodoName,
   cloneList,
+  updateListOrder,
 }) => {
-  const [sortableElements, setSortableElements] = useState([]);
   const [newTodoListInput, setNewTodoListInput] = useState('');
   const [flipState, setFlipState] = useState('rotateY(0deg)');
   const inputRef = useRef(null);
+  const list = useMemo(() => todoListsUI.get('listOrder', I.List()).toArray().map(id => ({
+    id,
+    chosen: false,
+    selected: false,
+    filtered: false,
+  })), [todoListsUI]);
 
   useEffect(() => {
     if (flipState === 'rotateY(180deg)') {
       inputRef.current.focus();
     }
   }, [flipState]);
-
-  useEffect(() => {
-    getFromChrome('listOrder')
-      .then(result => {
-        setSortableElements(result.map(id => ({
-          id,
-          selected: false,
-          chosen: false,
-          filtered: false,
-        })));
-      });
-  }, []);
-
-  useEffect(() => {
-    todoLists.forEach(todoList => {
-      if (todoList.get('id') > 0 && !sortableElements.some(element => element.id === todoList.get('id'))) {
-        setSortableElements([...sortableElements, {
-          id: todoList.get('id'),
-          selected: false,
-          chosen: false,
-          filtered: false,
-        }]);
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [todoLists]);
 
   const handleInputChange = event => setNewTodoListInput(event.target.value);
 
@@ -75,28 +56,24 @@ const TodoLists = ({
     }
   };
 
-  const onSort = () => {
-    storeInChrome('listOrder', sortableElements.map(e => e.id));
-  };
-
-  const onStart = () => {
-    setSortableElements(sortableElements.filter(e => todoLists.get(e.id)));
+  const setList = newOrder => {
+    if (newOrder.length !== 0) {
+      updateListOrder(newOrder.map(e => e.id));
+    }
   };
 
   return (
     <div id="listContainer">
       <ReactSortable
-        list={sortableElements}
-        setList={setSortableElements}
+        list={list}
+        setList={setList}
         sort
         id="todoLists"
         handle=".dragListHandle"
         animation={100}
-        onStart={onStart}
-        onSort={onSort}
         dragClass="drag"
       >
-        {sortableElements
+        {list
           .filter(e => todoLists.get(e.id))
           .map(sortableElement => todoLists.get(sortableElement.id))
           .map(todoList => (
@@ -162,6 +139,7 @@ TodoLists.propTypes = {
   editListTitle: PropTypes.func,
   editTodoName: PropTypes.func,
   cloneList: PropTypes.func,
+  updateListOrder: PropTypes.func,
 };
 
 TodoLists.defaultProps = {
@@ -178,6 +156,7 @@ TodoLists.defaultProps = {
   editListTitle: (() => {}),
   editTodoName: (() => {}),
   cloneList: (() => {}),
+  updateListOrder: (() => {}),
 };
 
 export default TodoLists;
