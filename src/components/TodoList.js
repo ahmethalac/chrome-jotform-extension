@@ -22,7 +22,6 @@ const TodoList = ({
   uiState,
   changeFilter,
   deleteTodo,
-  swapTodo,
   editListTitle,
   editTodoName,
   cloneList,
@@ -77,18 +76,6 @@ const TodoList = ({
     }
   }, [todos, uiState]);
 
-  const onDrop = event => {
-    if (event.dataTransfer.getData('oldFormId') !== formId) {
-      swapTodo(
-        event.dataTransfer.getData('TodoId'),
-        event.dataTransfer.getData('oldFormId'),
-        formId,
-        event.dataTransfer.getData('name'),
-        event.dataTransfer.getData('done') === 'true',
-      );
-    }
-  };
-
   const handleEdit = () => {
     if (newTitle !== '') {
       editListTitle(formId, newTitle);
@@ -104,8 +91,6 @@ const TodoList = ({
     <div className="todoListOuterContainer">
       <div
         className="todoList"
-        onDrop={onDrop}
-        onDragOver={event => event.preventDefault()}
       >
         <div
           className="todolistHeader"
@@ -125,10 +110,12 @@ const TodoList = ({
           >
             {name}
           </div>
-          <div
-            className="successfulTitleEdit"
-            style={{ opacity: editIconVisible ? 1 : 0 }}
-          />
+          <div className="dragListHandle">
+            <div
+              className="successfulTitleEdit"
+              style={{ opacity: editIconVisible ? 1 : 0 }}
+            />
+          </div>
           <button
             ref={menuButtonRef}
             type="button"
@@ -158,12 +145,6 @@ const TodoList = ({
               toggleTodo={done => toggleTodo(formId, todo.get('id', '0'), done)}
               done={todo.get('done', false)}
               deleteTodo={id => deleteTodo(formId, id)}
-              dragStart={event => {
-                event.dataTransfer.setData('TodoId', todo.get('id', '0'));
-                event.dataTransfer.setData('oldFormId', formId);
-                event.dataTransfer.setData('name', todo.get('name'));
-                event.dataTransfer.setData('done', todo.get('done'));
-              }}
               editTodoName={(submissionId, newName) => editTodoName(formId, submissionId, newName)}
             />
           ))}
@@ -192,7 +173,6 @@ TodoList.propTypes = {
   uiState: PropTypes.instanceOf(Object),
   changeFilter: PropTypes.func,
   deleteTodo: PropTypes.func,
-  swapTodo: PropTypes.func,
   editListTitle: PropTypes.func,
   editTodoName: PropTypes.func,
   cloneList: PropTypes.func,
@@ -209,7 +189,6 @@ TodoList.defaultProps = {
   uiState: I.fromJS({ filter: SHOW_ALL }),
   changeFilter: (() => {}),
   deleteTodo: (() => {}),
-  swapTodo: (() => {}),
   editListTitle: (() => {}),
   editTodoName: (() => {}),
   cloneList: (() => {}),

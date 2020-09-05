@@ -5,6 +5,7 @@ const mockStorage = {
     w: 'what is',
     h: 'how to',
   },
+  listOrder: [],
 };
 
 export const storeInChrome = (key, value) => {
