@@ -34,7 +34,12 @@ export default (state = INITIAL_STATE, action) => {
       const { name, id, tempID } = action.payload;
       return state
         .delete(tempID)
-        .set(id, I.fromJS({ id, name, todos: {} }));
+        .set(id, I.fromJS({
+          id,
+          name,
+          todos: I.fromJS({},
+            (key, value) => (isKeyed(value) ? value.toOrderedMap() : value.toList())),
+        }));
     }
     case ADD_TODOLIST_FAILURE: {
       const { error, tempID } = action.payload;
@@ -81,7 +86,12 @@ export default (state = INITIAL_STATE, action) => {
     case INIT_A_TODOLIST: {
       return state.set(action.payload.id,
         I.fromJS(action.payload,
-          (key, value) => (isKeyed(value) ? value.toOrderedMap() : value.toList())));
+          (key, value, path) => {
+            if (path.length === 1) {
+              return isKeyed(value) ? value.toOrderedMap() : value.toList();
+            }
+            return isKeyed(value) ? value.toMap() : value.toList();
+          }));
     }
     case DELETE_TODOLIST_OPTIMISTIC_SUCCESS: {
       return state.delete(action.payload.formId);

@@ -8,7 +8,6 @@ const Todo = ({
   done,
   toggleTodo,
   deleteTodo,
-  dragStart,
   editTodoName,
 }) => {
   const [newName, setNewName] = useState('');
@@ -33,7 +32,6 @@ const Todo = ({
 
   return (
     <li
-      onDragStart={dragStart}
       className="todo"
       ref={liRef}
     >
@@ -77,9 +75,6 @@ const Todo = ({
         type="button"
         className="dragHandle"
         aria-label="dragHandle"
-        onMouseDown={() => {
-          liRef.current.draggable = 'true';
-        }}
       />
     </li>
   );
@@ -91,7 +86,6 @@ Todo.propTypes = {
   done: PropTypes.bool,
   toggleTodo: PropTypes.func,
   deleteTodo: PropTypes.func,
-  dragStart: PropTypes.func,
   editTodoName: PropTypes.func,
 };
 
@@ -101,7 +95,6 @@ Todo.defaultProps = {
   done: false,
   toggleTodo: (() => {}),
   deleteTodo: (() => {}),
-  dragStart: (() => {}),
   editTodoName: (() => {}),
 };
 export default Todo;

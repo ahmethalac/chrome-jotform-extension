@@ -94,6 +94,7 @@ const TodoLists = ({
         animation={100}
         onStart={onStart}
         onSort={onSort}
+        dragClass="drag"
       >
         {sortableElements
           .filter(e => todoLists.get(e.id))

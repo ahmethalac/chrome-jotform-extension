@@ -32,7 +32,7 @@ export const changeTodoState = (submissionID, done) => {
   return axios.post(`${baseURL}submission/${submissionID}?apiKey=${JOTFORM_API_KEY}`, requestBody);
 };
 
-export const getTodoLists = () => axios.get(`${baseURL}user/forms?apikey=${JOTFORM_API_KEY}`)
+export const getTodoLists = () => axios.get(`${baseURL}user/forms?apikey=${JOTFORM_API_KEY}&limit=50`)
   .then(response => response.data.content)
   .then(forms => forms.filter(form => form.status === 'ENABLED'))
   .then(enabledForms => enabledForms.filter(form => form.title.startsWith('todoList_')));
