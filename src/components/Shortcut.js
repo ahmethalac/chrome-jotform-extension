@@ -27,12 +27,11 @@ const Shortcut = ({
 Shortcut.propTypes = {
   shortForm: PropTypes.string,
   longForm: PropTypes.string,
-  deleteShortcut: PropTypes.func,
+  deleteShortcut: PropTypes.func.isRequired,
 };
 
 Shortcut.defaultProps = {
   shortForm: 'u',
   longForm: 'undefined',
-  deleteShortcut: (() => {}),
 };
 export default Shortcut;

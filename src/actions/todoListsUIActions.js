@@ -1,4 +1,8 @@
-import { CHANGE_FILTER_REQUEST, UPDATE_LIST_ORDER_REQUEST, UPDATE_TODO_ORDER_REQUEST } from '../constants/actionTypes';
+import {
+  CHANGE_FILTER_REQUEST,
+  UPDATE_LIST_ORDER_REQUEST,
+  UPDATE_TODO_ORDER_REQUEST,
+} from '../constants/actionTypes';
 
 export const changeFilter = (formId, filter) => ({
   type: CHANGE_FILTER_REQUEST,

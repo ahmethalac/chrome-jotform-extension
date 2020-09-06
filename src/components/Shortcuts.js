@@ -39,14 +39,12 @@ const Shortcuts = ({
 Shortcuts.propTypes = {
   shortcuts: PropTypes.instanceOf(Object),
   title: PropTypes.string,
-  addShortcut: PropTypes.func,
-  deleteShortcut: PropTypes.func,
+  addShortcut: PropTypes.func.isRequired,
+  deleteShortcut: PropTypes.func.isRequired,
 };
 
 Shortcuts.defaultProps = {
   shortcuts: {},
   title: 'Shortcuts',
-  addShortcut: (() => {}),
-  deleteShortcut: (() => {}),
 };
 export default withClickOutside(Shortcuts);

@@ -85,17 +85,14 @@ Todo.propTypes = {
   name: PropTypes.string,
   id: PropTypes.string,
   done: PropTypes.bool,
-  toggleTodo: PropTypes.func,
-  deleteTodo: PropTypes.func,
-  editTodoName: PropTypes.func,
+  toggleTodo: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  editTodoName: PropTypes.func.isRequired,
 };
 
 Todo.defaultProps = {
   name: 'DefaultName',
   id: '0',
   done: false,
-  toggleTodo: (() => {}),
-  deleteTodo: (() => {}),
-  editTodoName: (() => {}),
 };
 export default Todo;

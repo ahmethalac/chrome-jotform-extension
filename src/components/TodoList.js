@@ -36,12 +36,15 @@ const TodoList = ({
   const nameRef = useRef(null);
   const textareaRef = useRef(null);
   const menuButtonRef = useRef(null);
-  const list = useMemo(() => uiState.get('order', I.List()).toArray().map(id => ({
-    id,
-    chosen: false,
-    selected: false,
-    filtered: false,
-  })), [uiState]);
+  const list = useMemo(() => uiState
+    .get('order', I.List())
+    .toArray()
+    .map(id => ({
+      id,
+      chosen: false,
+      selected: false,
+      filtered: false,
+    })), [uiState]);
 
   useEffect(() => {
     autosize(textareaRef.current);
@@ -105,6 +108,7 @@ const TodoList = ({
   const onAdd = event => {
     swapTodo(event.item.id, event.from.id, event.to.id);
   };
+
   return (
     <div className="todoListOuterContainer">
       <div
@@ -155,7 +159,6 @@ const TodoList = ({
           changeFilter={filter => changeFilter(formId, filter)}
         />
         <ReactSortable
-          multiDrag
           id={formId}
           group="todos"
           onAdd={onAdd}
@@ -190,6 +193,7 @@ const TodoList = ({
                     key={todo.get('id')}
                   />
                 )
+
             ))}
         </ReactSortable>
       </div>
@@ -208,19 +212,19 @@ const TodoList = ({
 TodoList.propTypes = {
   newTodoPlaceholder: PropTypes.string,
   todos: PropTypes.instanceOf(Map),
+  uiState: PropTypes.instanceOf(Map),
   name: PropTypes.string,
   formId: PropTypes.string,
-  toggleTodo: PropTypes.func,
-  addTodo: PropTypes.func,
-  deleteTodoList: PropTypes.func,
-  uiState: PropTypes.instanceOf(Object),
-  changeFilter: PropTypes.func,
-  deleteTodo: PropTypes.func,
-  editListTitle: PropTypes.func,
-  editTodoName: PropTypes.func,
-  cloneList: PropTypes.func,
-  updateTodoOrder: PropTypes.func,
-  swapTodo: PropTypes.func,
+  toggleTodo: PropTypes.func.isRequired,
+  addTodo: PropTypes.func.isRequired,
+  deleteTodoList: PropTypes.func.isRequired,
+  changeFilter: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  editListTitle: PropTypes.func.isRequired,
+  editTodoName: PropTypes.func.isRequired,
+  cloneList: PropTypes.func.isRequired,
+  updateTodoOrder: PropTypes.func.isRequired,
+  swapTodo: PropTypes.func.isRequired,
 };
 
 TodoList.defaultProps = {
@@ -228,17 +232,7 @@ TodoList.defaultProps = {
   todos: [],
   name: 'Default List',
   formId: '0',
-  toggleTodo: (() => {}),
-  addTodo: (() => {}),
-  deleteTodoList: (() => {}),
   uiState: I.fromJS({}),
-  changeFilter: (() => {}),
-  deleteTodo: (() => {}),
-  editListTitle: (() => {}),
-  editTodoName: (() => {}),
-  cloneList: (() => {}),
-  updateTodoOrder: (() => {}),
-  swapTodo: (() => {}),
 };
 
 export default TodoList;

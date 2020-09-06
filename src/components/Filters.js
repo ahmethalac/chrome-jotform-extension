@@ -34,12 +34,10 @@ const Filters = ({ filter, changeFilter }) => (
 
 Filters.propTypes = {
   filter: PropTypes.string,
-  changeFilter: PropTypes.func,
+  changeFilter: PropTypes.func.isRequired,
 };
 
 Filters.defaultProps = {
   filter: SHOW_ALL,
-  changeFilter: (() => {}),
 };
-
 export default Filters;

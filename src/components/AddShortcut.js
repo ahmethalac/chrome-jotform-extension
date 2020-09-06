@@ -76,10 +76,7 @@ const AddShortcut = ({ addShortcut }) => {
 };
 
 AddShortcut.propTypes = {
-  addShortcut: PropTypes.func,
+  addShortcut: PropTypes.func.isRequired,
 };
 
-AddShortcut.defaultProps = {
-  addShortcut: (() => {}),
-};
 export default AddShortcut;

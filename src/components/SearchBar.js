@@ -91,16 +91,14 @@ SearchBar.propTypes = {
   handleSubmit: PropTypes.func,
   searchbarPlaceholder: PropTypes.string,
   shortcuts: PropTypes.instanceOf(Object),
-  addShortcut: PropTypes.func,
-  deleteShortcut: PropTypes.func,
+  addShortcut: PropTypes.func.isRequired,
+  deleteShortcut: PropTypes.func.isRequired,
 };
 
 SearchBar.defaultProps = {
   handleSubmit: (searchTerm => window.open(`https://www.google.com/search?q=${searchTerm}`, '_top')),
   searchbarPlaceholder: 'Search in Web',
   shortcuts: {},
-  addShortcut: (() => {}),
-  deleteShortcut: (() => {}),
 };
 
 export default SearchBar;

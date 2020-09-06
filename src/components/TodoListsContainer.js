@@ -11,7 +11,9 @@ import {
   swapTodo,
   editListTitle,
   editTodoName,
-  cloneList, updateListOrder, updateTodoOrder,
+  cloneList,
+  updateListOrder,
+  updateTodoOrder,
 } from '../actions';
 
 const mapStateToProps = state => ({

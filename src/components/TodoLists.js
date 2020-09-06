@@ -30,12 +30,15 @@ const TodoLists = ({
   const [newTodoListInput, setNewTodoListInput] = useState('');
   const [flipState, setFlipState] = useState('rotateY(0deg)');
   const inputRef = useRef(null);
-  const list = useMemo(() => todoListsUI.get('listOrder', I.List()).toArray().map(id => ({
-    id,
-    chosen: false,
-    selected: false,
-    filtered: false,
-  })), [todoListsUI]);
+  const list = useMemo(() => todoListsUI
+    .get('listOrder', I.List())
+    .toArray()
+    .map(id => ({
+      id,
+      chosen: false,
+      selected: false,
+      filtered: false,
+    })), [todoListsUI]);
 
   useEffect(() => {
     if (flipState === 'rotateY(180deg)') {
@@ -65,9 +68,8 @@ const TodoLists = ({
     }
   };
 
-  const scrollList = document.getElementById('todoLists');
-
   const scroll = useCallback(direction => {
+    const scrollList = document.getElementById('todoLists');
     const blockWidth = Math.floor(scrollList.offsetWidth / 320) * 320;
     let scrollAmount = 0;
     if (direction === 'left') {
@@ -76,40 +78,42 @@ const TodoLists = ({
       scrollAmount = ((blockWidth - (scrollList.scrollLeft % blockWidth)) || blockWidth);
     }
     scrollList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-  }, [scrollList]);
+  }, []);
 
   return (
     <div className="topContainer">
       <div style={{ maxWidth: 'calc(100% - 200px)' }}>
-        <div className="listNavigationBar">
-          <button
-            type="button"
-            className="scrollLeft"
-            onClick={() => scroll('left')}
-            aria-label="scrollLeft"
-          />
-          <div className="filter">
-            <input
-              value={filterName}
-              onChange={event => setFilterName(event.target.value)}
-              className="listFilter"
-              placeholder="Filter by Title"
-            />
+        {list.length ? (
+          <div className="listNavigationBar">
             <button
               type="button"
-              className="resetFilter"
-              aria-label="resetFilter"
-              onClick={() => setFilterName('')}
+              className="scrollLeft"
+              onClick={() => scroll('left')}
+              aria-label="scrollLeft"
+            />
+            <div className="filter">
+              <input
+                value={filterName}
+                onChange={event => setFilterName(event.target.value)}
+                className="listFilter"
+                placeholder="Filter by Title"
+              />
+              <button
+                type="button"
+                className="resetFilter"
+                aria-label="resetFilter"
+                onClick={() => setFilterName('')}
+              />
+            </div>
+            <div style={{ flex: 1 }} />
+            <button
+              type="button"
+              className="scrollRight"
+              onClick={() => scroll('right')}
+              aria-label="scrollRight"
             />
           </div>
-          <div style={{ flex: 1 }} />
-          <button
-            type="button"
-            className="scrollRight"
-            onClick={() => scroll('right')}
-            aria-label="scrollRight"
-          />
-        </div>
+        ) : null}
         <ReactSortable
           list={list}
           setList={setList}
@@ -177,39 +181,27 @@ const TodoLists = ({
 };
 
 TodoLists.propTypes = {
-  todoLists: PropTypes.instanceOf(I.Map),
-  toggleTodo: PropTypes.func,
-  addTodo: PropTypes.func,
-  addTodoList: PropTypes.func,
-  deleteTodoList: PropTypes.func,
   newTodoListPlaceholder: PropTypes.string,
-  todoListsUI: PropTypes.instanceOf(Object),
-  changeFilter: PropTypes.func,
-  deleteTodo: PropTypes.func,
-  swapTodo: PropTypes.func,
-  editListTitle: PropTypes.func,
-  editTodoName: PropTypes.func,
-  cloneList: PropTypes.func,
-  updateListOrder: PropTypes.func,
-  updateTodoOrder: PropTypes.func,
+  todoLists: PropTypes.instanceOf(I.Map),
+  todoListsUI: PropTypes.instanceOf(I.Map),
+  toggleTodo: PropTypes.func.isRequired,
+  addTodo: PropTypes.func.isRequired,
+  addTodoList: PropTypes.func.isRequired,
+  deleteTodoList: PropTypes.func.isRequired,
+  changeFilter: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  swapTodo: PropTypes.func.isRequired,
+  editListTitle: PropTypes.func.isRequired,
+  editTodoName: PropTypes.func.isRequired,
+  cloneList: PropTypes.func.isRequired,
+  updateListOrder: PropTypes.func.isRequired,
+  updateTodoOrder: PropTypes.func.isRequired,
 };
 
 TodoLists.defaultProps = {
-  todoLists: [],
-  toggleTodo: (() => {}),
-  addTodo: (() => {}),
-  addTodoList: (() => {}),
-  deleteTodoList: (() => {}),
   newTodoListPlaceholder: 'List Name',
+  todoLists: I.fromJS({}),
   todoListsUI: I.fromJS({}),
-  changeFilter: (() => {}),
-  deleteTodo: (() => {}),
-  swapTodo: (() => {}),
-  editListTitle: (() => {}),
-  editTodoName: (() => {}),
-  cloneList: (() => {}),
-  updateListOrder: (() => {}),
-  updateTodoOrder: (() => {}),
 };
 
 export default TodoLists;

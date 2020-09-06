@@ -42,17 +42,15 @@ const TodoListMenu = ({
 );
 
 TodoListMenu.propTypes = {
-  cloneList: PropTypes.func,
+  cloneList: PropTypes.func.isRequired,
   cloneListText: PropTypes.string,
-  deleteTodoList: PropTypes.func,
+  deleteTodoList: PropTypes.func.isRequired,
   deleteTodoListText: PropTypes.string,
   position: PropTypes.instanceOf(DOMRect),
 };
 
 TodoListMenu.defaultProps = {
-  cloneList: (() => {}),
   cloneListText: 'Clone List',
-  deleteTodoList: (() => {}),
   deleteTodoListText: 'Delete List',
   position: new DOMRect(),
 };
