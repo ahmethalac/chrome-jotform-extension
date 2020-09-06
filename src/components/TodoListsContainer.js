@@ -11,7 +11,7 @@ import {
   swapTodo,
   editListTitle,
   editTodoName,
-  cloneList, updateListOrder,
+  cloneList, updateListOrder, updateTodoOrder,
 } from '../actions';
 
 const mapStateToProps = state => ({
@@ -31,6 +31,7 @@ const mapActionsToProps = {
   editTodoName,
   cloneList,
   updateListOrder,
+  updateTodoOrder,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(TodoLists);

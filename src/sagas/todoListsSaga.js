@@ -40,7 +40,11 @@ import {
   DELETE_UI_STATE,
   UPDATE_CHROME_UI_STORAGE,
   DELETE_FROM_LIST_ORDER,
-  ADD_TO_LIST_ORDER_OPTIMISTIC, ADD_TO_LIST_ORDER_REAL,
+  ADD_TO_LIST_ORDER_OPTIMISTIC,
+  ADD_TO_LIST_ORDER_REAL,
+  UPDATE_TODO_ORDER_SUCCESS,
+  ADD_TO_TODO_ORDER_OPTIMISTIC,
+  ADD_TO_TODO_ORDER_REAL, DELETE_FROM_TODO_ORDER,
 } from '../constants/actionTypes';
 import {
   changeTitle, changeTodoName,
@@ -105,6 +109,10 @@ export function* addTodo(action) {
       type: ADD_TODO_OPTIMISTIC_SUCCESS,
       payload: { name, tempSubmissionID, formId },
     });
+    yield put({
+      type: ADD_TO_TODO_ORDER_OPTIMISTIC,
+      payload: { id: tempSubmissionID, formId },
+    });
 
     const { request: { response } } = yield call(submitTodo, formId, name, done);
     const { content, responseCode, message } = JSON.parse(response);
@@ -120,6 +128,13 @@ export function* addTodo(action) {
       payload: {
         name, submissionID, formId, tempSubmissionID,
       },
+    });
+    yield put({
+      type: ADD_TO_TODO_ORDER_REAL,
+      payload: { id: submissionID, tempId: tempSubmissionID, formId },
+    });
+    yield put({
+      type: UPDATE_CHROME_UI_STORAGE,
     });
   } catch (e) {
     yield put({
@@ -171,14 +186,6 @@ export function* initTodoLists() {
       rawTodos.reverse().forEach(todo => {
         todos[todo.id] = todo;
       });
-      yield put({
-        type: INIT_A_TODOLIST,
-        payload: {
-          id: todoLists[i].id,
-          name: todoLists[i].title.replace('todoList_', ''),
-          todos,
-        },
-      });
       if (process.env.NODE_ENV === 'development') {
         yield put({
           type: SET_TODOLIST_COLOR_OPTIMISTIC,
@@ -191,7 +198,22 @@ export function* initTodoLists() {
           type: ADD_TO_LIST_ORDER_OPTIMISTIC,
           payload: { id: todoLists[i].id },
         });
+        yield put({
+          type: UPDATE_TODO_ORDER_SUCCESS,
+          payload: {
+            id: todoLists[i].id,
+            order: rawTodos.map(todo => todo.id),
+          },
+        });
       }
+      yield put({
+        type: INIT_A_TODOLIST,
+        payload: {
+          id: todoLists[i].id,
+          name: todoLists[i].title.replace('todoList_', ''),
+          todos,
+        },
+      });
     }
 
     yield put({
@@ -261,6 +283,18 @@ export function* removeTodo(action) {
     if (responseCode !== 200) {
       throw Error(`Request failed! ${message}`);
     }
+
+    yield put({
+      type: DELETE_FROM_TODO_ORDER,
+      payload: {
+        formId,
+        submissionId,
+      },
+    });
+
+    yield put({
+      type: UPDATE_CHROME_UI_STORAGE,
+    });
   } catch (e) {
     yield put({
       type: DELETE_TODO_FAILURE,

@@ -1,6 +1,7 @@
 import {
   call, put, takeEvery, select,
 } from 'redux-saga/effects';
+import I from 'immutable';
 import { getFromChrome, storeInChrome } from '../lib/api';
 import {
   CHANGE_FILTER_FAILURE,
@@ -10,7 +11,7 @@ import {
   INIT_UI_STATE_SUCCESS,
   UPDATE_CHROME_UI_STORAGE,
   UPDATE_LIST_ORDER_REQUEST,
-  UPDATE_LIST_ORDER_SUCCESS,
+  UPDATE_LIST_ORDER_SUCCESS, UPDATE_TODO_ORDER_REQUEST, UPDATE_TODO_ORDER_SUCCESS,
 } from '../constants/actionTypes';
 import { getTodoListsUIState } from '../selectors';
 
@@ -43,7 +44,8 @@ export function* updateChromeStorage() {
       if (element[0] === 'listOrder') {
         storedUI[element[0]] = element[1].toArray();
       } else {
-        storedUI[element[0]] = element[1].toJSON();
+        const jsonObject = element[1].set('order', element[1].get('order', I.List()).toArray());
+        storedUI[element[0]] = jsonObject.toJSON();
       }
     });
   storeInChrome('uiState', storedUI);
@@ -78,11 +80,23 @@ export function* storeListOrder(action) {
     type: UPDATE_CHROME_UI_STORAGE,
   });
 }
+
+export function* storeTodoOrder(action) {
+  yield put({
+    type: UPDATE_TODO_ORDER_SUCCESS,
+    payload: action.payload,
+  });
+
+  yield put({
+    type: UPDATE_CHROME_UI_STORAGE,
+  });
+}
 const todolistsUISagas = [
   takeEvery(INIT_UI_STATE_REQUEST, initUIState),
   takeEvery(UPDATE_CHROME_UI_STORAGE, updateChromeStorage),
   takeEvery(CHANGE_FILTER_REQUEST, changeFilterSaga),
   takeEvery(UPDATE_LIST_ORDER_REQUEST, storeListOrder),
+  takeEvery(UPDATE_TODO_ORDER_REQUEST, storeTodoOrder),
 ];
 
 export default todolistsUISagas;

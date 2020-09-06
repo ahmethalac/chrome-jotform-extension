@@ -5,6 +5,7 @@ import React, {
 import PropTypes from 'prop-types';
 import I from 'immutable';
 import autosize from 'autosize';
+import { ReactSortable } from 'react-sortablejs';
 import Todo from './Todo';
 import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilters';
 import Filters from './Filters';
@@ -25,6 +26,7 @@ const TodoList = ({
   editListTitle,
   editTodoName,
   cloneList,
+  updateTodoOrder,
 }) => {
   const [newTodoInput, setNewTodoInput] = useState('');
   const [newTitle, setNewTitle] = useState('');
@@ -33,6 +35,12 @@ const TodoList = ({
   const nameRef = useRef(null);
   const textareaRef = useRef(null);
   const menuButtonRef = useRef(null);
+  const list = useMemo(() => uiState.get('order', I.List()).toArray().map(id => ({
+    id,
+    chosen: false,
+    selected: false,
+    filtered: false,
+  })), [uiState]);
 
   useEffect(() => {
     autosize(textareaRef.current);
@@ -60,21 +68,22 @@ const TodoList = ({
     }
   };
 
-  const visibleTodos = useMemo(() => {
+  const getVisibility = done => {
     switch (uiState.get('filter', SHOW_ALL)) {
       case SHOW_ALL: {
-        return todos;
+        return true;
       }
       case SHOW_ACTIVE: {
-        return todos.filter(t => !t.get('done', false));
+        return !done;
       }
       case SHOW_COMPLETED: {
-        return todos.filter(t => t.get('done', false));
+        return done;
       }
       default:
-        return {};
+        return false;
     }
-  }, [todos, uiState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
 
   const handleEdit = () => {
     if (newTitle !== '') {
@@ -86,6 +95,12 @@ const TodoList = ({
 
   const openMenu = useCallback(() => setMenuVisible(true), []);
   const closeMenu = useCallback(() => setMenuVisible(false), []);
+
+  const setList = newOrder => {
+    if (newOrder.length !== 0) {
+      updateTodoOrder(newOrder.map(e => e.id));
+    }
+  };
 
   return (
     <div className="todoListOuterContainer">
@@ -136,19 +151,34 @@ const TodoList = ({
           filter={uiState.get('filter')}
           changeFilter={filter => changeFilter(formId, filter)}
         />
-        <ul className="todos">
-          {visibleTodos.map(todo => (
-            <Todo
-              key={todo.get('id', '0')}
-              id={todo.get('id', '0')}
-              name={todo.get('name', 'undefined')}
-              toggleTodo={done => toggleTodo(formId, todo.get('id', '0'), done)}
-              done={todo.get('done', false)}
-              deleteTodo={id => deleteTodo(formId, id)}
-              editTodoName={(submissionId, newName) => editTodoName(formId, submissionId, newName)}
-            />
-          ))}
-        </ul>
+        <ReactSortable
+          list={list}
+          setList={setList}
+          className="todos"
+          sort
+          animation={100}
+        >
+          {list
+            .filter(e => todos.get(e.id))
+            .map(sortableElement => todos.get(sortableElement.id))
+            .map(todo => (
+              getVisibility(todo.get('done'))
+                ? (
+                  <Todo
+                    key={todo.get('id', '0')}
+                    id={todo.get('id', '0')}
+                    name={todo.get('name', 'undefined')}
+                    toggleTodo={done => toggleTodo(formId, todo.get('id', '0'), done)}
+                    done={todo.get('done', false)}
+                    deleteTodo={id => deleteTodo(formId, id)}
+                    editTodoName={(submissionId, newName) => editTodoName(
+                      formId, submissionId, newName,
+                    )}
+                  />
+                )
+                : <div id={todo.get('id')} />
+            ))}
+        </ReactSortable>
       </div>
       {menuVisible && (
         <TodoListMenu
@@ -176,6 +206,7 @@ TodoList.propTypes = {
   editListTitle: PropTypes.func,
   editTodoName: PropTypes.func,
   cloneList: PropTypes.func,
+  updateTodoOrder: PropTypes.func,
 };
 
 TodoList.defaultProps = {
@@ -186,12 +217,13 @@ TodoList.defaultProps = {
   toggleTodo: (() => {}),
   addTodo: (() => {}),
   deleteTodoList: (() => {}),
-  uiState: I.fromJS({ filter: SHOW_ALL }),
+  uiState: I.fromJS({}),
   changeFilter: (() => {}),
   deleteTodo: (() => {}),
   editListTitle: (() => {}),
   editTodoName: (() => {}),
   cloneList: (() => {}),
+  updateTodoOrder: (() => {}),
 };
 
 export default TodoList;

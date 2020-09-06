@@ -23,6 +23,7 @@ const TodoLists = ({
   editTodoName,
   cloneList,
   updateListOrder,
+  updateTodoOrder,
 }) => {
   const [newTodoListInput, setNewTodoListInput] = useState('');
   const [flipState, setFlipState] = useState('rotateY(0deg)');
@@ -92,6 +93,7 @@ const TodoLists = ({
               editListTitle={editListTitle}
               editTodoName={editTodoName}
               cloneList={cloneList}
+              updateTodoOrder={newOrder => updateTodoOrder(todoList.get('id'), newOrder)}
             />
           ))}
       </ReactSortable>
@@ -140,6 +142,7 @@ TodoLists.propTypes = {
   editTodoName: PropTypes.func,
   cloneList: PropTypes.func,
   updateListOrder: PropTypes.func,
+  updateTodoOrder: PropTypes.func,
 };
 
 TodoLists.defaultProps = {
@@ -157,6 +160,7 @@ TodoLists.defaultProps = {
   editTodoName: (() => {}),
   cloneList: (() => {}),
   updateListOrder: (() => {}),
+  updateTodoOrder: (() => {}),
 };
 
 export default TodoLists;

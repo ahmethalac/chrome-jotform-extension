@@ -9,7 +9,7 @@ export const getTodoLists = createSelector(
 
 export const selectTodos = createSelector(
   [todoList => todoList.get('todos', {})],
-  todos => todos.toArray().map(value => value[1]),
+  todos => todos,
 );
 
 export const getTodoListsUIState = state => state.todoListsUI;
