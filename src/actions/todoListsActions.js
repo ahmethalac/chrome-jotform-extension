@@ -32,14 +32,12 @@ export const deleteTodo = (formId, submissionId) => ({
   payload: { formId, submissionId },
 });
 
-export const swapTodo = (submissionId, oldFormId, newFormId, name, done) => ({
+export const swapTodo = (submissionId, oldFormId, newFormId) => ({
   type: SWAP_TODO_REQUEST,
   payload: {
     submissionId,
     oldFormId,
     newFormId,
-    name,
-    done,
   },
 });
 

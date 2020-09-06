@@ -10,7 +10,7 @@ import {
   DELETE_UI_STATE,
   INIT_UI_STATE_SUCCESS,
   SET_TODOLIST_COLOR_OPTIMISTIC,
-  SET_TODOLIST_COLOR_REAL,
+  SET_TODOLIST_COLOR_REAL, SWAP_TODO_UPDATE_UI_SUCCESS,
   UPDATE_LIST_ORDER_SUCCESS,
   UPDATE_TODO_ORDER_SUCCESS,
 } from '../constants/actionTypes';
@@ -83,6 +83,15 @@ export default (state = INITIAL_STATE, action) => {
       if (deleteIndex !== -1) {
         return state.setIn([formId, 'order'],
           state.getIn([formId, 'order']).delete(deleteIndex));
+      }
+      return state;
+    }
+    case SWAP_TODO_UPDATE_UI_SUCCESS: {
+      const { oldSubmissionId, newFormId, newSubmissionId } = action.payload;
+      const updateIndex = state.getIn([newFormId, 'order'], List()).indexOf(oldSubmissionId);
+      if (updateIndex !== -1) {
+        return state.setIn([newFormId, 'order'],
+          state.getIn([newFormId, 'order']).set(updateIndex, newSubmissionId));
       }
       return state;
     }

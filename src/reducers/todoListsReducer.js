@@ -118,23 +118,22 @@ export default (state = INITIAL_STATE, action) => {
         submissionId,
         oldFormId,
         newFormId,
-        name,
-        done,
       } = action.payload;
       return state
-        .deleteIn([oldFormId, 'todos', submissionId])
         .setIn([newFormId, 'todos', submissionId],
-          I.fromJS({ id: submissionId, name, done }));
+          state.getIn([oldFormId, 'todos', submissionId]));
     }
     case SWAP_TODO_REAL_SUCCESS: {
       const {
         oldSubmissionId,
+        oldFormId,
         newSubmissionId,
         newFormId,
         name,
         done,
       } = action.payload;
       return state
+        .deleteIn([oldFormId, 'todos', oldSubmissionId])
         .deleteIn([newFormId, 'todos', oldSubmissionId])
         .setIn([newFormId, 'todos', newSubmissionId],
           I.fromJS({ id: newSubmissionId, name, done }));

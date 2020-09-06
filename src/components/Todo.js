@@ -34,6 +34,7 @@ const Todo = ({
     <li
       className="todo"
       ref={liRef}
+      id={id}
     >
       <input
         type="checkbox"
@@ -73,8 +74,8 @@ const Todo = ({
       />
       <button
         type="button"
-        className="dragHandle"
-        aria-label="dragHandle"
+        className="dragTodoHandle"
+        aria-label="dragTodoHandle"
       />
     </li>
   );

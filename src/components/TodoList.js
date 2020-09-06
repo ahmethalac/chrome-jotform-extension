@@ -3,7 +3,7 @@ import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import I from 'immutable';
+import I, { Map } from 'immutable';
 import autosize from 'autosize';
 import { ReactSortable } from 'react-sortablejs';
 import Todo from './Todo';
@@ -27,6 +27,7 @@ const TodoList = ({
   editTodoName,
   cloneList,
   updateTodoOrder,
+  swapTodo,
 }) => {
   const [newTodoInput, setNewTodoInput] = useState('');
   const [newTitle, setNewTitle] = useState('');
@@ -82,7 +83,6 @@ const TodoList = ({
       default:
         return false;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   const handleEdit = () => {
@@ -102,6 +102,9 @@ const TodoList = ({
     }
   };
 
+  const onAdd = event => {
+    swapTodo(event.item.id, event.from.id, event.to.id);
+  };
   return (
     <div className="todoListOuterContainer">
       <div
@@ -152,11 +155,15 @@ const TodoList = ({
           changeFilter={filter => changeFilter(formId, filter)}
         />
         <ReactSortable
+          id={formId}
+          group="todos"
+          onAdd={onAdd}
           list={list}
           setList={setList}
           className="todos"
           sort
           animation={100}
+          handle=".dragTodoHandle"
         >
           {list
             .filter(e => todos.get(e.id))
@@ -176,7 +183,12 @@ const TodoList = ({
                     )}
                   />
                 )
-                : <div id={todo.get('id')} />
+                : (
+                  <div
+                    id={todo.get('id')}
+                    key={todo.get('id')}
+                  />
+                )
             ))}
         </ReactSortable>
       </div>
@@ -194,7 +206,7 @@ const TodoList = ({
 
 TodoList.propTypes = {
   newTodoPlaceholder: PropTypes.string,
-  todos: PropTypes.arrayOf(PropTypes.object),
+  todos: PropTypes.instanceOf(Map),
   name: PropTypes.string,
   formId: PropTypes.string,
   toggleTodo: PropTypes.func,
@@ -207,6 +219,7 @@ TodoList.propTypes = {
   editTodoName: PropTypes.func,
   cloneList: PropTypes.func,
   updateTodoOrder: PropTypes.func,
+  swapTodo: PropTypes.func,
 };
 
 TodoList.defaultProps = {
@@ -224,6 +237,7 @@ TodoList.defaultProps = {
   editTodoName: (() => {}),
   cloneList: (() => {}),
   updateTodoOrder: (() => {}),
+  swapTodo: (() => {}),
 };
 
 export default TodoList;

@@ -44,7 +44,7 @@ import {
   ADD_TO_LIST_ORDER_REAL,
   UPDATE_TODO_ORDER_SUCCESS,
   ADD_TO_TODO_ORDER_OPTIMISTIC,
-  ADD_TO_TODO_ORDER_REAL, DELETE_FROM_TODO_ORDER,
+  ADD_TO_TODO_ORDER_REAL, DELETE_FROM_TODO_ORDER, SWAP_TODO_UPDATE_UI_REQUEST,
 } from '../constants/actionTypes';
 import {
   changeTitle, changeTodoName,
@@ -313,9 +313,8 @@ export function* swapSubmission(action) {
     submissionId,
     oldFormId,
     newFormId,
-    name,
-    done,
   } = action.payload;
+  const { name, done } = (yield select(getTodoListsState)).getIn([oldFormId, 'todos', submissionId]).toJSON();
   try {
     yield put({
       type: SWAP_TODO_OPTIMISTIC_SUCCESS,
@@ -323,8 +322,6 @@ export function* swapSubmission(action) {
         submissionId,
         oldFormId,
         newFormId,
-        name,
-        done,
       },
     });
 
@@ -348,10 +345,19 @@ export function* swapSubmission(action) {
       type: SWAP_TODO_REAL_SUCCESS,
       payload: {
         oldSubmissionId: submissionId,
+        oldFormId,
         newSubmissionId,
         newFormId,
         name,
         done,
+      },
+    });
+    yield put({
+      type: SWAP_TODO_UPDATE_UI_REQUEST,
+      payload: {
+        oldSubmissionId: submissionId,
+        newSubmissionId,
+        newFormId,
       },
     });
   } catch (e) {

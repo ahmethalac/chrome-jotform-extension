@@ -8,7 +8,7 @@ import {
   CHANGE_FILTER_REQUEST, CHANGE_FILTER_SUCCESS,
   INIT_UI_STATE_FAILURE,
   INIT_UI_STATE_REQUEST,
-  INIT_UI_STATE_SUCCESS,
+  INIT_UI_STATE_SUCCESS, SWAP_TODO_UPDATE_UI_REQUEST, SWAP_TODO_UPDATE_UI_SUCCESS,
   UPDATE_CHROME_UI_STORAGE,
   UPDATE_LIST_ORDER_REQUEST,
   UPDATE_LIST_ORDER_SUCCESS, UPDATE_TODO_ORDER_REQUEST, UPDATE_TODO_ORDER_SUCCESS,
@@ -91,12 +91,24 @@ export function* storeTodoOrder(action) {
     type: UPDATE_CHROME_UI_STORAGE,
   });
 }
+
+export function* todosSwapped(action) {
+  yield put({
+    type: SWAP_TODO_UPDATE_UI_SUCCESS,
+    payload: action.payload,
+  });
+
+  yield put({
+    type: UPDATE_CHROME_UI_STORAGE,
+  });
+}
 const todolistsUISagas = [
   takeEvery(INIT_UI_STATE_REQUEST, initUIState),
   takeEvery(UPDATE_CHROME_UI_STORAGE, updateChromeStorage),
   takeEvery(CHANGE_FILTER_REQUEST, changeFilterSaga),
   takeEvery(UPDATE_LIST_ORDER_REQUEST, storeListOrder),
   takeEvery(UPDATE_TODO_ORDER_REQUEST, storeTodoOrder),
+  takeEvery(SWAP_TODO_UPDATE_UI_REQUEST, todosSwapped),
 ];
 
 export default todolistsUISagas;
