@@ -155,6 +155,7 @@ const TodoList = ({
           changeFilter={filter => changeFilter(formId, filter)}
         />
         <ReactSortable
+          multiDrag
           id={formId}
           group="todos"
           onAdd={onAdd}

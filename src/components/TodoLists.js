@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useEffect, useMemo, useRef, useState,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -63,40 +64,69 @@ const TodoLists = ({
     }
   };
 
+  const scrollList = document.getElementById('todoLists');
+
+  const scroll = useCallback(direction => {
+    const blockWidth = Math.floor(scrollList.offsetWidth / 320) * 320;
+    let scrollAmount = 0;
+    if (direction === 'left') {
+      scrollAmount = (scrollList.scrollLeft % blockWidth || blockWidth) * -1;
+    } else if (direction === 'right') {
+      scrollAmount = ((blockWidth - (scrollList.scrollLeft % blockWidth)) || blockWidth);
+    }
+    scrollList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  }, [scrollList]);
+
   return (
-    <div id="listContainer">
-      <ReactSortable
-        list={list}
-        setList={setList}
-        sort
-        id="todoLists"
-        handle=".dragListHandle"
-        animation={100}
-        dragClass="drag"
-      >
-        {list
-          .filter(e => todoLists.get(e.id))
-          .map(sortableElement => todoLists.get(sortableElement.id))
-          .map(todoList => (
-            <TodoList
-              key={todoList.get('id', '0')}
-              name={todoList.get('name', 'undefined')}
-              formId={todoList.get('id', '0')}
-              todos={selectTodos(todoList)}
-              toggleTodo={toggleTodo}
-              addTodo={addTodo}
-              deleteTodoList={deleteTodoList}
-              uiState={todoListsUI.get(todoList.get('id'))}
-              changeFilter={changeFilter}
-              deleteTodo={deleteTodo}
-              swapTodo={swapTodo}
-              editListTitle={editListTitle}
-              editTodoName={editTodoName}
-              cloneList={cloneList}
-              updateTodoOrder={newOrder => updateTodoOrder(todoList.get('id'), newOrder)}
-            />
-          ))}
-      </ReactSortable>
+    <div className="topContainer">
+      <div style={{ maxWidth: 'calc(100% - 200px)' }}>
+        <div className="listNavigationBar">
+          <button
+            type="button"
+            className="scrollLeft"
+            onClick={() => scroll('left')}
+            aria-label="scrollLeft"
+          />
+          <button
+            type="button"
+            className="scrollRight"
+            onClick={() => scroll('right')}
+            aria-label="scrollRight"
+          />
+        </div>
+        <ReactSortable
+          list={list}
+          setList={setList}
+          sort
+          id="todoLists"
+          handle=".dragListHandle"
+          animation={100}
+          dragClass="drag"
+        >
+          {list
+            .filter(e => todoLists.get(e.id))
+            .map(sortableElement => todoLists.get(sortableElement.id))
+            .map(todoList => (
+              <TodoList
+                key={todoList.get('id', '0')}
+                name={todoList.get('name', 'undefined')}
+                formId={todoList.get('id', '0')}
+                todos={selectTodos(todoList)}
+                toggleTodo={toggleTodo}
+                addTodo={addTodo}
+                deleteTodoList={deleteTodoList}
+                uiState={todoListsUI.get(todoList.get('id'))}
+                changeFilter={changeFilter}
+                deleteTodo={deleteTodo}
+                swapTodo={swapTodo}
+                editListTitle={editListTitle}
+                editTodoName={editTodoName}
+                cloneList={cloneList}
+                updateTodoOrder={newOrder => updateTodoOrder(todoList.get('id'), newOrder)}
+              />
+            ))}
+        </ReactSortable>
+      </div>
       <button
         type="button"
         className="addTodoList"

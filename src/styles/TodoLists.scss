@@ -1,6 +1,29 @@
 @import "common";
 
-#listContainer{
+.listNavigationBar{
+  padding-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.scrollLeft{
+  @extend iconButton;
+  background-image: url("../assets/scrollLeft.png");
+  height: 30px;
+  width: 30px;
+  opacity: 0.8;
+}
+
+.scrollRight{
+  @extend iconButton;
+  background-image: url("../assets/scrollRight.png");
+  height: 30px;
+  width: 30px;
+  opacity: 0.8;
+}
+
+.topContainer{
   display: flex;
 }
 
@@ -9,9 +32,11 @@
   overflow-x: auto;
   overflow-y: hidden;
   align-items: flex-start;
+  max-width: 960px;
 }
 
 .addTodoList {
+  margin-top: 35px;
   background-color: transparent;
   min-width: 200px;
   height: 128px;
