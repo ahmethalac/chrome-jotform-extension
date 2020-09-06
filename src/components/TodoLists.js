@@ -26,6 +26,7 @@ const TodoLists = ({
   updateListOrder,
   updateTodoOrder,
 }) => {
+  const [filterName, setFilterName] = useState('');
   const [newTodoListInput, setNewTodoListInput] = useState('');
   const [flipState, setFlipState] = useState('rotateY(0deg)');
   const inputRef = useRef(null);
@@ -87,6 +88,21 @@ const TodoLists = ({
             onClick={() => scroll('left')}
             aria-label="scrollLeft"
           />
+          <div className="filter">
+            <input
+              value={filterName}
+              onChange={event => setFilterName(event.target.value)}
+              className="listFilter"
+              placeholder="Filter by Title"
+            />
+            <button
+              type="button"
+              className="resetFilter"
+              aria-label="resetFilter"
+              onClick={() => setFilterName('')}
+            />
+          </div>
+          <div style={{ flex: 1 }} />
           <button
             type="button"
             className="scrollRight"
@@ -107,23 +123,26 @@ const TodoLists = ({
             .filter(e => todoLists.get(e.id))
             .map(sortableElement => todoLists.get(sortableElement.id))
             .map(todoList => (
-              <TodoList
-                key={todoList.get('id', '0')}
-                name={todoList.get('name', 'undefined')}
-                formId={todoList.get('id', '0')}
-                todos={selectTodos(todoList)}
-                toggleTodo={toggleTodo}
-                addTodo={addTodo}
-                deleteTodoList={deleteTodoList}
-                uiState={todoListsUI.get(todoList.get('id'))}
-                changeFilter={changeFilter}
-                deleteTodo={deleteTodo}
-                swapTodo={swapTodo}
-                editListTitle={editListTitle}
-                editTodoName={editTodoName}
-                cloneList={cloneList}
-                updateTodoOrder={newOrder => updateTodoOrder(todoList.get('id'), newOrder)}
-              />
+              todoList.get('name').includes(filterName)
+                ? (
+                  <TodoList
+                    key={todoList.get('id', '0')}
+                    name={todoList.get('name', 'undefined')}
+                    formId={todoList.get('id', '0')}
+                    todos={selectTodos(todoList)}
+                    toggleTodo={toggleTodo}
+                    addTodo={addTodo}
+                    deleteTodoList={deleteTodoList}
+                    uiState={todoListsUI.get(todoList.get('id'))}
+                    changeFilter={changeFilter}
+                    deleteTodo={deleteTodo}
+                    swapTodo={swapTodo}
+                    editListTitle={editListTitle}
+                    editTodoName={editTodoName}
+                    cloneList={cloneList}
+                    updateTodoOrder={newOrder => updateTodoOrder(todoList.get('id'), newOrder)}
+                  />
+                ) : <div key={todoList.get('id')} />
             ))}
         </ReactSortable>
       </div>

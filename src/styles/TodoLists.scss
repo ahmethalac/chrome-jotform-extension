@@ -90,3 +90,28 @@
   color: rgba(255,255,255,0.8);
 }
 
+.filter{
+  margin: 0 65px;
+  border-bottom: 1px dotted white;
+  opacity: 0.8;
+}
+
+.listFilter{
+  width: 100px;
+  text-align: center;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  &::placeholder{
+    color: white;
+    font-size: 16px;
+  }
+}
+
+.resetFilter{
+  @extend iconButton;
+  background-image: url("../assets/resetFilter.png");
+  height: 12px;
+  width: 12px;
+}
