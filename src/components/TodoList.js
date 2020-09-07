@@ -1,4 +1,5 @@
 import React, {
+  // TODO: OH GOD PLEASE PUT THESE IN SEPARATE LINES
   useCallback,
   useEffect, useMemo, useRef, useState,
 } from 'react';
@@ -36,6 +37,18 @@ const TodoList = ({
   const nameRef = useRef(null);
   const textareaRef = useRef(null);
   const menuButtonRef = useRef(null);
+
+  /**
+   * TODO:
+   * This op is not related to here. You should prep this
+   * in selectors and pass it as a prop.
+   *
+   * As a matter of fact passing in whole uiState and
+   * then getting vars from that is not really cool.
+   *
+   * These ops will run on each react irrelevent render
+   * if you don't use selectors as they should be used.
+   */
   const list = useMemo(() => uiState
     .get('order', I.List())
     .toArray()
@@ -106,8 +119,17 @@ const TodoList = ({
   };
 
   const onAdd = event => {
+    /**
+     * TODO:
+     * If a function requires more then 3 params,
+     * then its better to pass it as an object generally.
+     * This way you dont have to remember irrelevent orders.
+     * swapTodo({ itemId: ..., fromId: ..., toId: ... });
+     */
     swapTodo(event.item.id, event.from.id, event.to.id);
   };
+
+  // TODO: Create a new component named ListHeader and move the markup inside.
 
   return (
     <div className="todoListOuterContainer">
@@ -235,4 +257,5 @@ TodoList.defaultProps = {
   uiState: I.fromJS({}),
 };
 
+// TODO: read about memo(Component) exports and use them.
 export default TodoList;

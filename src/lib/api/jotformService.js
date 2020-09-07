@@ -32,6 +32,7 @@ export const changeTodoState = (submissionID, done) => {
   return axios.post(`${baseURL}submission/${submissionID}?apiKey=${JOTFORM_API_KEY}`, requestBody);
 };
 
+// TODO: well you have limited this but are you planning to lazily load the rest on scroll?
 export const getTodoLists = () => axios.get(`${baseURL}user/forms?apikey=${JOTFORM_API_KEY}&limit=50`)
   .then(response => response.data.content)
   .then(forms => forms.filter(form => form.status === 'ENABLED'))
