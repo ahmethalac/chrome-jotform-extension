@@ -13,7 +13,7 @@ import {
   editTodoName,
   cloneList,
   updateListOrder,
-  updateTodoOrder,
+  updateTodoOrder, changeColor,
 } from '../actions';
 
 const mapStateToProps = state => ({
@@ -34,6 +34,7 @@ const mapActionsToProps = {
   cloneList,
   updateListOrder,
   updateTodoOrder,
+  changeColor,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(TodoLists);

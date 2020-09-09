@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { createPortal } from 'react-dom';
 
 const withClickOutside = WrappedComponent => {
   const WithClickOutside = ({
@@ -27,13 +28,14 @@ const withClickOutside = WrappedComponent => {
       };
     }, [handleClickOutside]);
 
-    return (
+    return createPortal(
       <div
         ref={wrapperRef}
         className={wrapperClassname}
       >
         <WrappedComponent {...passThroughProps} />
-      </div>
+      </div>,
+      document.getElementById('modalRoot'),
     );
   };
 
@@ -45,7 +47,7 @@ const withClickOutside = WrappedComponent => {
 
   WithClickOutside.defaultProps = {
     externalRefs: [],
-    wrapperClassname: '',
+    wrapperClassname: 'popup',
   };
 
   WithClickOutside.displayName = WrappedComponent.displayName

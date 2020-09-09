@@ -81,6 +81,7 @@ const SearchBar = ({
           addShortcut={addShortcut}
           onClickOutside={closeShortcuts}
           deleteShortcut={deleteShortcut}
+          position={shortcutsButtonRef.current.getBoundingClientRect()}
         />
       )}
     </div>

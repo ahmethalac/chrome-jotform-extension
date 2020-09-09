@@ -38,3 +38,9 @@
   background-image: url('../assets/deleteIcon.png');
   margin-right: 5px;
 }
+
+.pickColorIcon {
+  @extend iconButton;
+  background-image: url("../assets/colorWheelIcon.png");
+  margin-right: 5px;
+}

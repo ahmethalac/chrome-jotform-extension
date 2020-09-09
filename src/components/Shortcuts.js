@@ -10,11 +10,14 @@ const Shortcuts = ({
   title,
   addShortcut,
   deleteShortcut,
+  position,
 }) => (
   <div
     id="shortcuts"
     style={{
       height: Math.min(shortcuts.size, 4) * 25 + 70,
+      top: position.y,
+      left: position.right,
     }}
   >
     <div className="shortcutTitle">
@@ -41,10 +44,12 @@ Shortcuts.propTypes = {
   title: PropTypes.string,
   addShortcut: PropTypes.func.isRequired,
   deleteShortcut: PropTypes.func.isRequired,
+  position: PropTypes.instanceOf(DOMRect),
 };
 
 Shortcuts.defaultProps = {
   shortcuts: {},
   title: 'Shortcuts',
+  position: new DOMRect(),
 };
 export default withClickOutside(Shortcuts);

@@ -1,5 +1,4 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
 import '../styles/TodoListMenu.scss';
 import PropTypes from 'prop-types';
 import withClickOutside from '../helpers/hocs/withClickOutside';
@@ -10,11 +9,24 @@ const TodoListMenu = ({
   deleteTodoList,
   deleteTodoListText,
   position,
-}) => createPortal(
+  pickColorText,
+  openColorPicker,
+}) => (
   <div
     className="todoListMenu"
     style={{ top: position.y, left: position.right }}
   >
+    <div>
+      <button
+        className="listButton"
+        type="button"
+        aria-label="pickColor"
+        onMouseDown={openColorPicker}
+      >
+        <div className="pickColorIcon" />
+        {pickColorText}
+      </button>
+    </div>
     <div>
       <button
         className="listButton"
@@ -37,8 +49,7 @@ const TodoListMenu = ({
         {deleteTodoListText}
       </button>
     </div>
-  </div>,
-  document.getElementById('modalRoot'),
+  </div>
 );
 
 TodoListMenu.propTypes = {
@@ -47,11 +58,15 @@ TodoListMenu.propTypes = {
   deleteTodoList: PropTypes.func.isRequired,
   deleteTodoListText: PropTypes.string,
   position: PropTypes.instanceOf(DOMRect),
+  pickColorText: PropTypes.string,
+  openColorPicker: PropTypes.func,
 };
 
 TodoListMenu.defaultProps = {
   cloneListText: 'Clone List',
   deleteTodoListText: 'Delete List',
   position: new DOMRect(),
+  pickColorText: 'Change Color',
+  openColorPicker: (() => {}),
 };
 export default withClickOutside(TodoListMenu);

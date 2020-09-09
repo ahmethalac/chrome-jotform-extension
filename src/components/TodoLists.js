@@ -25,6 +25,7 @@ const TodoLists = ({
   cloneList,
   updateListOrder,
   updateTodoOrder,
+  changeColor,
 }) => {
   const [filterName, setFilterName] = useState('');
   const [newTodoListInput, setNewTodoListInput] = useState('');
@@ -145,6 +146,7 @@ const TodoLists = ({
                     editTodoName={editTodoName}
                     cloneList={cloneList}
                     updateTodoOrder={newOrder => updateTodoOrder(todoList.get('id'), newOrder)}
+                    changeColor={changeColor}
                   />
                 ) : <div key={todoList.get('id')} />
             ))}
@@ -196,6 +198,7 @@ TodoLists.propTypes = {
   cloneList: PropTypes.func.isRequired,
   updateListOrder: PropTypes.func.isRequired,
   updateTodoOrder: PropTypes.func.isRequired,
+  changeColor: PropTypes.func.isRequired,
 };
 
 TodoLists.defaultProps = {

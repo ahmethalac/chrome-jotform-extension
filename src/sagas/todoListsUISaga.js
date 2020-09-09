@@ -6,7 +6,7 @@ import { getFromChrome, storeInChrome } from '../lib/api';
 import {
   CHANGE_FILTER_FAILURE,
   CHANGE_FILTER_REQUEST,
-  CHANGE_FILTER_SUCCESS,
+  CHANGE_FILTER_SUCCESS, CHANGE_LIST_COLOR,
   INIT_UI_STATE_FAILURE,
   INIT_UI_STATE_REQUEST,
   INIT_UI_STATE_SUCCESS,
@@ -107,6 +107,11 @@ export function* todosSwapped(action) {
     type: UPDATE_CHROME_UI_STORAGE,
   });
 }
+
+export function* changeListColor(action) {
+  console.log(action);
+  yield;
+}
 const todolistsUISagas = [
   takeEvery(INIT_UI_STATE_REQUEST, initUIState),
   takeEvery(UPDATE_CHROME_UI_STORAGE, updateChromeStorage),
@@ -114,6 +119,7 @@ const todolistsUISagas = [
   takeEvery(UPDATE_LIST_ORDER_REQUEST, storeListOrder),
   takeEvery(UPDATE_TODO_ORDER_REQUEST, storeTodoOrder),
   takeEvery(SWAP_TODO_UPDATE_UI_REQUEST, todosSwapped),
+  takeEvery(CHANGE_LIST_COLOR, changeListColor),
 ];
 
 export default todolistsUISagas;

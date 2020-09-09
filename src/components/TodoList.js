@@ -12,6 +12,7 @@ import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilt
 import Filters from './Filters';
 import '../styles/TodoList.scss';
 import TodoListMenu from './TodoListMenu';
+import ColorPicker from './ColorPicker';
 
 const TodoList = ({
   newTodoPlaceholder,
@@ -29,14 +30,28 @@ const TodoList = ({
   cloneList,
   updateTodoOrder,
   swapTodo,
+  changeColor,
 }) => {
   const [newTodoInput, setNewTodoInput] = useState('');
   const [newTitle, setNewTitle] = useState('');
   const [editIconVisible, setEditIconVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [colorPickerVisible, setColorPickerVisible] = useState(false);
   const nameRef = useRef(null);
   const textareaRef = useRef(null);
   const menuButtonRef = useRef(null);
+
+  const [backgroundColor, setBackgroundColor] = useState('#FF0000');
+
+  useEffect(() => {
+    setBackgroundColor(uiState.get('color', '#FF0000'));
+  }, [uiState]);
+
+  useEffect(() => {
+    if (!colorPickerVisible) {
+      changeColor(formId, backgroundColor);
+    }
+  }, [backgroundColor, changeColor, colorPickerVisible, formId]);
 
   /**
    * TODO:
@@ -129,6 +144,7 @@ const TodoList = ({
     swapTodo(event.item.id, event.from.id, event.to.id);
   };
 
+  const closeColorPicker = () => setColorPickerVisible(false);
   // TODO: Create a new component named ListHeader and move the markup inside.
 
   return (
@@ -138,7 +154,7 @@ const TodoList = ({
       >
         <div
           className="todolistHeader"
-          style={{ backgroundColor: uiState.get('color', '#FF1616') }}
+          style={{ backgroundColor }}
         >
           <div
             role="button"
@@ -225,6 +241,18 @@ const TodoList = ({
           deleteTodoList={() => deleteTodoList(formId)}
           onClickOutside={closeMenu}
           position={menuButtonRef.current.getBoundingClientRect()}
+          openColorPicker={() => setColorPickerVisible(true)}
+        />
+      )}
+      {colorPickerVisible
+      && (
+        <ColorPicker
+          onClickOutside={closeColorPicker}
+          position={menuButtonRef.current.getBoundingClientRect()}
+          initialColor={backgroundColor}
+          onChange={color => {
+            setBackgroundColor(color.hex);
+          }}
         />
       )}
     </div>
@@ -247,6 +275,7 @@ TodoList.propTypes = {
   cloneList: PropTypes.func.isRequired,
   updateTodoOrder: PropTypes.func.isRequired,
   swapTodo: PropTypes.func.isRequired,
+  changeColor: PropTypes.func.isRequired,
 };
 
 TodoList.defaultProps = {
