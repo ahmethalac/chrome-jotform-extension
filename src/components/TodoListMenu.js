@@ -16,6 +16,11 @@ const TodoListMenu = ({
     className="todoListMenu"
     style={{ top: position.y, left: position.right }}
   >
+    <div
+      className="menuHeader"
+    >
+      List Actions
+    </div>
     <div>
       <button
         className="listButton"

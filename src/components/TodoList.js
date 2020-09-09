@@ -41,17 +41,7 @@ const TodoList = ({
   const textareaRef = useRef(null);
   const menuButtonRef = useRef(null);
 
-  const [backgroundColor, setBackgroundColor] = useState('#FF0000');
-
-  useEffect(() => {
-    setBackgroundColor(uiState.get('color', '#FF0000'));
-  }, [uiState]);
-
-  useEffect(() => {
-    if (!colorPickerVisible) {
-      changeColor(formId, backgroundColor);
-    }
-  }, [backgroundColor, changeColor, colorPickerVisible, formId]);
+  const [backgroundColor, setBackgroundColor] = useState(uiState.get('color', '#FF0000'));
 
   /**
    * TODO:
@@ -144,7 +134,10 @@ const TodoList = ({
     swapTodo(event.item.id, event.from.id, event.to.id);
   };
 
-  const closeColorPicker = () => setColorPickerVisible(false);
+  const closeColorPicker = () => {
+    setColorPickerVisible(false);
+    changeColor(formId, backgroundColor);
+  };
   // TODO: Create a new component named ListHeader and move the markup inside.
 
   return (

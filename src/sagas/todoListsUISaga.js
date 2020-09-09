@@ -9,7 +9,7 @@ import {
   CHANGE_FILTER_SUCCESS, CHANGE_LIST_COLOR,
   INIT_UI_STATE_FAILURE,
   INIT_UI_STATE_REQUEST,
-  INIT_UI_STATE_SUCCESS,
+  INIT_UI_STATE_SUCCESS, SET_TODOLIST_COLOR_OPTIMISTIC,
   SWAP_TODO_UPDATE_UI_REQUEST,
   SWAP_TODO_UPDATE_UI_SUCCESS,
   UPDATE_CHROME_UI_STORAGE,
@@ -109,8 +109,14 @@ export function* todosSwapped(action) {
 }
 
 export function* changeListColor(action) {
-  console.log(action);
-  yield;
+  yield put({
+    type: SET_TODOLIST_COLOR_OPTIMISTIC,
+    payload: action.payload,
+  });
+
+  yield put({
+    type: UPDATE_CHROME_UI_STORAGE,
+  });
 }
 const todolistsUISagas = [
   takeEvery(INIT_UI_STATE_REQUEST, initUIState),

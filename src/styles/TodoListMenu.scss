@@ -13,6 +13,7 @@
 }
 
 .listButton{
+  font-weight: bold;
   border: none;
   background-color: transparent;
   display: flex;
@@ -26,21 +27,37 @@
   }
 }
 
+.menuHeader{
+  width: 150px;
+  margin: 0 10px 5px 10px;
+  padding: 5px;
+  text-align: center;
+  border-bottom: 1px solid #c4c4c4;
+  font-size: 14px;
+  color: grey;
+}
 
 .cloneIcon{
   @extend iconButton;
+  height: 15px;
+  width: 15px;
   background-image: url("../assets/cloneIcon.png");
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .deleteListIcon {
   @extend iconButton;
+  height: 15px;
+  width: 15px;
   background-image: url('../assets/deleteIcon.png');
-  margin-right: 5px;
+  margin-right: 10px;
+  padding-bottom: 1.5px;
 }
 
 .pickColorIcon {
   @extend iconButton;
+  height: 15px;
+  width: 15px;
   background-image: url("../assets/colorWheelIcon.png");
-  margin-right: 5px;
+  margin-right: 10px;
 }
