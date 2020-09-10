@@ -1,6 +1,5 @@
 import React, {
   useCallback,
-  useRef,
   useState,
 } from 'react';
 import '../styles/AddShortcut.scss';
@@ -12,7 +11,6 @@ const AddShortcut = ({
   const [inputsVisible, setInputsVisible] = useState(false);
   const [shortForm, setShortForm] = useState('!');
   const [longForm, setLongForm] = useState('');
-  const shortInput = useRef(null);
 
   const handleSend = () => {
     if (shortForm.substring(1) !== '' && longForm !== '') {
@@ -57,7 +55,6 @@ const AddShortcut = ({
       >
         <input
           className="shortFormInput"
-          ref={shortInput}
           value={shortForm}
           onChange={handleShortInput}
           onBlur={handleSend}

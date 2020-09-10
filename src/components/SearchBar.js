@@ -52,6 +52,7 @@ const SearchBar = ({
   };
 
   const handleShortcutsButton = () => setShortcutsVisible(!shortcutsVisible);
+
   return (
     <div className="searchBar">
       <button

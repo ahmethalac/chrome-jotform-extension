@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import TodoLists from './TodoLists';
 import {
-  getTodoListsState,
+  getTodoLists,
   getTodoListsUI,
 } from '../selectors';
 import {
@@ -16,11 +16,12 @@ import {
   editTodoName,
   cloneList,
   updateListOrder,
-  updateTodoOrder, changeColor,
+  updateTodoOrder,
+  changeColor,
 } from '../actions';
 
 const mapStateToProps = state => ({
-  todoLists: getTodoListsState(state),
+  todoLists: getTodoLists(state),
   todoListsUI: getTodoListsUI(state),
 });
 

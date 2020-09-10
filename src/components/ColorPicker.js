@@ -21,7 +21,7 @@ const ColorPicker = ({
     }}
   >
     <ColorWheel
-      size={180}
+      size={200}
       initialColor={initialColor}
       onChange={onChange}
     />

@@ -1,7 +1,6 @@
 import React, {
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -9,7 +8,7 @@ import PropTypes from 'prop-types';
 import I from 'immutable';
 import { ReactSortable } from 'react-sortablejs';
 import TodoList from './TodoList';
-import { selectTodos } from '../selectors';
+import { getListOrder, selectTodos } from '../selectors';
 import '../styles/TodoLists.scss';
 
 const TodoLists = ({
@@ -34,15 +33,13 @@ const TodoLists = ({
   const [newTodoListInput, setNewTodoListInput] = useState('');
   const [flipState, setFlipState] = useState('rotateY(0deg)');
   const inputRef = useRef(null);
-  const list = useMemo(() => todoListsUI
-    .get('listOrder', I.List())
-    .toArray()
+  const list = getListOrder(todoListsUI)
     .map(id => ({
       id,
       chosen: false,
       selected: false,
       filtered: false,
-    })), [todoListsUI]);
+    }));
 
   useEffect(() => {
     if (flipState === 'rotateY(180deg)') {
@@ -84,6 +81,12 @@ const TodoLists = ({
     scrollList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   }, []);
 
+  const scrollLeft = () => scroll('left');
+  const handleFilter = event => setFilterName(event.target.value);
+  const resetFilter = () => setFilterName('');
+  const scrollRight = () => scroll('right');
+  const handleUpdateOrder = id => newOrder => updateTodoOrder(id, newOrder);
+  const handleAddButtonClick = () => setFlipState('rotateY(180deg)');
   return (
     <div className="topContainer">
       <div style={{ maxWidth: 'calc(100% - 200px)' }}>
@@ -92,13 +95,13 @@ const TodoLists = ({
             <button
               type="button"
               className="scrollLeft"
-              onClick={() => scroll('left')}
+              onClick={scrollLeft}
               aria-label="scrollLeft"
             />
             <div className="filter">
               <input
                 value={filterName}
-                onChange={event => setFilterName(event.target.value)}
+                onChange={handleFilter}
                 className="listFilter"
                 placeholder="Filter by Title"
               />
@@ -106,14 +109,14 @@ const TodoLists = ({
                 type="button"
                 className="resetFilter"
                 aria-label="resetFilter"
-                onClick={() => setFilterName('')}
+                onClick={resetFilter}
               />
             </div>
             <div style={{ flex: 1 }} />
             <button
               type="button"
               className="scrollRight"
-              onClick={() => scroll('right')}
+              onClick={scrollRight}
               aria-label="scrollRight"
             />
           </div>
@@ -148,7 +151,7 @@ const TodoLists = ({
                     editListTitle={editListTitle}
                     editTodoName={editTodoName}
                     cloneList={cloneList}
-                    updateTodoOrder={newOrder => updateTodoOrder(todoList.get('id'), newOrder)}
+                    updateTodoOrder={handleUpdateOrder(todoList.get('id'))}
                     changeColor={changeColor}
                   />
                 ) : <div key={todoList.get('id')} />
@@ -158,7 +161,7 @@ const TodoLists = ({
       <button
         type="button"
         className="addTodoList"
-        onClick={() => setFlipState('rotateY(180deg)')}
+        onClick={handleAddButtonClick}
       >
         <div
           className="addTodoListSkeleton"

@@ -4,6 +4,7 @@ import React, {
   useMemo,
   useRef,
   useState,
+  memo,
 } from 'react';
 import PropTypes from 'prop-types';
 import I, { Map } from 'immutable';
@@ -19,6 +20,7 @@ import Filters from './Filters';
 import '../styles/TodoList.scss';
 import TodoListMenu from './TodoListMenu';
 import ColorPicker from './ColorPicker';
+import ListHeader from './ListHeader';
 
 const TodoList = ({
   newTodoPlaceholder,
@@ -43,23 +45,12 @@ const TodoList = ({
   const [editIconVisible, setEditIconVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState(uiState.get('color', '#FF0000'));
+
   const nameRef = useRef(null);
   const textareaRef = useRef(null);
   const menuButtonRef = useRef(null);
 
-  const [backgroundColor, setBackgroundColor] = useState(uiState.get('color', '#FF0000'));
-
-  /**
-   * TODO:
-   * This op is not related to here. You should prep this
-   * in selectors and pass it as a prop.
-   *
-   * As a matter of fact passing in whole uiState and
-   * then getting vars from that is not really cool.
-   *
-   * These ops will run on each react irrelevent render
-   * if you don't use selectors as they should be used.
-   */
   const list = useMemo(() => uiState
     .get('order', I.List())
     .toArray()
@@ -141,43 +132,31 @@ const TodoList = ({
     setColorPickerVisible(false);
     changeColor(formId, backgroundColor);
   };
-  // TODO: Create a new component named ListHeader and move the markup inside.
+
+  const handleInput = event => setNewTitle(event.target.textContent);
+  const handleFilterChange = filter => changeFilter(formId, filter);
+  const handleToggleTodo = id => done => toggleTodo(formId, id, done);
+  const handleDeleteTodo = id => () => deleteTodo(formId, id);
+  const handleEditTodo = id => newName => editTodoName(formId, id, newName);
+  const handleCloneList = () => cloneList(formId);
+  const handleDeleteList = () => deleteTodoList(formId);
+  const openColorPicker = () => setColorPickerVisible(true);
+  const changeBackgroundColor = color => setBackgroundColor(color.hex);
 
   return (
     <div className="todoListOuterContainer">
       <div className="todoList">
-        <div
-          className="todolistHeader"
-          style={{ backgroundColor }}
-        >
-          <div
-            role="button"
-            className="todolistName"
-            tabIndex={0}
-            contentEditable
-            onInput={event => setNewTitle(event.target.textContent)}
-            onKeyPress={editTitleEnter}
-            onBlur={handleEdit}
-            suppressContentEditableWarning
-            ref={nameRef}
-            spellCheck={false}
-          >
-            {name}
-          </div>
-          <div className="dragListHandle">
-            <div
-              className="successfulTitleEdit"
-              style={{ opacity: editIconVisible ? 1 : 0 }}
-            />
-          </div>
-          <button
-            ref={menuButtonRef}
-            type="button"
-            className="menuButton"
-            aria-label="menuButton"
-            onClick={openMenu}
-          />
-        </div>
+        <ListHeader
+          backgroundColor={backgroundColor}
+          onInput={handleInput}
+          onKeyPress={editTitleEnter}
+          onBlur={handleEdit}
+          nameRef={nameRef}
+          name={name}
+          editIconVisible={editIconVisible}
+          menuButtonRef={menuButtonRef}
+          onMenuOpen={openMenu}
+        />
         <textarea
           ref={textareaRef}
           className="newTodoInput"
@@ -188,7 +167,7 @@ const TodoList = ({
         />
         <Filters
           filter={uiState.get('filter')}
-          changeFilter={filter => changeFilter(formId, filter)}
+          changeFilter={handleFilterChange}
         />
         <ReactSortable
           id={formId}
@@ -211,12 +190,10 @@ const TodoList = ({
                     key={todo.get('id', '0')}
                     id={todo.get('id', '0')}
                     name={todo.get('name', 'undefined')}
-                    toggleTodo={done => toggleTodo(formId, todo.get('id', '0'), done)}
+                    toggleTodo={handleToggleTodo(todo.get('id', '0'))}
                     done={todo.get('done', false)}
-                    deleteTodo={id => deleteTodo(formId, id)}
-                    editTodoName={(submissionId, newName) => editTodoName(
-                      formId, submissionId, newName,
-                    )}
+                    deleteTodo={handleDeleteTodo(todo.get('id', '0'))}
+                    editTodoName={handleEditTodo(todo.get('id', '0'))}
                   />
                 )
                 : (
@@ -231,11 +208,11 @@ const TodoList = ({
       </div>
       {menuVisible && (
         <TodoListMenu
-          cloneList={() => cloneList(formId)}
-          deleteTodoList={() => deleteTodoList(formId)}
+          cloneList={handleCloneList}
+          deleteTodoList={handleDeleteList}
           onClickOutside={closeMenu}
           position={menuButtonRef.current.getBoundingClientRect()}
-          openColorPicker={() => setColorPickerVisible(true)}
+          openColorPicker={openColorPicker}
         />
       )}
       {colorPickerVisible
@@ -244,9 +221,7 @@ const TodoList = ({
           onClickOutside={closeColorPicker}
           position={menuButtonRef.current.getBoundingClientRect()}
           initialColor={backgroundColor}
-          onChange={color => {
-            setBackgroundColor(color.hex);
-          }}
+          onChange={changeBackgroundColor}
         />
       )}
     </div>
@@ -280,5 +255,4 @@ TodoList.defaultProps = {
   uiState: I.fromJS({}),
 };
 
-// TODO: read about memo(Component) exports and use them.
-export default TodoList;
+export default memo(TodoList);

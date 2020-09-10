@@ -1,6 +1,7 @@
 import React, {
   useRef,
   useState,
+  memo,
 } from 'react';
 import PropTypes from 'prop-types';
 import '../styles/Todo.scss';
@@ -15,7 +16,6 @@ const Todo = ({
 }) => {
   const [newName, setNewName] = useState('');
   const [editIconVisible, setEditIconVisible] = useState(false);
-  const liRef = useRef(null);
   const nameRef = useRef(null);
 
   const editNameEnter = event => {
@@ -27,23 +27,26 @@ const Todo = ({
 
   const handleEdit = () => {
     if (newName !== '') {
-      editTodoName(id, newName);
+      editTodoName(newName);
       setEditIconVisible(true);
       setTimeout(() => setEditIconVisible(false), 1000);
     }
   };
 
+  const handleToggle = () => toggleTodo(done);
+
+  const handleInput = event => setNewName(event.target.textContent);
+
   return (
     <li
       className="todo"
-      ref={liRef}
       id={id}
     >
       <input
         type="checkbox"
         className="done"
         checked={done}
-        onClick={() => toggleTodo(done)}
+        onClick={handleToggle}
         onChange={() => {}}
       />
       <div
@@ -52,7 +55,7 @@ const Todo = ({
         role="button"
         tabIndex={-1}
         contentEditable
-        onInput={event => setNewName(event.target.textContent)}
+        onInput={handleInput}
         className="todoName"
         suppressContentEditableWarning
         onBlur={handleEdit}
@@ -72,7 +75,7 @@ const Todo = ({
       <button
         type="button"
         className="deleteTodoButton"
-        onClick={() => deleteTodo(id)}
+        onClick={deleteTodo}
         aria-label="deleteTodoButton"
       />
       <button
@@ -98,4 +101,4 @@ Todo.defaultProps = {
   id: '0',
   done: false,
 };
-export default Todo;
+export default memo(Todo);

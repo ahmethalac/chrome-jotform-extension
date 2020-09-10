@@ -11,33 +11,39 @@ const Shortcuts = ({
   addShortcut,
   deleteShortcut,
   position,
-}) => (
-  <div
-    id="shortcuts"
-    style={{
-      height: Math.min(shortcuts.size, 4) * 25 + 70,
-      top: position.y,
-      left: position.right,
-    }}
-  >
-    <div className="shortcutTitle">
-      {title}
+}) => {
+  const handleDelete = shortForm => () => deleteShortcut(shortForm);
+
+  const style = {
+    height: Math.min(shortcuts.size, 4) * 25 + 70,
+    top: position.y,
+    left: position.right,
+  };
+
+  return (
+    <div
+      id="shortcuts"
+      style={style}
+    >
+      <div className="shortcutTitle">
+        {title}
+      </div>
+      <div className="shortcutList">
+        {shortcuts.toArray().map(s => (
+          <Shortcut
+            key={s[0]}
+            shortForm={s[0]}
+            longForm={s[1]}
+            deleteShortcut={handleDelete(s[0])}
+          />
+        ))}
+      </div>
+      <AddShortcut
+        addShortcut={addShortcut}
+      />
     </div>
-    <div className="shortcutList">
-      {shortcuts.toArray().map(s => (
-        <Shortcut
-          key={s[0]}
-          shortForm={s[0]}
-          longForm={s[1]}
-          deleteShortcut={() => deleteShortcut(s[0])}
-        />
-      ))}
-    </div>
-    <AddShortcut
-      addShortcut={addShortcut}
-    />
-  </div>
-);
+  );
+};
 
 Shortcuts.propTypes = {
   shortcuts: PropTypes.instanceOf(Object),
