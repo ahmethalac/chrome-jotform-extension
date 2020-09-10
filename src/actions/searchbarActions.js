@@ -3,9 +3,15 @@ import {
   DELETE_SHORTCUT_REQUEST,
 } from '../constants/actionTypes';
 
-export const addShortcut = (shortForm, longForm) => ({
+export const addShortcut = (
+  shortForm,
+  longForm,
+) => ({
   type: ADD_SHORTCUT_REQUEST,
-  payload: { shortForm, longForm },
+  payload: {
+    shortForm,
+    longForm,
+  },
 });
 
 export const deleteShortcut = shortForm => ({

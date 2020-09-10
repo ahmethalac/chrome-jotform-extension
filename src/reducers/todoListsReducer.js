@@ -48,7 +48,10 @@ export default (state = INITIAL_STATE, action) => {
     }
     case ADD_TODO_OPTIMISTIC_SUCCESS: {
       const {
-        name, tempSubmissionID: id, formId, done,
+        name,
+        tempSubmissionID: id,
+        formId,
+        done,
       } = action.payload;
       return state
         .setIn([formId, 'todos', id], I.fromJS({ id, name, done }));

@@ -1,9 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilters';
+import {
+  SHOW_ACTIVE,
+  SHOW_ALL,
+  SHOW_COMPLETED,
+} from '../constants/todolistFilters';
 import '../styles/Filters.scss';
 
-const Filters = ({ filter, changeFilter }) => (
+const Filters = ({
+  filter,
+  changeFilter,
+}) => (
   <div id="filterContainer">
     <button
       type="button"

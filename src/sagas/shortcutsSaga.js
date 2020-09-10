@@ -1,4 +1,8 @@
-import { takeEvery, put, call } from 'redux-saga/effects';
+import {
+  takeEvery,
+  put,
+  call,
+} from 'redux-saga/effects';
 import {
   ADD_SHORTCUT_FAILURE,
   ADD_SHORTCUT_REQUEST,
@@ -10,7 +14,10 @@ import {
   INIT_SHORTCUTS_REQUEST,
   INIT_SHORTCUTS_SUCCESS,
 } from '../constants/actionTypes';
-import { getFromChrome, storeInChrome } from '../lib/api';
+import {
+  getFromChrome,
+  storeInChrome,
+} from '../lib/api';
 
 export function* initShortcuts() {
   try {

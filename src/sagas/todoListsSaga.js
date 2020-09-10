@@ -1,5 +1,8 @@
 import {
-  takeEvery, put, call, select,
+  takeEvery,
+  put,
+  call,
+  select,
 } from 'redux-saga/effects';
 import {
   ADD_TODO_FAILURE,
@@ -451,7 +454,7 @@ export function* cloneTodoList(action) {
       type: UPDATE_CHROME_UI_STORAGE,
     });
 
-    const oldTodos = selectTodos(oldList);
+    const oldTodos = (selectTodos(oldList)).toArray().map(e => e[1]);
     for (let i = 0; i < oldTodos.length; i += 1) {
       const { request: { response: submissionResponse } } = yield call(
         submitTodo,
@@ -478,6 +481,13 @@ export function* cloneTodoList(action) {
           formId: id,
           done: oldTodos[i].get('done'),
         },
+      });
+      yield put({
+        type: ADD_TO_TODO_ORDER_OPTIMISTIC,
+        payload: { id: submissionID, formId: id },
+      });
+      yield put({
+        type: UPDATE_CHROME_UI_STORAGE,
       });
     }
   } catch (e) {

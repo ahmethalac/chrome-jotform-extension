@@ -2,7 +2,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 import I from 'immutable';
 import SearchBar from '../components/SearchBar';
-import { DUMMY_STATE_FOR_SEARCHBAR_SHORTCUTS } from '../constants/dummyValues';
 
 describe('Rendering components', () => {
   let searchBar;
@@ -86,7 +85,10 @@ describe('Typing and submitting', () => {
 describe('Custom shortcuts', () => {
   let searchBar;
   let textBox;
-  const shortcuts = I.fromJS(DUMMY_STATE_FOR_SEARCHBAR_SHORTCUTS);
+  const shortcuts = I.fromJS({
+    w: 'what is',
+    h: 'how to',
+  });
 
   beforeEach(() => {
     searchBar = mount(<SearchBar shortcuts={shortcuts} />);

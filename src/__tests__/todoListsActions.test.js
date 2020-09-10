@@ -1,5 +1,8 @@
 import {
-  addTodo, addTodoList, deleteTodoList, toggleTodo,
+  addTodo,
+  addTodoList,
+  deleteTodoList,
+  toggleTodo,
 } from '../actions';
 import {
   ADD_TODO_REQUEST,

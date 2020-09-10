@@ -1,6 +1,9 @@
 import I from 'immutable';
 import reducer from '../reducers/todoListsUIReducer';
-import { SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilters';
+import {
+  SHOW_ALL,
+  SHOW_COMPLETED,
+} from '../constants/todolistFilters';
 import { CHANGE_FILTER_SUCCESS } from '../constants/actionTypes';
 
 it('should return the initial state', () => {

@@ -1,6 +1,9 @@
 import { connect } from 'react-redux';
 import TodoLists from './TodoLists';
-import { getTodoListsState, getTodoListsUI } from '../selectors';
+import {
+  getTodoListsState,
+  getTodoListsUI,
+} from '../selectors';
 import {
   addTodo,
   addTodoList,

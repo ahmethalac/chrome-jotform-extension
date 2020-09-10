@@ -1,14 +1,20 @@
 import React, {
-  // TODO: OH GOD PLEASE PUT THESE IN SEPARATE LINES
   useCallback,
-  useEffect, useMemo, useRef, useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import I, { Map } from 'immutable';
 import autosize from 'autosize';
 import { ReactSortable } from 'react-sortablejs';
 import Todo from './Todo';
-import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from '../constants/todolistFilters';
+import {
+  SHOW_ACTIVE,
+  SHOW_ALL,
+  SHOW_COMPLETED,
+} from '../constants/todolistFilters';
 import Filters from './Filters';
 import '../styles/TodoList.scss';
 import TodoListMenu from './TodoListMenu';
@@ -124,14 +130,11 @@ const TodoList = ({
   };
 
   const onAdd = event => {
-    /**
-     * TODO:
-     * If a function requires more then 3 params,
-     * then its better to pass it as an object generally.
-     * This way you dont have to remember irrelevent orders.
-     * swapTodo({ itemId: ..., fromId: ..., toId: ... });
-     */
-    swapTodo(event.item.id, event.from.id, event.to.id);
+    swapTodo({
+      submissionId: event.item.id,
+      oldFormId: event.from.id,
+      newFormId: event.to.id,
+    });
   };
 
   const closeColorPicker = () => {
@@ -142,9 +145,7 @@ const TodoList = ({
 
   return (
     <div className="todoListOuterContainer">
-      <div
-        className="todoList"
-      >
+      <div className="todoList">
         <div
           className="todolistHeader"
           style={{ backgroundColor }}

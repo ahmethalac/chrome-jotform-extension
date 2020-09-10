@@ -10,14 +10,30 @@ import {
   TOGGLE_TODO_REQUEST,
 } from '../constants/actionTypes';
 
-export const toggleTodo = (formId, submissionId, done) => ({
+export const toggleTodo = (
+  formId,
+  submissionId,
+  done,
+) => ({
   type: TOGGLE_TODO_REQUEST,
-  payload: { formId, submissionId, done },
+  payload: {
+    formId,
+    submissionId,
+    done,
+  },
 });
 
-export const addTodo = (formId, name, done) => ({
+export const addTodo = (
+  formId,
+  name,
+  done,
+) => ({
   type: ADD_TODO_REQUEST,
-  payload: { formId, name, done },
+  payload: {
+    formId,
+    name,
+    done,
+  },
 });
 
 export const addTodoList = name => ({
@@ -30,24 +46,52 @@ export const deleteTodoList = formId => ({
   payload: { formId },
 });
 
-export const deleteTodo = (formId, submissionId) => ({
+export const deleteTodo = (
+  formId,
+  submissionId,
+) => ({
   type: DELETE_TODO_REQUEST,
-  payload: { formId, submissionId },
+  payload: {
+    formId,
+    submissionId,
+  },
 });
 
-export const swapTodo = (submissionId, oldFormId, newFormId) => ({
+export const swapTodo = ({
+  submissionId,
+  oldFormId,
+  newFormId,
+}) => ({
   type: SWAP_TODO_REQUEST,
-  payload: { submissionId, oldFormId, newFormId },
+  payload: {
+    submissionId,
+    oldFormId,
+    newFormId,
+  },
 });
 
-export const editListTitle = (formId, newTitle) => ({
+export const editListTitle = (
+  formId,
+  newTitle,
+) => ({
   type: EDIT_LIST_TITLE_REQUEST,
-  payload: { formId, newTitle },
+  payload: {
+    formId,
+    newTitle,
+  },
 });
 
-export const editTodoName = (formId, submissionId, newName) => ({
+export const editTodoName = (
+  formId,
+  submissionId,
+  newName,
+) => ({
   type: EDIT_TODO_NAME_REQUEST,
-  payload: { formId, submissionId, newName },
+  payload: {
+    formId,
+    submissionId,
+    newName,
+  },
 });
 
 export const cloneList = formId => ({

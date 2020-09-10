@@ -28,7 +28,6 @@ const SearchBar = ({
         input = input.substring(0, input.lastIndexOf('!')) + shortcuts.get(shortcut);
       }
     }
-
     setInputText(input);
   };
 
@@ -47,14 +46,17 @@ const SearchBar = ({
 
   const closeShortcuts = useCallback(() => setShortcutsVisible(false), []);
 
+  const handleSearchButton = () => {
+    inputRef.current.focus();
+    handleSend();
+  };
+
+  const handleShortcutsButton = () => setShortcutsVisible(!shortcutsVisible);
   return (
     <div className="searchBar">
       <button
         id="searchButton"
-        onClick={() => {
-          inputRef.current.focus();
-          handleSend();
-        }}
+        onClick={handleSearchButton}
         type="button"
         aria-label="searchButton"
       />
@@ -69,7 +71,7 @@ const SearchBar = ({
       />
       <button
         ref={shortcutsButtonRef}
-        onMouseDown={() => setShortcutsVisible(!shortcutsVisible)}
+        onMouseDown={handleShortcutsButton}
         id="shortcutsButton"
         type="button"
         aria-label="shortcutsButton"

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ColorWheel from 'react-color-picker-wheel';
 import withClickOutside from '../helpers/hocs/withClickOutside';
-import ColorWheel from '../ColorPicker';
 
 const ColorPicker = ({
   position,
@@ -21,7 +21,7 @@ const ColorPicker = ({
     }}
   >
     <ColorWheel
-      size={150}
+      size={180}
       initialColor={initialColor}
       onChange={onChange}
     />

@@ -1,15 +1,23 @@
 import {
-  call, put, takeEvery, select,
+  call,
+  put,
+  takeEvery,
+  select,
 } from 'redux-saga/effects';
 import I from 'immutable';
-import { getFromChrome, storeInChrome } from '../lib/api';
+import {
+  getFromChrome,
+  storeInChrome,
+} from '../lib/api';
 import {
   CHANGE_FILTER_FAILURE,
   CHANGE_FILTER_REQUEST,
-  CHANGE_FILTER_SUCCESS, CHANGE_LIST_COLOR,
+  CHANGE_FILTER_SUCCESS,
+  CHANGE_LIST_COLOR,
   INIT_UI_STATE_FAILURE,
   INIT_UI_STATE_REQUEST,
-  INIT_UI_STATE_SUCCESS, SET_TODOLIST_COLOR_OPTIMISTIC,
+  INIT_UI_STATE_SUCCESS,
+  SET_TODOLIST_COLOR_OPTIMISTIC,
   SWAP_TODO_UPDATE_UI_REQUEST,
   SWAP_TODO_UPDATE_UI_SUCCESS,
   UPDATE_CHROME_UI_STORAGE,

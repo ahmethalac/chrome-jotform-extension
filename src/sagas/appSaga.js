@@ -1,4 +1,7 @@
-import { takeEvery, put } from 'redux-saga/effects';
+import {
+  takeEvery,
+  put,
+} from 'redux-saga/effects';
 import {
   INIT_APP_FAILURE,
   INIT_APP_REQUEST,

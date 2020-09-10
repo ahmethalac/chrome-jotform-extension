@@ -1,10 +1,14 @@
 import React, {
-  useCallback, useRef, useState,
+  useCallback,
+  useRef,
+  useState,
 } from 'react';
 import '../styles/AddShortcut.scss';
 import PropTypes from 'prop-types';
 
-const AddShortcut = ({ addShortcut }) => {
+const AddShortcut = ({
+  addShortcut,
+}) => {
   const [inputsVisible, setInputsVisible] = useState(false);
   const [shortForm, setShortForm] = useState('!');
   const [longForm, setLongForm] = useState('');
@@ -27,6 +31,16 @@ const AddShortcut = ({ addShortcut }) => {
 
   const showInputs = useCallback(() => setInputsVisible(true), []);
 
+  const handleShortInput = event => {
+    if (event.target.value === '') {
+      setShortForm('!');
+    } else {
+      setShortForm(event.target.value);
+    }
+  };
+
+  const handleLongInput = event => setLongForm(event.target.value);
+
   return (
     <div className="addShortcut">
       <button
@@ -45,13 +59,7 @@ const AddShortcut = ({ addShortcut }) => {
           className="shortFormInput"
           ref={shortInput}
           value={shortForm}
-          onChange={event => {
-            if (event.target.value === '') {
-              setShortForm('!');
-            } else {
-              setShortForm(event.target.value);
-            }
-          }}
+          onChange={handleShortInput}
           onBlur={handleSend}
           onKeyDown={enterEvent}
 
@@ -61,7 +69,7 @@ const AddShortcut = ({ addShortcut }) => {
           className="longFormInput"
           placeholder="Long Form"
           value={longForm}
-          onChange={event => setLongForm(event.target.value)}
+          onChange={handleLongInput}
           onKeyDown={enterEvent}
         />
         <button

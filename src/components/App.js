@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react';
+import React, {
+  useEffect,
+} from 'react';
 import '../styles/App.scss';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -13,7 +15,7 @@ const App = ({
     _initApp();
   }, [_initApp]);
   return (
-    <div className="App" id="App">
+    <div className="App">
       <SearchBarContainer />
       <TodoListsContainer />
     </div>

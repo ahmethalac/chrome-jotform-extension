@@ -1,5 +1,9 @@
 import I from 'immutable';
-import { ADD_SHORTCUT_SUCCESS, DELETE_SHORTCUT_SUCCESS, INIT_SHORTCUTS_SUCCESS } from '../constants/actionTypes';
+import {
+  ADD_SHORTCUT_SUCCESS,
+  DELETE_SHORTCUT_SUCCESS,
+  INIT_SHORTCUTS_SUCCESS,
+} from '../constants/actionTypes';
 
 const INITIAL_STATE = I.fromJS({});
 
