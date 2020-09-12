@@ -11,6 +11,7 @@ import TodoList from './TodoList';
 import { getListOrder, selectTodos } from '../selectors';
 import '../styles/TodoLists.scss';
 import LoginJotform from './LoginJotform';
+import LogoutPrompt from './LogoutPrompt';
 
 const TodoLists = ({
   todoLists,
@@ -31,11 +32,16 @@ const TodoLists = ({
   changeColor,
   loggedIn,
   setAPIKey,
+  logout,
 }) => {
   const [filterName, setFilterName] = useState('');
   const [newTodoListInput, setNewTodoListInput] = useState('');
   const [flipState, setFlipState] = useState('rotateY(0deg)');
+  const [logoutPromptVisible, setLogoutPromptVisible] = useState(false);
+
   const inputRef = useRef(null);
+  const logoutButtonRef = useRef(null);
+
   const list = getListOrder(todoListsUI)
     .map(id => ({
       id,
@@ -93,7 +99,7 @@ const TodoLists = ({
   return (
     loggedIn !== 'notKnown' && (loggedIn ? (
       <div className="topContainer">
-        <div style={{ maxWidth: 'calc(100% - 200px)' }}>
+        <div style={{ maxWidth: 'calc(100% - 240px)' }}>
           {list.length ? (
             <div className="listNavigationBar">
               <button
@@ -188,15 +194,23 @@ const TodoLists = ({
             </div>
           </div>
         </button>
-      </div>
-    )
-      : (
-        <LoginJotform
-
-          setAPIKey={setAPIKey}
+        <button
+          ref={logoutButtonRef}
+          type="button"
+          className="logoutButton"
+          onClick={() => setLogoutPromptVisible(true)}
+          aria-label="logoutButton"
         />
-      ))
-
+        {logoutPromptVisible && (
+        <LogoutPrompt
+          onClickOutside={() => setLogoutPromptVisible(false)}
+          position={logoutButtonRef.current.getBoundingClientRect()}
+          logout={logout}
+          close={() => setLogoutPromptVisible(false)}
+        />
+        )}
+      </div>
+    ) : <LoginJotform setAPIKey={setAPIKey} />)
   );
 };
 
@@ -219,6 +233,7 @@ TodoLists.propTypes = {
   changeColor: PropTypes.func.isRequired,
   loggedIn: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   setAPIKey: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 TodoLists.defaultProps = {

@@ -20,6 +20,7 @@ import {
   updateTodoOrder,
   changeColor,
   setAPIKey,
+  logout,
 } from '../actions';
 
 const mapStateToProps = state => ({
@@ -43,6 +44,7 @@ const mapActionsToProps = {
   updateTodoOrder,
   changeColor,
   setAPIKey,
+  logout,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(TodoLists);

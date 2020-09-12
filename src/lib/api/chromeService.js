@@ -65,9 +65,4 @@ export const removeFromChrome = key => {
   }
 };
 
-// FOR DEBUG PURPOSES
-if (process.env.NODE_ENV === 'production') {
-  chrome.storage.sync.get(null, response => console.log(response));
-}
-
 export default 'dummyExport';

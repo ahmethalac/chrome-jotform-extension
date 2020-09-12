@@ -7,11 +7,17 @@ import {
   INIT_APP_FAILURE,
   INIT_APP_REQUEST,
   INIT_APP_SUCCESS,
-  INIT_SHORTCUTS_REQUEST, INIT_TODOLISTS_FAILURE,
+  INIT_SHORTCUTS_REQUEST,
+  INIT_TODOLISTS_FAILURE,
   INIT_TODOLISTS_REQUEST,
-  INIT_UI_STATE_REQUEST, SET_API_KEY,
+  INIT_UI_STATE_REQUEST,
+  LOGOUT,
+  SET_API_KEY,
 } from '../constants/actionTypes';
-import { storeInChrome } from '../lib/api';
+import {
+  removeFromChrome,
+  storeInChrome,
+} from '../lib/api';
 
 export function* initApp() {
   try {
@@ -52,9 +58,15 @@ export function* setKey(action) {
     });
   }
 }
+
+export function* logoutFromJotform() {
+  yield call(removeFromChrome, 'apiKey');
+}
+
 const appSagas = [
   takeEvery(INIT_APP_REQUEST, initApp),
   takeEvery(SET_API_KEY, setKey),
+  takeEvery(LOGOUT, logoutFromJotform),
 ];
 
 export default appSagas;
