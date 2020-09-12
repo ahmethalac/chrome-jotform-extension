@@ -1,0 +1,41 @@
+.loginJotFormContainer{
+  width: 300px;
+  height: 150px;
+  border-radius: 10px;
+  border: 2px solid white;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.prompt{
+  color: rgba(255,255,255,0.8);
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.apiKeyInput{
+  margin: 0 50px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+  color: rgba(255,255,255,.8);
+  &::placeholder{
+    color: rgba(255, 255, 255, 0.8);
+  }
+  text-align: center;
+}
+
+.sendAPIButton{
+  width: 30%;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, .8);
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  color: rgba(0,0,0,0.8);
+}

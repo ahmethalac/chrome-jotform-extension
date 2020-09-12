@@ -51,10 +51,10 @@ ListHeader.propTypes = {
   onInput: PropTypes.func,
   onKeyPress: PropTypes.func,
   onBlur: PropTypes.func,
-  nameRef: PropTypes.element.isRequired,
+  nameRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
   name: PropTypes.string,
   editIconVisible: PropTypes.bool,
-  menuButtonRef: PropTypes.element.isRequired,
+  menuButtonRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }).isRequired,
   onMenuOpen: PropTypes.func,
 };
 

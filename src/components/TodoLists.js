@@ -10,6 +10,7 @@ import { ReactSortable } from 'react-sortablejs';
 import TodoList from './TodoList';
 import { getListOrder, selectTodos } from '../selectors';
 import '../styles/TodoLists.scss';
+import LoginJotform from './LoginJotform';
 
 const TodoLists = ({
   todoLists,
@@ -28,6 +29,8 @@ const TodoLists = ({
   updateListOrder,
   updateTodoOrder,
   changeColor,
+  loggedIn,
+  setAPIKey,
 }) => {
   const [filterName, setFilterName] = useState('');
   const [newTodoListInput, setNewTodoListInput] = useState('');
@@ -88,103 +91,112 @@ const TodoLists = ({
   const handleUpdateOrder = id => newOrder => updateTodoOrder(id, newOrder);
   const handleAddButtonClick = () => setFlipState('rotateY(180deg)');
   return (
-    <div className="topContainer">
-      <div style={{ maxWidth: 'calc(100% - 200px)' }}>
-        {list.length ? (
-          <div className="listNavigationBar">
-            <button
-              type="button"
-              className="scrollLeft"
-              onClick={scrollLeft}
-              aria-label="scrollLeft"
-            />
-            <div className="filter">
-              <input
-                value={filterName}
-                onChange={handleFilter}
-                className="listFilter"
-                placeholder="Filter by Title"
-              />
+    loggedIn !== 'notKnown' && (loggedIn ? (
+      <div className="topContainer">
+        <div style={{ maxWidth: 'calc(100% - 200px)' }}>
+          {list.length ? (
+            <div className="listNavigationBar">
               <button
                 type="button"
-                className="resetFilter"
-                aria-label="resetFilter"
-                onClick={resetFilter}
+                className="scrollLeft"
+                onClick={scrollLeft}
+                aria-label="scrollLeft"
+              />
+              <div className="filter">
+                <input
+                  value={filterName}
+                  onChange={handleFilter}
+                  className="listFilter"
+                  placeholder="Filter by Title"
+                />
+                <button
+                  type="button"
+                  className="resetFilter"
+                  aria-label="resetFilter"
+                  onClick={resetFilter}
+                />
+              </div>
+              <div style={{ flex: 1 }} />
+              <button
+                type="button"
+                className="scrollRight"
+                onClick={scrollRight}
+                aria-label="scrollRight"
               />
             </div>
-            <div style={{ flex: 1 }} />
-            <button
-              type="button"
-              className="scrollRight"
-              onClick={scrollRight}
-              aria-label="scrollRight"
-            />
-          </div>
-        ) : null}
-        <ReactSortable
-          list={list}
-          setList={setList}
-          sort
-          id="todoLists"
-          handle=".dragListHandle"
-          animation={100}
-          dragClass="drag"
-        >
-          {list
-            .filter(e => todoLists.get(e.id))
-            .map(sortableElement => todoLists.get(sortableElement.id))
-            .map(todoList => (
-              todoList.get('name').includes(filterName)
-                ? (
-                  <TodoList
-                    key={todoList.get('id', '0')}
-                    name={todoList.get('name', 'undefined')}
-                    formId={todoList.get('id', '0')}
-                    todos={selectTodos(todoList)}
-                    toggleTodo={toggleTodo}
-                    addTodo={addTodo}
-                    deleteTodoList={deleteTodoList}
-                    uiState={todoListsUI.get(todoList.get('id'))}
-                    changeFilter={changeFilter}
-                    deleteTodo={deleteTodo}
-                    swapTodo={swapTodo}
-                    editListTitle={editListTitle}
-                    editTodoName={editTodoName}
-                    cloneList={cloneList}
-                    updateTodoOrder={handleUpdateOrder(todoList.get('id'))}
-                    changeColor={changeColor}
-                  />
-                ) : <div key={todoList.get('id')} />
-            ))}
-        </ReactSortable>
-      </div>
-      <button
-        type="button"
-        className="addTodoList"
-        onClick={handleAddButtonClick}
-      >
-        <div
-          className="addTodoListSkeleton"
-          style={{ transform: flipState }}
-        >
-          <div className="addTodoListFront">
-            <div className="frontAddButton" />
-          </div>
-          <div className="addTodoListBack">
-            <input
-              ref={inputRef}
-              type="text"
-              className="newTodoListInput"
-              value={newTodoListInput}
-              placeholder={newTodoListPlaceholder}
-              onChange={handleInputChange}
-              onKeyDown={enterEvent}
-              onBlur={handleSend}
-            />
-          </div>
+          ) : null}
+          <ReactSortable
+            list={list}
+            setList={setList}
+            sort
+            id="todoLists"
+            handle=".dragListHandle"
+            animation={100}
+            dragClass="drag"
+          >
+            {list
+              .filter(e => todoLists.get(e.id))
+              .map(sortableElement => todoLists.get(sortableElement.id))
+              .map(todoList => (
+                todoList.get('name').includes(filterName)
+                  ? (
+                    <TodoList
+                      key={todoList.get('id', '0')}
+                      name={todoList.get('name', 'undefined')}
+                      formId={todoList.get('id', '0')}
+                      todos={selectTodos(todoList)}
+                      toggleTodo={toggleTodo}
+                      addTodo={addTodo}
+                      deleteTodoList={deleteTodoList}
+                      uiState={todoListsUI.get(todoList.get('id'))}
+                      changeFilter={changeFilter}
+                      deleteTodo={deleteTodo}
+                      swapTodo={swapTodo}
+                      editListTitle={editListTitle}
+                      editTodoName={editTodoName}
+                      cloneList={cloneList}
+                      updateTodoOrder={handleUpdateOrder(todoList.get('id'))}
+                      changeColor={changeColor}
+                    />
+                  ) : <div key={todoList.get('id')} />
+              ))}
+          </ReactSortable>
         </div>
-      </button>
-    </div>
+        <button
+          type="button"
+          className="addTodoList"
+          onClick={handleAddButtonClick}
+        >
+          <div
+            className="addTodoListSkeleton"
+            style={{ transform: flipState }}
+          >
+            <div className="addTodoListFront">
+              <div className="frontAddButton" />
+            </div>
+            <div className="addTodoListBack">
+              <input
+                ref={inputRef}
+                type="text"
+                className="newTodoListInput"
+                value={newTodoListInput}
+                placeholder={newTodoListPlaceholder}
+                onChange={handleInputChange}
+                onKeyDown={enterEvent}
+                onBlur={handleSend}
+              />
+            </div>
+          </div>
+        </button>
+      </div>
+    )
+      : (
+        <LoginJotform
+
+          setAPIKey={setAPIKey}
+        />
+      ))
+
   );
 };
 
@@ -205,12 +217,15 @@ TodoLists.propTypes = {
   updateListOrder: PropTypes.func.isRequired,
   updateTodoOrder: PropTypes.func.isRequired,
   changeColor: PropTypes.func.isRequired,
+  loggedIn: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  setAPIKey: PropTypes.func.isRequired,
 };
 
 TodoLists.defaultProps = {
   newTodoListPlaceholder: 'List Name',
   todoLists: I.fromJS({}),
   todoListsUI: I.fromJS({}),
+  loggedIn: false,
 };
 
 export default TodoLists;
