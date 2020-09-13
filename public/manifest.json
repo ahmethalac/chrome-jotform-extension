@@ -1,11 +1,13 @@
 {
-  "name": "JotFormTab",
-  "version": "1.0",
-  "description": "JotForm New Tab for Chrome",
+  "name": "New Tab Task Manager",
+  "version": "0.1.0",
+  "description": "Task manager app which overrides default new tab on Chrome",
   "manifest_version": 2,
-  "icons": { "16": "icon16.png",
+  "icons": {
+    "16": "icon16.png",
     "48": "icon48.png",
-    "128": "icon128.png" },
+    "128": "icon128.png"
+  },
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
